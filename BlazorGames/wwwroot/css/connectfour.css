@@ -1,0 +1,32 @@
+﻿.connectfour-board {
+    background-color: blue;
+    display: flex;
+    flex-direction: row;
+    max-width: 490px;
+}
+
+.connectfour-column {
+    min-width: 60px;
+    min-height: 60px;
+    height: 100%;
+}
+
+.connectfour-gamepiece {
+    border: solid 1px black;
+    margin: 5px;
+    min-height: 60px;
+    min-width: 60px;
+    border-radius: 50px;
+}
+
+.connectfour-red {
+    background-color: red;
+}
+
+.connectfour-yellow {
+    background-color: yellow;
+}
+
+.connectfour-blank {
+    background-color: white;
+}
