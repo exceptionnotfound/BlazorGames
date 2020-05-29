@@ -9,7 +9,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.100 #Blazor WebAssembly requires 3.1.100
+        dotnet-version: 3.2
     - name: Build with dotnet
       run: dotnet build --configuration Release
     - name: Publish Blazor webassembly using dotnet 
