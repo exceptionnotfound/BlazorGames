@@ -1,0 +1,32 @@
+﻿.tictactoe-board {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    max-width: 490px;
+}
+
+.tictactoe-column {
+    min-width: 60px;
+    min-height: 60px;
+    height: 100%;
+}
+
+.tictactoe-gamepiece {
+    border: solid 1px black;
+    min-height: 60px;
+    min-width: 60px;
+}
+
+.tictactoe-x {
+    background-image: url("../letter-x.png");
+    background-repeat: no-repeat;
+}
+
+.tictactoe-o {
+    background-image: url("../letter-o.png");
+    background-repeat: no-repeat;
+}
+
+.tictactoe-blank {
+    background-image: none;
+}

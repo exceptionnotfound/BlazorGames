@@ -1,0 +1,37 @@
+﻿@page "/tictactoe"
+@using BlazorGames.Models.TicTacToe;
+
+<link href="../."
+
+<h1>Tic Tac Toe</h1>
+
+@code {
+    GameBoard board = new GameBoard();
+}
+
+
+@if (!board.GameComplete)
+{
+    <h2>@board.CurrentTurn's Turn!</h2>
+}
+else
+{
+    <h2>@board.GetGameCompleteMessage() <button class="btn btn-success" @onclick="@(() => board.Reset())">Reset</button></h2>
+}
+
+<div class="tictactoe-board">
+    @for (int i = 0; i < 3; i++)
+    {
+        <div class="tictacttoe-column">
+            @for (int j = 0; j < 3; j++)
+            {
+                int x = i;
+                int y = j;
+                <div class="tictactoe-gamepiece
+                         tictactoe-@board.Board[i,j].Style.ToString().ToLower()" @onclick="@(() => board.PieceClicked(x,y))"
+                     style="@(board.IsGamePieceAWinningPiece(i, j)? "opacity: 0.6" : "")"></div>
+            }
+        </div>
+    }
+</div>
+
