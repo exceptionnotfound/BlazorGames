@@ -101,7 +101,7 @@ namespace BlazorGames.Models.Minesweeper
             Random rand = new Random();
             //For any board, take the user's first revealed panel + any neighbors of that panel, and mark them as unavailable for mine placement.
             var neighbors = GetNeighbors(x, y); //Get all neighbors to specified depth
-            neighbors.Add(GetPanel(x, y));
+            neighbors.Add(Panels.First(z => z.X == x && z.Y == y));
 
             //Select random panels from set which are not excluded
             var mineList = Panels.Except(neighbors).OrderBy(user => rand.Next());
@@ -156,28 +156,6 @@ namespace BlazorGames.Models.Minesweeper
                 Status = GameStatus.Completed; 
                 RevealAllMines();
             }
-        }
-
-        public BoardStats GetStats()
-        {
-            BoardStats stats = new BoardStats();
-
-            stats.Mines = Panels.Count(x => x.IsMine);
-            stats.FlaggedMinePanels = Panels.Count(x => x.IsMine && x.IsFlagged);
-
-            stats.PercentMinesFlagged = Math.Round((double)(stats.FlaggedMinePanels / stats.Mines) * 100, 2);
-
-            stats.TotalPanels = Panels.Count;
-            stats.PanelsRevealed = Panels.Count(x => x.IsFlagged || x.IsRevealed);
-
-            stats.PercentPanelsRevealed = Math.Round((double)(stats.PanelsRevealed / stats.TotalPanels) * 100, 2);
-
-            return stats;
-        }
-
-        public Panel GetPanel(int x, int y)
-        {
-            return Panels.First(z => z.X == x && z.Y == y);
         }
 
         public void FlagPanel(int x, int y)

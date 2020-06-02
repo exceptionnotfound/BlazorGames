@@ -31,7 +31,7 @@
 <div class="minesweeper-board">
     @for (int i = 1; i <= board.Width; i++)
     {
-    <div class="minesweeper-column">
+        <div class="minesweeper-column">
         @for (int j = 1; j <= board.Height; j++)
         {
             int x = i;
@@ -41,7 +41,14 @@
             {
                 @if (currentPanel.IsMine)
                 {
-                    <div class="minesweeper-gamepiece minesweeper-revealed minesweeper-mine"></div>
+                    if (board.Status == Models.Minesweeper.Enums.GameStatus.Completed)
+                    {
+                        <div class="minesweeper-gamepiece minesweeper-revealed minesweeper-mine-smiley"></div>
+                    }
+                    else
+                    {
+                        <div class="minesweeper-gamepiece minesweeper-revealed minesweeper-mine"></div>
+                    }
                 }
                 else if (currentPanel.AdjacentMines == 0)
                 {

@@ -17,6 +17,7 @@
     border: solid 1px black;
     text-align:center;
     vertical-align:central;
+    font-weight:bold;
 }
 
 .minesweeper-unrevealed {
@@ -31,8 +32,12 @@
     background-image: url("../mine.png");
 }
 
+.minesweeper-mine-smiley {
+    background-image: url("../smiley-small.png");
+}
+
 .minesweeper-1{
-    color:green;
+    color: green;
 }
 .minesweeper-2{
     color: blue;
@@ -45,4 +50,13 @@
 }
 .minesweeper-5 {
     color: brown;
+}
+.minesweeper-6 {
+    color: darkred;
+}
+.minesweeper-7 {
+    color: black;
+}
+.minesweeper-8 {
+    color: darkgray;
 }
