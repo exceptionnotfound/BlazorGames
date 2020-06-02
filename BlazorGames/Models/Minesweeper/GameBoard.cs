@@ -10,7 +10,7 @@ namespace BlazorGames.Models.Minesweeper
     {
         public int Width { get; set; } = 20;
         public int Height { get; set; } = 20;
-        public int MineCount { get; set; } = 20;
+        public int MineCount { get; set; } = 30;
         public List<Panel> Panels { get; set; }
         public GameStatus Status { get; set; }
 
@@ -25,6 +25,11 @@ namespace BlazorGames.Models.Minesweeper
         public void Reset()
         {
             Initialize(Width, Height, MineCount);
+        }
+
+        public int PanelsRemaining()
+        {
+            return Panels.Where(x => !x.IsRevealed).Count() - MineCount;
         }
 
         public void Initialize(int width, int height, int mines)
@@ -58,13 +63,8 @@ namespace BlazorGames.Models.Minesweeper
 
         public List<Panel> GetNeighbors(int x, int y)
         {
-            return GetNeighbors(x, y, 1);
-        }
-
-        public List<Panel> GetNeighbors(int x, int y, int depth)
-        {
-            var nearbyPanels = Panels.Where(panel => panel.X >= (x - depth) && panel.X <= (x + depth)
-                                                 && panel.Y >= (y - depth) && panel.Y <= (y + depth));
+            var nearbyPanels = Panels.Where(panel => panel.X >= (x - 1) && panel.X <= (x + 1)
+                                                 && panel.Y >= (y - 1) && panel.Y <= (y + 1));
             var currentPanel = Panels.Where(panel => panel.X == x && panel.Y == y);
             return nearbyPanels.Except(currentPanel).ToList();
         }
@@ -99,8 +99,8 @@ namespace BlazorGames.Models.Minesweeper
         public void FirstMove(int x, int y)
         {
             Random rand = new Random();
-            //For any board, take the user's first revealed panel + any neighbors of that panel to X depth, and mark them as unavailable for mine placement.
-            var neighbors = GetNeighbors(x, y, 1); //Get all neighbors to specified depth
+            //For any board, take the user's first revealed panel + any neighbors of that panel, and mark them as unavailable for mine placement.
+            var neighbors = GetNeighbors(x, y); //Get all neighbors to specified depth
             neighbors.Add(GetPanel(x, y));
 
             //Select random panels from set which are not excluded
@@ -153,7 +153,8 @@ namespace BlazorGames.Models.Minesweeper
             var minePanels = Panels.Where(x => x.IsMine).Select(x => x.ID);
             if (!hiddenPanels.Except(minePanels).Any())
             {
-                Status = GameStatus.Completed;
+                Status = GameStatus.Completed; 
+                RevealAllMines();
             }
         }
 

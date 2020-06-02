@@ -5,12 +5,26 @@
     GameBoard board = new GameBoard();
 }
 
-<h3>
+<h2>
     Minesweeper
-    @if (board.Status == Models.Minesweeper.Enums.GameStatus.Completed
-          || board.Status == Models.Minesweeper.Enums.GameStatus.Failed)
+</h2>
+
+<h3>
+    @if (board.Status == Models.Minesweeper.Enums.GameStatus.Completed)
     {
-        <button class="btn btn-success" @onclick="@(() => board.Reset())">Reset</button>
+        <text>Congrats!</text><button class="btn btn-success" @onclick="@(() => board.Reset())">Reset</button>
+    }
+    else if (board.Status == Models.Minesweeper.Enums.GameStatus.Failed)
+    {
+        <text>Whoops!</text><button class="btn btn-success" @onclick="@(() => board.Reset())">Reset</button>
+    }
+    else if(board.Status == Models.Minesweeper.Enums.GameStatus.InProgress)
+    {
+        <span>@board.PanelsRemaining() Remaining</span>
+    }
+    else
+    {
+        <span>Let's play!</span>
     }
 </h3>
 
