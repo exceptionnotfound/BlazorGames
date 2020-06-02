@@ -1,0 +1,48 @@
+﻿.minesweeper-board {
+    display: flex;
+    flex-direction: row;
+}
+
+.minesweeper-column {
+    min-width: 30px;
+    min-height: 30px;
+    height: 100%;
+}
+
+.minesweeper-gamepiece {
+    min-width: 30px;
+    min-height: 30px;
+    max-width: 30px;
+    max-height: 30px;
+    border: solid 1px black;
+    text-align:center;
+    vertical-align:central;
+}
+
+.minesweeper-unrevealed {
+    background-color:lightgray;
+}
+
+.minesweeper-revealed {
+    background-color:white;
+}
+
+.minesweeper-mine {
+    background-image: url("../mine.png");
+}
+
+.minesweeper-1{
+    color:green;
+}
+.minesweeper-2{
+    color: blue;
+}
+.minesweeper-3 {
+    color: red;
+}
+.minesweeper-4 {
+    color: purple;
+}
+.minesweeper-5 {
+    color: brown;
+}

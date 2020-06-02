@@ -1,0 +1,50 @@
+﻿@page "/minesweeper"
+@using BlazorGames.Models.Minesweeper;
+
+@code {
+    GameBoard board = new GameBoard();
+}
+
+<h3>
+    Minesweeper
+    @if (board.Status == Models.Minesweeper.Enums.GameStatus.Completed
+          || board.Status == Models.Minesweeper.Enums.GameStatus.Failed)
+    {
+        <button class="btn btn-success" @onclick="@(() => board.Reset())">Reset</button>
+    }
+</h3>
+
+<div class="minesweeper-board">
+    @for (int i = 1; i <= board.Width; i++)
+    {
+    <div class="minesweeper-column">
+        @for (int j = 1; j <= board.Height; j++)
+        {
+            int x = i;
+            int y = j;
+            var currentPanel = board.Panels.First(m => m.X == x && m.Y == y);
+            if (currentPanel.IsRevealed)
+            {
+                @if (currentPanel.IsMine)
+                {
+                    <div class="minesweeper-gamepiece minesweeper-revealed minesweeper-mine"></div>
+                }
+                else if (currentPanel.AdjacentMines == 0)
+                {
+                    <div class="minesweeper-gamepiece minesweeper-revealed"></div>
+                }
+                else
+                {
+                    <div class="minesweeper-gamepiece minesweeper-revealed minesweeper-@currentPanel.AdjacentMines">@currentPanel.AdjacentMines</div>
+                }
+            }
+            else
+            {
+                <div class="minesweeper-gamepiece minesweeper-unrevealed" @onclick="@(() => board.MakeMove(x, y))">
+                </div>
+            }
+
+        }
+    </div>
+    }
+</div>
