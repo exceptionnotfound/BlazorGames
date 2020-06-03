@@ -1,66 +1,119 @@
-﻿.minesweeper-board {
+﻿.minesweeper-game div {
+    line-height:0;
+    font-size:0;
+}
+
+.minesweeper-board {
     display: flex;
     flex-direction: row;
+    font-family: Arial;
+    background-color: silver;
+}
+
+.minesweeper-medium {
+    width:276px;
+    height:318px;
+}
+
+.minesweeper-board div{
+    background-image: url(../sprite100.gif);
 }
 
 .minesweeper-column {
-    min-width: 30px;
-    min-height: 30px;
     height: 100%;
 }
 
 .minesweeper-gamepiece {
-    min-width: 30px;
-    min-height: 30px;
-    max-width: 30px;
-    max-height: 30px;
-    border: solid 1px black;
-    text-align:center;
-    vertical-align:central;
-    font-weight:bold;
+    min-width: 16px;
+    min-height: 16px;
+    max-width: 16px;
+    max-height: 16px;
+    font-size:0px;
 }
 
 .minesweeper-unrevealed {
-    background-color:lightgray;
-}
-
-.minesweeper-revealed {
-    background-color:white;
+    background-position: 0px -39px;
 }
 
 .minesweeper-flagged {
-    background-image: url("../flag-small.png");
+    background-position:-16px -39px;
 }
 
 .minesweeper-mine {
-    background-image: url("../mine.png");
+    background-position: -64px -39px;
 }
 
 .minesweeper-mine-smiley {
     background-image: url("../smiley-small.png");
 }
 
-.minesweeper-1{
-    color: green;
+.minesweeper-0 {
+    background-position: 0px -23px;
 }
-.minesweeper-2{
-    color: blue;
+
+.minesweeper-1 {
+    background-position: -16px -23px;
+}
+.minesweeper-2 {
+    background-position: -32px -23px;
 }
 .minesweeper-3 {
-    color: red;
+    background-position: -48px -23px;
 }
 .minesweeper-4 {
-    color: purple;
+    background-position: -64px -23px;
 }
 .minesweeper-5 {
-    color: brown;
+    background-position: -80px -23px;
 }
 .minesweeper-6 {
-    color: darkred;
+    background-position: -96px -23px;
 }
 .minesweeper-7 {
-    color: black;
+    background-position: -112px -23px;
 }
 .minesweeper-8 {
-    color: darkgray;
+    background-position: -128px -23px;
+}
+
+.minesweeper-border-jointleft{
+    background-position:-56px -81px;
+    width:10px;
+    height:10px
+}
+
+.minesweeper-border-jointright {
+    background-position: -66px -81px;
+    width: 10px;
+    height: 10px
+}
+
+.minesweeper-border-horizontal{
+    background-position: -40px -81px;
+    width:16px;
+    height:10px;
+}
+
+.minesweeper-border-vertical{
+    background-position: -134px -39px;
+    width:10px;
+    height:16px;
+}
+
+.minesweeper-border-vertical-long{
+    background-position: -134px -39px;
+    width: 10px;
+    height: 32px;
+}
+
+.minesweeper-border-bottomleft {
+    background-position: -20px -81px;
+    width: 10px;
+    height: 10px;
+}
+
+.minesweeper-border-bottomright {
+    background-position: -30px -81px;
+    width: 10px;
+    height: 10px;
 }

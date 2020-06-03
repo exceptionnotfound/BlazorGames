@@ -32,6 +32,11 @@ namespace BlazorGames.Models.Minesweeper
             return Panels.Where(x => !x.IsRevealed).Count() - MineCount;
         }
 
+        public int MinesRemaining()
+        {
+            return MineCount - Panels.Where(x => x.IsFlagged).Count();
+        }
+
         public void Initialize(int width, int height, int mines)
         {
             Width = width;
@@ -153,7 +158,6 @@ namespace BlazorGames.Models.Minesweeper
             if (!hiddenPanels.Except(minePanels).Any())
             {
                 Status = GameStatus.Completed; 
-                RevealAllMines();
             }
         }
 
