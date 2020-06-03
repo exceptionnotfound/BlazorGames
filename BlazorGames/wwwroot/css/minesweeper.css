@@ -28,6 +28,10 @@
     background-color:white;
 }
 
+.minesweeper-flagged {
+    background-image: url("../flag-small.png");
+}
+
 .minesweeper-mine {
     background-image: url("../mine.png");
 }

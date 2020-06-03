@@ -8,9 +8,9 @@ namespace BlazorGames.Models.Minesweeper
 {
     public class GameBoard
     {
-        public int Width { get; set; } = 20;
-        public int Height { get; set; } = 20;
-        public int MineCount { get; set; } = 30;
+        public int Width { get; set; } = 16;
+        public int Height { get; set; } = 16;
+        public int MineCount { get; set; } = 40;
         public List<Panel> Panels { get; set; }
         public GameStatus Status { get; set; }
 
@@ -73,8 +73,7 @@ namespace BlazorGames.Models.Minesweeper
         {
             //Step 1: Find the Specified Panel
             var selectedPanel = Panels.First(panel => panel.X == x && panel.Y == y);
-            selectedPanel.IsRevealed = true;
-            selectedPanel.IsFlagged = false; //Revealed panels cannot be flagged
+            selectedPanel.Reveal();
 
             //Step 2: If the panel is a mine, game over!
             if (selectedPanel.IsMine)
@@ -161,10 +160,8 @@ namespace BlazorGames.Models.Minesweeper
         public void FlagPanel(int x, int y)
         {
             var panel = Panels.Where(z => z.X == x && z.Y == y).First();
-            if (!panel.IsRevealed)
-            {
-                panel.IsFlagged = true;
-            }
+
+            panel.Flag();
         }
     }
 }

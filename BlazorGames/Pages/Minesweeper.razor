@@ -31,7 +31,7 @@
 <div class="minesweeper-board">
     @for (int i = 1; i <= board.Width; i++)
     {
-        <div class="minesweeper-column">
+    <div class="minesweeper-column">
         @for (int j = 1; j <= board.Height; j++)
         {
             int x = i;
@@ -59,9 +59,13 @@
                     <div class="minesweeper-gamepiece minesweeper-revealed minesweeper-@currentPanel.AdjacentMines">@currentPanel.AdjacentMines</div>
                 }
             }
+            else if (currentPanel.IsFlagged)
+            {
+                <div class="minesweeper-gamepiece minesweeper-unrevealed minesweeper-flagged" @onmouseup="@(() => board.FlagPanel(x, y))"></div>
+            }
             else
             {
-                <div class="minesweeper-gamepiece minesweeper-unrevealed" @onclick="@(() => board.MakeMove(x, y))">
+                <div class="minesweeper-gamepiece minesweeper-unrevealed" @onclick="@(() => board.MakeMove(x, y))" @oncontextmenu:preventDefault @oncontextmenu="@(() => board.FlagPanel(x, y))">
                 </div>
             }
 
