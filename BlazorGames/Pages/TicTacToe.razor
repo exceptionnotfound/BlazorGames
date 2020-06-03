@@ -1,12 +1,16 @@
 ﻿@page "/tictactoe"
 @using BlazorGames.Models.TicTacToe;
-
-<link href="../."
+@inject IJSRuntime _jsRuntime; 
 
 <h1>Tic Tac Toe</h1>
 
 @code {
     GameBoard board = new GameBoard();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await _jsRuntime.InvokeVoidAsync("Prism.highlightAll");
+    }
 }
 
 
@@ -35,3 +39,433 @@ else
     }
 </div>
 
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-2965044426270243"
+     data-ad-slot="3453103897"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+
+<h2>How I Made This</h2>
+
+<p>The source code for this sample is available <a href="https://github.com/exceptionnotfound/BlazorGames">over on GitHub</a>.</p>
+
+<p>
+    As always when attempting to model a game, we first need to consider the kinds of items we will interact with.
+    For tic-tac-toe this is fairly straightforward, as we only have the board itself and the x's and o's. 
+</p>
+
+<p>Game pieces in tic-tac-toe can only have one of two values: X or O. They can also be blank. Let's use a C# enumeration to define this:</p>
+
+<pre class="language-csharp"><code class="language-csharp">public enum PieceStyle
+{
+    X,
+    O,
+    Blank
+}
+</code></pre>
+
+<p>We will also need a class for the GamePiece itself:</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GamePiece
+{
+    public PieceStyle Style;
+
+    public GamePiece()
+    {
+        Style = PieceStyle.Blank;
+    }
+}
+</code></pre>
+
+<p>We can now begin to model the most important component of this example: the GameBoard class.</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //A 2D array of game pieces,
+    //expected to blank at the beginning of the game.
+    public GamePiece[,] Board { get; set; }
+
+    public PieceStyle CurrentTurn = PieceStyle.X;
+
+    public GameBoard()
+    {
+        Reset();
+    }
+}
+</code></pre>
+
+<p>Note the Reset() method. All that method does is set the game board back to blank spaces:</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Properties
+    public void Reset()
+    {
+        Board = new GamePiece[3, 3];
+
+        //Populate the Board with blank pieces
+        for (int i = 0; i &lt;= 2; i++)
+        {
+            for (int j = 0; j &lt;= 2; j++)
+            {
+                Board[i, j] = new GamePiece();
+            }
+        }
+    }
+}
+</code></pre>
+
+<p>Now we begin the real work, and consider this question: how do we model a game being played?</p>
+
+<h3>Let's Take Turns</h3>
+
+<p>
+    In order to allow our system to simulate turn-taking, we need to track whose turn it currently is.
+    To do that, we can introduce a property in our GameBoard class called CurrentTurn, and have it use
+    a method named SwitchTurns():
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Other Properties and Methods
+
+    public PieceStyle CurrentTurn = PieceStyle.X;
+
+    private void SwitchTurns()
+    {
+        //This is equivalent to: if currently X's turn,
+        // make it O's turn, and vice-versa
+        CurrentTurn = CurrentTurn == PieceStyle.X ? PieceStyle.O : PieceStyle.X;
+    }
+}
+</code></pre>
+
+<p>
+    We also need a method that represents a turn being taken. 
+    On a player's turn, they will click an empty space and place their marker (X or O) on that space. 
+    However, they shouldn't be able to click any spaces in two conditions:
+</p>
+
+<ol>
+    <li>The space is already occupied OR</li>
+    <li>The game is complete</li>
+</ol>
+
+<p>Let's deal with the second condition first. We can use a new property to check if the game is complete:</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Other Properties
+
+    public bool GameComplete => GetWinner() != null || IsADraw();
+
+    //...Other Methods
+}
+</code></pre>
+
+<p>
+    We will implement the methods GetWinner() and IsADraw() later. 
+    The main thing to take away from this is that the game is complete when either a 
+    winner is declared or a draw occurs.
+</p>
+
+<p>
+    Now we can write a method to allow players to "claim" spaces, 
+    which also includes a check to make sure that they aren't already claimed:
+</p>
+
+<pre class="language-csharp">
+<code class="language-csharp">public class GameBoard
+{
+    //...Other Properties and Methods
+
+    //Given the coordinates of the space that was clicked...
+    public void PieceClicked(int x, int y)
+    {
+        //If the game is complete, do nothing
+        if (GameComplete) { return; }
+
+        //If the space is not already claimed...
+        GamePiece clickedSpace = Board[x, y];
+        if (clickedSpace.Style == PieceStyle.Blank)
+        {
+            //Set the marker to the current turn marker (X or O)
+            clickedSpace.Style = CurrentTurn;
+
+            //Make it the other player's turn
+            SwitchTurns();
+        }
+    }
+}
+    </code>
+</pre>
+
+<p>That's all the code we need for our tic-tac-toe players to take turns! Now let's deal with some other scenarios.</p>
+
+<h3>Dealing with Draws</h3>
+
+<p>
+    NOTE: The code in this section and the next was originally submitted by 
+    <a href="https://github.com/johnt84">John Tomlinson</a> and modified by me.
+</p>
+
+<p>
+    It's possible (and if the players are older than five, likely) that a tic-tac-toe 
+    game will end in a draw. A "draw" occurs when all spaces are occupied and no winner 
+    can be found. So, let's create a method to watch for this situation.
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    public bool IsADraw()
+    {
+        int pieceBlankCount = 0;
+
+        //Count all the blank spaces. If the count is 0, this is a draw.
+        for (int i = 0; i &lt; 3; i++)
+        {
+            for (int j = 0; j &lt; 3; j++)
+            {
+                pieceBlankCount = this.Board[i, j].Style == PieceStyle.Blank
+                ? pieceBlankCount + 1
+                : pieceBlankCount;
+            }
+        }
+
+        return pieceBlankCount == 0;
+    }
+}
+</code></pre>
+
+<h3>Winning the Game</h3>
+
+<p>
+    Now we come to the most complex of the 
+    scenarios we're going to be dealing with: 
+    how do we determine if a game has been won?
+</p>
+
+<p>
+    The method to check this is going to be brute-force: for each space on the board, check each possible 
+    direction for matching pieces, and if you find three in a row, stop checking.
+</p>
+
+<p>
+    First, let's implement an enumeration to show the directions from which we will look for tic-tac-toes:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public enum EvaluationDirection
+{
+    Up,
+    UpRight,
+    Right,
+    DownRight
+}
+</code></pre>
+
+<p>
+    The method to do this for a single given space looks like this:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Other Properties and Methods
+
+    private WinningPlay EvaluatePieceForWinner(int i, int j,
+                                               EvaluationDirection dir)
+    {
+        GamePiece currentPiece = Board[i, j];
+        if (currentPiece.Style == PieceStyle.Blank)
+        {
+            return null;
+        }
+
+        int inARow = 1;
+        int iNext = i;
+        int jNext = j;
+
+        var winningMoves = new List&lt;string&gt;();
+
+        while (inARow &lt; 3)
+        {
+            //For each direction, increment the pointers to the next space
+            //to be evaluated
+            switch (dir)
+            {
+                case EvaluationDirection.Up:
+                    jNext -= 1;
+                    break;
+
+                case EvaluationDirection.UpRight:
+                    iNext += 1;
+                    jNext -= 1;
+                    break;
+
+                case EvaluationDirection.Right:
+                    iNext += 1;
+                    break;
+
+                case EvaluationDirection.DownRight:
+                    iNext += 1;
+                    jNext += 1;
+                    break;
+            }
+
+            //If the next "space" is off the board, don't check it.
+            if (iNext &lt; 0 || iNext &gt;= 3 || jNext &lt; 0 || jNext &gt;= 3) { break; }
+
+            //If the next space has a matching letter...
+            if (Board[iNext, jNext].Style == currentPiece.Style)
+            {
+                //Add this space to the collection of winning spaces.
+                winningMoves.Add($"{iNext},{jNext}");
+                inARow++;
+            }
+            else //Otherwise, no tic-tac-toe is found for this space/direction
+            {
+                return null;
+            }
+        }
+
+        //If we found three in a row
+        if (inARow >= 3)
+        {
+            //Return this set of spaces as the winning set
+            winningMoves.Add($"{i},{j}");
+
+            return new WinningPlay()
+            {
+                WinningMoves = winningMoves,
+                WinningStyle = currentPiece.Style,
+                WinningDirection = dir,
+            };
+        }
+
+        //If we got here, we didn't find any tic-tac-toes for the given space.
+        return null;
+    }
+}
+</code></pre>
+
+<p>
+    However, that method only evaluates for a single space; now we need a method to do that for all spaces.
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    public WinningPlay GetWinner()
+    {
+        WinningPlay winningPlay = null;
+
+        for (int i = 0; i &lt; 3; i++)
+        {
+            for (int j = 0; j &lt; 3; j++)
+            {
+                foreach (EvaluationDirection evalDirection in (EvaluationDirection[])Enum.GetValues(typeof(EvaluationDirection)))
+                {
+                    winningPlay = EvaluatePieceForWinner(i, j, evalDirection);
+                    if (winningPlay != null) { return winningPlay; }
+                }
+            }
+        }
+
+        return winningPlay;
+    }
+}
+</code></pre>
+
+<h3>Extras</h3>
+
+<p>
+    Finally, let's implement two more methods: one which gets a message to 
+    display the user when the game is won or drawn, and one to check for those 
+    situations so we can display the message.
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    public string GetGameCompleteMessage()
+    {
+        var winningPlay = GetWinner();
+        return winningPlay != null ? $"{winningPlay.WinningStyle} Wins!" : "Draw!";
+    }
+
+    public bool IsGamePieceAWinningPiece(int i, int j)
+    {
+        var winningPlay = GetWinner();
+        return winningPlay?.WinningMoves?.Contains($"{i},{j}") ?? false;
+    }
+}
+</code></pre>
+
+<p>
+    With all of that, our GameBoard class is complete! Now we just need to use it
+    on a razor component. Below is a basic razor component (which is what Blazor
+    calls the .razor files) that we will modify to host our tic-tac-toe game.
+</p>
+
+<pre class="language-html"><code class="language-html">@@page "/tictactoe"
+@@using BlazorGames.Models.TicTacToe;
+
+&lt;h1&gt;Tic Tac Toe&lt;/h1&gt;
+
+@@code {
+    GameBoard board = new GameBoard();
+}
+</code>
+</pre>
+
+<p>
+    First, let's write the markup for the game board itself:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">&lt;div class="tictactoe-board"&gt;
+    @@for (int i = 0; i &lt; 3; i++)
+    {
+        &lt;div class="tictacttoe-column"&gt;
+            @@for (int j = 0; j &lt; 3; j++)
+            {
+                int x = i;
+                int y = j;
+                &lt;div class="tictactoe-gamepiece
+                         tictactoe-@@board.Board[i,j].Style.ToString().ToLower()" @@onclick="@@(() => board.PieceClicked(x,y))"
+                     style="@@(board.IsGamePieceAWinningPiece(i, j)? "opacity: 0.6" : "")"&gt;&lt;/div&gt;
+            }
+        &lt;/div&gt;
+    }
+&lt;/div&gt;
+</code></pre>
+
+<p>
+    Note that the div with class "tictactoe-gamepiece" has styles dynamically applied to it when 
+    it is occupied by a letter and when it is part of the winning tic-tac-toe.
+</p>
+
+<p>
+    The last little piece is to output a message for wins and draws.
+</p>
+
+<pre class="language-html"><code class="language-html">@@if (!board.GameComplete)
+{
+    &lt;h2&gt;@@board.CurrentTurn's Turn!&lt;/h2&gt;
+}
+else
+{
+    &lt;h2&gt;
+        @@board.GetGameCompleteMessage()
+        &lt;button class="btn btn-success" @@onclick="@@(() => board.Reset())"&gt;
+            Reset
+        &lt;/button&gt;
+    &lt;/h2&gt;
+}
+</code></pre>
+
+<p>
+    And with that, we have a working tic-tac-toe game written in C# and Blazor WebAssembly!
+</p>
+
+<p>
+    Please feel free to check out <a href="https://github.com/exceptionnotfound/BlazorGames">the full source code over on GitHub</a>,
+    and submit a pull request.
+</p>
