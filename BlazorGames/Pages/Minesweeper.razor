@@ -61,64 +61,64 @@
         {
         <div class="minesweeper-column">
             @for (int j = 0; j <= maxHeight; j++)
-                {
-                    int x = i;
-                    int y = j;
+            {
+                int x = i;
+                int y = j;
 
-                    if (x == 0 && y == 0)
+                if (x == 0 && y == 0)
+                {
+                    <div class="minesweeper-border-jointleft"></div>
+                }
+                else if (x == 0 && y == maxHeight)
+                {
+                    <div class="minesweeper-border-bottomleft"></div>
+                }
+                else if (x == maxWidth && y == 0)
+                {
+                    <div class="minesweeper-border-jointright"></div>
+                }
+                else if (x == maxWidth && y == maxHeight)
+                {
+                    <div class="minesweeper-border-bottomright"></div>
+                }
+                else if(y == 0 || y == maxHeight)
+                {
+                    <div class="minesweeper-border-horizontal"></div>
+                }
+                else if(x == 0 || x == maxWidth)
+                {
+                    <div class="minesweeper-border-vertical"></div>
+                }
+                else
+                {
+                    var currentPanel = board.Panels.First(m => m.X == x && m.Y == y);
+                    if (currentPanel.IsRevealed)
                     {
-            <div class="minesweeper-border-jointleft"></div>
-                    }
-                    else if (x == 0 && y == maxHeight)
-                    {
-            <div class="minesweeper-border-bottomleft"></div>
-                    }
-                    else if (x == maxWidth && y == 0)
-                    {
-            <div class="minesweeper-border-jointright"></div>
-                    }
-                    else if (x == maxWidth && y == maxHeight)
-                    {
-            <div class="minesweeper-border-bottomright"></div>
-                    }
-                    else if(y == 0 || y == maxHeight)
-                    {
-            <div class="minesweeper-border-horizontal"></div>
-                    }
-                    else if(x == 0 || x == maxWidth)
-                    {
-            <div class="minesweeper-border-vertical"></div>
-                    }
-                    else
-                    {
-                        var currentPanel = board.Panels.First(m => m.X == x && m.Y == y);
-                        if (currentPanel.IsRevealed)
+                        if (currentPanel.IsMine)
                         {
-                            if (currentPanel.IsMine)
-                            {
-            <div class="minesweeper-gamepiece minesweeper-mine"></div>
-                            }
-                            else if (currentPanel.AdjacentMines == 0)
-                            {
-            <div class="minesweeper-gamepiece minesweeper-0"></div>
-                            }
-                            else
-                            {
-            <div class="minesweeper-gamepiece minesweeper-@currentPanel.AdjacentMines">@currentPanel.AdjacentMines</div>
-                            }
+                            <div class="minesweeper-gamepiece minesweeper-mine"></div>
                         }
-                        else if (currentPanel.IsFlagged)
+                        else if (currentPanel.AdjacentMines == 0)
                         {
-            <div class="minesweeper-gamepiece minesweeper-flagged" @oncontextmenu="@(() => board.FlagPanel(x, y))" @oncontextmenu:preventDefault></div>
+                            <div class="minesweeper-gamepiece minesweeper-0"></div>
                         }
                         else
                         {
-            <div class="minesweeper-gamepiece minesweeper-unrevealed" @onclick="@(() => board.MakeMove(x, y))" @oncontextmenu:preventDefault @oncontextmenu="@(() => board.FlagPanel(x, y))">
-            </div>
+                            <div class="minesweeper-gamepiece minesweeper-@currentPanel.AdjacentMines">@currentPanel.AdjacentMines</div>
                         }
                     }
+                    else if (currentPanel.IsFlagged)
+                    {
+                        <div class="minesweeper-gamepiece minesweeper-flagged" @oncontextmenu="@(() => board.FlagPanel(x, y))" @oncontextmenu:preventDefault></div>
+                    }
+                    else
+                    {
+                        <div class="minesweeper-gamepiece minesweeper-unrevealed" @onclick="@(() => board.MakeMove(x, y))" @oncontextmenu:preventDefault @oncontextmenu="@(() => board.FlagPanel(x, y))">
+                        </div>
+                    }
                 }
+            }
         </div>
-         }
+        }
     </div>
 </div>
