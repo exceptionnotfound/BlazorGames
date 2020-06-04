@@ -1,7 +1,35 @@
 ﻿@page "/"
 
-<h1>Blazor Games</h1>
+<h1>BlazorGames.net</h1>
 
-<p>Hiya Everybody! Welcome to my new site, where we make board and computer games with Blazor to see how it works!</p>
+<p>
+    Welcome to my new site! Here we make classic games with ASP.NET Core and Blazor 
+    and have some fun while learning.
+</p>
 
-<p>I'll be updating this site with new examples as I make them. In the meantime, check out the existing games using the links on the left.</p>
+<p>I'll be updating this site with new examples as I make them. In the meantime, check out the existing games below.</p>
+
+<h2>
+    The Games
+</h2>
+
+<div class="row">
+    <div class="col-4">
+        <NavLink class="nav-link" href="tictactoe">
+            <h3>Tic Tac Toe</h3>
+            <img class="img-fluid" src="tictactoe-bookmark.png" />
+        </NavLink>
+    </div>
+    <div class="col-4">
+        <NavLink class="nav-link" href="connectfour">
+            <h3>ConnectFour</h3>
+            <img class="img-fluid" src="connectfour-bookmark.png" />
+        </NavLink>
+    </div>
+    <div class="col-4">
+        <NavLink class="nav-link" href="minesweeper">
+            <h3>Minesweeper</h3>
+            <img class="img-fluid" src="minesweeper-bookmark.png" />
+        </NavLink>
+    </div>
+</div>
