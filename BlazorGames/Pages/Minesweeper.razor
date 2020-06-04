@@ -1,5 +1,6 @@
 ﻿@page "/minesweeper"
 @using BlazorGames.Models.Minesweeper;
+@using BlazorGames.Models.Minesweeper.Enums;
 
 @code {
     GameBoard board = new GameBoard();
@@ -14,52 +15,42 @@
     Minesweeper
 </h2>
 
-<h3>
-    @if (board.Status == Models.Minesweeper.Enums.GameStatus.Completed)
-    {
-        <text>Congrats!</text><button class="btn btn-success" @onclick="@(() => board.Reset())">Reset</button>
-    }
-    else if (board.Status == Models.Minesweeper.Enums.GameStatus.Failed)
-    {
-        <text>Whoops!</text><button class="btn btn-success" @onclick="@(() => board.Reset())">Reset</button>
-    }
-    else if (board.Status == Models.Minesweeper.Enums.GameStatus.InProgress)
-    {
-        <span>@board.MinesRemaining() Remaining</span>
-    }
-    else
-    {
-        <span>Let's play!</span>
-    }
-</h3>
-
 <div class="minesweeper-game minesweeper-medium">
-    <div class="minesweeper-board">
+    <div class="minesweeper-board" @oncontextmenu:preventDefault onmousedown="faceOooh(event);" onmouseup="faceSmile();">
         @{
             var maxWidth = board.Width + 1;
             var maxHeight = board.Height + 1;
         }
 
-        @*Build the upper section first*@
-        @for (int i = 0; i < maxWidth; i++)
+        <div class="minesweeper-border-topleft"></div>
+        @for (int i = 1; i < maxWidth; i++)
         {
-            @if(i == 0)
-            {
-                <div class="minesweeper-border-topleft"></div>
-            }
-            else if (i == maxWidth)
-            {
-                <div class="minesweeper-border-topright"></div>
-            }
-            else
-            {
-                <div class="minesweeper-border-horizontal"></div>
-            }
+            <div class="minesweeper-border-horizontal"></div>
         }
+        <div class="minesweeper-border-topright"></div>
+        <div class="minesweeper-border-vertical-long"></div>
+        <div class="minesweeper-time-@GetPlace(board.MinesRemaining(), 100)" id="mines_hundreds"></div>
+        <div class="minesweeper-time-@GetPlace(board.MinesRemaining(), 10)" id="mines_tens"></div>
+        <div class="minesweeper-time-@GetPlace(board.MinesRemaining(), 1)" id="mines_ones"></div>
+        @if (board.Status == GameStatus.Failed)
+        {
+            <div class="minesweeper-face-dead" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
+        }
+        else if (board.Status == GameStatus.Completed)
+        {
+            <div class="minesweeper-face-win" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
+        }
+        else
+        {
+            <div class="minesweeper-face-smile" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
+        }
+        <div class="minesweeper-time-0" id="seconds_hundreds"></div>
+        <div class="minesweeper-time-0" id="seconds_tens"></div>
+        <div class="minesweeper-time-0" id="seconds_ones"></div>
+        <div class="minesweeper-border-vertical-long"></div>
 
         @for (int i = 0; i <= maxWidth; i++)
         {
-        <div class="minesweeper-column">
             @for (int j = 0; j <= maxHeight; j++)
             {
                 int x = i;
@@ -71,25 +62,25 @@
                 }
                 else if (x == 0 && y == maxHeight)
                 {
-                    <div class="minesweeper-border-bottomleft"></div>
+                    <div class="minesweeper-border-jointright"></div>
                 }
                 else if (x == maxWidth && y == 0)
                 {
-                    <div class="minesweeper-border-jointright"></div>
+                    <div class="minesweeper-border-bottomleft"></div>
                 }
                 else if (x == maxWidth && y == maxHeight)
                 {
                     <div class="minesweeper-border-bottomright"></div>
                 }
-                else if(y == 0 || y == maxHeight)
-                {
-                    <div class="minesweeper-border-horizontal"></div>
-                }
-                else if(x == 0 || x == maxWidth)
+                else if (y == 0 || y == maxHeight)
                 {
                     <div class="minesweeper-border-vertical"></div>
                 }
-                else
+                else if (x == 0 || x == maxWidth)
+                {
+                    <div class="minesweeper-border-horizontal"></div>
+                }
+                else if (y > 0 && y < maxHeight)
                 {
                     var currentPanel = board.Panels.First(m => m.X == x && m.Y == y);
                     if (currentPanel.IsRevealed)
@@ -118,7 +109,6 @@
                     }
                 }
             }
-        </div>
         }
     </div>
 </div>
