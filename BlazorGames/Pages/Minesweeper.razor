@@ -1,6 +1,8 @@
 ﻿@page "/minesweeper"
-@using BlazorGames.Models.Minesweeper;
-@using BlazorGames.Models.Minesweeper.Enums;
+@using BlazorGames.Models.Minesweeper
+@using BlazorGames.Models.Minesweeper.Enums
+@inject IJSRuntime _jsRuntime
+@inject NavigationManager _navManager
 
 @code {
     GameBoard board = new GameBoard();
@@ -8,6 +10,20 @@
     public int GetPlace(int value, int place)
     {
         return ((value % (place * 10)) - (value % place)) / place;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        while (board.Status == GameStatus.InProgress && _navManager.Uri.Contains("minesweeper"))
+        {
+            await Task.Delay(500);
+            var elapsedTime = (int)board.Stopwatch.Elapsed.TotalSeconds;
+            var hundreds = GetPlace(elapsedTime, 100);
+            var tens = GetPlace(elapsedTime, 10);
+            var ones = GetPlace(elapsedTime, 1);
+
+            await _jsRuntime.InvokeAsync<string>("setTime", hundreds, tens, ones);
+        }
     }
 }
 
@@ -44,9 +60,9 @@
         {
             <div class="minesweeper-face-smile" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
         }
-        <div class="minesweeper-time-0" id="seconds_hundreds"></div>
-        <div class="minesweeper-time-0" id="seconds_tens"></div>
-        <div class="minesweeper-time-0" id="seconds_ones"></div>
+        <div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,100)" id="seconds_hundreds"></div>
+        <div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,10)" id="seconds_tens"></div>
+        <div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,1)" id="seconds_ones"></div>
         <div class="minesweeper-border-vertical-long"></div>
 
         @for (int i = 0; i <= maxWidth; i++)

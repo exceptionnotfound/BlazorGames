@@ -1,8 +1,10 @@
 ﻿using BlazorGames.Models.Minesweeper.Enums;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace BlazorGames.Models.Minesweeper
 {
@@ -17,6 +19,8 @@ namespace BlazorGames.Models.Minesweeper
         public double PercentMinesFlagged { get; set; }
         public double PercentPanelsRevealed { get; set; }
 
+        public Stopwatch Stopwatch { get; set; }
+
         public GameBoard()
         {
             Reset();
@@ -25,6 +29,7 @@ namespace BlazorGames.Models.Minesweeper
         public void Reset()
         {
             Initialize(Width, Height, MineCount);
+            Stopwatch = new Stopwatch();
         }
 
         public int PanelsRemaining()
@@ -125,6 +130,7 @@ namespace BlazorGames.Models.Minesweeper
             }
 
             Status = GameStatus.InProgress;
+            Stopwatch.Start();
         }
 
         public void RevealZeros(int x, int y)
@@ -157,7 +163,8 @@ namespace BlazorGames.Models.Minesweeper
             var minePanels = Panels.Where(x => x.IsMine).Select(x => x.ID);
             if (!hiddenPanels.Except(minePanels).Any())
             {
-                Status = GameStatus.Completed; 
+                Status = GameStatus.Completed;
+                Stopwatch.Stop();
             }
         }
 
