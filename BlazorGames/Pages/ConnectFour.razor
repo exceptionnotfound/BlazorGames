@@ -1,23 +1,28 @@
 ﻿@page "/connectfour"
 @using BlazorGames.Models.ConnectFour;
 @using BlazorGames.Models.ConnectFour.Enums;
+@inject IJSRuntime _jsRuntime;
 
 <h1>ConnectFour</h1>
 
 @code {
-
     GameBoard board = new GameBoard();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await _jsRuntime.InvokeVoidAsync("Prism.highlightAll");
+    }
 }
 
 
 @if (board.WinningPlay == null)
 {
-    <h2>@board.CurrentTurn's Turn!</h2>
+    <h3>@board.CurrentTurn's Turn!</h3>
 
 }
 else
 {
-    <h2>@board.WinningPlay.WinningColor Wins! <button class="btn btn-success" @onclick="@(() => board.Reset())">Reset</button></h2>
+    <h3>@board.WinningPlay.WinningColor Wins! <button class="btn btn-success" @onclick="@(() => board.Reset())">Reset</button></h3>
 }
 
 <div class="connectfour-board">
@@ -35,3 +40,411 @@ else
         </div>
     }
 </div>
+
+<hr />
+
+<h2>How To Make This</h2>
+
+<p>
+    ConnectFour is a bit more complex than the Tic Tac Toe example, but only a bit. Let's see how to make this game in Blazor!
+</p>
+
+<h3>The Sample Project</h3>
+
+<p>
+    The sample project for this code is <a href="https://github.com/exceptionnotfound/BlazorGames">over on GitHub</a>.
+    This tutorials assumes you already have a created Blazor WebAssembly and ASP.NET Core 3.1 or greater application.
+</p>
+
+<h3>The Original Blog Post</h3>
+
+<p>
+    This game was originally written in Blazor Server, and the corresponding blog post can be found here:
+    <a href="https://exceptionnotfound.net/learning-blazor-by-building-connect-four-in-asp-net-core/">
+        A Blazor Tutorial: Building Connect Four in ASP.NET Core
+    </a>
+</p>
+
+<h3>Modeling the Game</h3>
+
+<p>
+    As with the <a href="TicTacToe.razor">Tic Tac Toe example</a>, before we can start writing the code we must
+    take a minute to model the game of ConnectFour and the kinds of classes we need. Let's think about what kinds
+    of things we can use to represent a game of ConnectFour in process.
+</p>
+
+<p>
+    First and foremost we have the "board"; in the real world it would be a vertical series of slits,
+    7 spaces wide and 6 tall, into which the pieces are inserted. Then we have the pieces themselves;
+    various red and yellow discs which slide easily into the board. This (like Tic Tac Toe) is a relatively simple game,
+    so (lucky for us) the amount of modeling we have to do is limited.
+</p>
+
+<h3>The First Few Classes and Enums</h3>
+
+<p>
+    Game pieces in ConnectFour are either red or yellow, and a single space on the game board can also be blank.
+    Therefore we can use an enumeration to represent the possible colors the board can show.
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public enum PieceColor
+{
+    Red,
+    Yellow,
+    Blank
+}
+</code></pre>
+
+<p>
+    We now need a basic class to represent a game piece. Lucky for us, the game piece really only
+    has one property: its color.
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GamePiece
+{
+    public PieceColor Color;
+
+    public GamePiece(PieceColor color)
+    {
+        Color = color;
+    }
+}
+</code></pre>
+
+<p>
+    Of course, we also need to model the board itself. We're going to think of the board
+    as being a multidimensional array, 7 wide by 6 tall, and filled with "blank" pieces
+    at the beginning of the game; these blank pieces will be replaced by colored
+    pieces as the game progresses.
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    public GamePiece[,] Board { get; set; }
+
+    public GameBoard()
+    {
+        Board = new GamePiece[7, 6];
+
+        //Populate the Board with blank pieces
+        for(int i = 0; i &lt;= 6; i++)
+        {
+            for(int j = 0; j &lt;= 5; j++)
+            {
+                Board[i, j] = new GamePiece(PieceColor.Blank);
+            }
+        }
+    }
+}
+</code></pre>
+
+<p>That's all the models we need! Now we can get started modeling the actual game.</p>
+
+<h3>Creating a New Razor Page</h3>
+
+<p>
+    At this point, you need to create a new Razor Component in your application. Depending on
+    your IDE, the process to do this will be different. But the result is the same: the created page
+    will look something like this:
+</p>
+
+<pre class="language-html"><code class="language-html">@@page "/connectfour"
+@@using BlazorGames.Models.ConnectFour;
+@@using BlazorGames.Models.ConnectFour.Enums;
+
+&lt;h1&gt;ConnectFour&lt;/h1&gt;
+
+@@code {
+    GameBoard board = new GameBoard();
+}
+</code></pre>
+
+<p>
+    Note the @@page directive. This directive sets up the route to which this
+    page will answer to; in that way it is similar to Attribute Routing in ASP.NET MVC.
+    Our route says this page will respond to &lt;rootsite&gt;/connectfour.
+</p>
+
+<p>
+    We also need to include the namespaces for our created classes and enumeration; for this
+    application, they are BlazorGames.Models.ConnectFour and BlazorGames.Model.ConnectFour.Enums,
+    which are used in the @@using statements above.
+</p>
+
+<p>
+    Finally, note the @@code directive. This directive tells ASP.NET Core to interpret anything between the
+    curly braces as C# code, which will subsequently be compiled to Web Assembly. For this demo, we will be
+    putting as little as possible into that directive; most of the code will be included in the Models namespace.
+    For this demo, we only need a GameBoard class declared in that directive.
+</p>
+
+<h3>Making the Game Look Nice</h3>
+
+<p>
+    This game isn't going to look like anything if we don't put together some nice CSS for it. Here's
+    the CSS classes in use for this board at this moment:
+</p>
+
+<pre class="language-css"><code class="language-css">.connectfour-board {
+    background-color: blue;
+    display: flex;
+    flex-direction: row;
+    max-width: 490px;
+}
+
+.connectfour-column {
+    min-width: 60px;
+    min-height: 60px;
+    height: 100%;
+}
+
+.connectfour-gamepiece {
+    border: solid 1px black;
+    margin: 5px;
+    min-height: 60px;
+    min-width: 60px;
+    border-radius: 50px;
+}
+
+.connectfour-red {
+    background-color: red;
+}
+
+.connectfour-yellow {
+    background-color: yellow;
+}
+
+.connectfour-blank {
+    background-color: white;
+}
+</code></pre>
+
+<p>
+    We'll be using all of these classes in just a little bit.
+</p>
+
+<h3>Outputting the Board to the Page</h3>
+
+<p>
+    Now let's see how we can use Blazor to output our starting board to the page. Here's the code for that:
+</p>
+
+<pre class="language-html"><code class="language-html">&lt;div class="connectfour-board"&gt;
+    @@for (int i = 0; i &lt; 7; i++)
+    {
+        &lt; div class="connectfour-column"&gt;
+        @@for (int j = 0; j &lt; 6; j++)
+        {
+            int x = i;
+            int y = j;
+            &lt;div class="connectfour-gamepiece
+                        connectfour-@@board.Board[i,j].Color.ToString().ToLower()" @@onclick="@@(() => board.PieceClicked(x,y))"
+                    style="@@(board.IsGamePieceAWinningPiece(i, j)? "opacity: 0.6" : "")"&gt;&lt;/div&gt;
+            }
+        &lt;/div&gt;
+    }
+&lt;/div&gt;
+</code></pre>
+
+<p>
+    There's something a bit strange in this code sample that I want to point out: why do we create
+    the variables x and y if there are already variables i and j that represent the same thing?
+    The reason is because of the way Blazor compiles C# code: the variables that are the "loop"
+    variables are only available within the loops that created them. We create x and y to get
+    around this limitation.
+</p>
+
+<h3>Clicking a Piece</h3>
+
+<p>
+    The @@onclick declaration for our game piece &lt;div&gt; calls a method named PieceClicked() in the GameBoard
+    object. Before we can write this method, we must first think about how pieces are supposed to behave in
+    ConnectFour.
+</p>
+
+<p>
+    When you insert a piece into a column slot, they will slide down to the lowest available
+    slot due to gravity. A large part of the strategy of ConnectFour (such as it is) is taking this
+    into account when making moves. Our code, therefore, needs to reflect that no matter
+    where in a column we click, the piece must "fall" to the lowest available slot.
+    This is why we needed the "blank" color in the PieceColor enum.
+</p>
+
+<p>
+    Let's write that method now, with annotations:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public void PieceClicked(int x, int y)
+{
+    //If a winning play has already been made, don't do anything.
+    if (WinningPlay != null) { return; }
+
+    GamePiece clickedSpace = Board[x, y];
+
+    //The piece must "fall" to the lowest unoccupied space in the clicked column
+    if (clickedSpace.Color == PieceColor.Blank)
+    {
+        while (y &lt; 5)
+        {
+            GamePiece nextSpace = Board[x, y + 1];
+
+            y = y + 1;
+            if (nextSpace.Color == PieceColor.Blank)
+            {
+                clickedSpace = nextSpace;
+            }
+        }
+        clickedSpace.Color = CurrentTurn;
+    }
+
+    //After every move, check to see if that move was a winning move.
+    WinningPlay = GetWinner();
+    if (WinningPlay == null)
+    {
+        SwitchTurns();
+    }
+}
+</code></pre>
+
+<p>
+    The method above will allow the player to click an unoccupied space and have their color piece "fall"
+    to the lowest unoccupied space. We're getting close!
+</p>
+
+<p>
+    There's still something we have to do, however; we need to determine when a winning play is made, and
+    point out which pieces were a part of that win. To do that, let's implement the GetWinner() method.
+</p>
+
+<h3>Finding the Game Winner</h3>
+
+<p>
+    NOTE: The code in this section was originally submitted by
+    <a href="https://github.com/johnt84">John Tomlinson</a> and has been modified by me.
+</p>
+
+<p>
+    In order to find the game winner, much like in the <a href="TicTacToe.razor">Tic Tac Toe example</a>, we are going to 
+    brute-force check each piece for a four-in-a-row. Once one is found, we can stop looking. However, the implementation
+    this time around is different enough from Tic Tac Toe that a new class is needed: WinningPlay.
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class WinningPlay
+{
+    public List&lt;string&gt; WinningMoves { get; set; }
+    public EvaluationDirection WinningDirection { get; set; }
+    public PieceColor WinningColor { get; set; }
+}
+</code></pre>
+
+<p>
+    We also need an enumeration WinningDirection, which determines in which direction we can evaluate the board
+    for winning plays.
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public enum EvaluationDirection
+{
+    Up,
+    UpRight,
+    Right,
+    DownRight
+}
+</code></pre>
+
+<p>
+    With these two enums in place, we can now write the method to find the winning play. Note that this method
+    will be called after every play. 
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">private WinningPlay GetWinner()
+{
+    WinningPlay winningPlay = null;
+
+    for (int i = 0; i &lt; 7; i++)
+    {
+        for (int j = 0; j &lt; 6; j++)
+        {
+            winningPlay = EvaluatePieceForWinner(i, j, EvaluationDirection.Up);
+            if (winningPlay != null) { return winningPlay; }
+
+            winningPlay = EvaluatePieceForWinner(i, j, EvaluationDirection.UpRight);
+            if (winningPlay != null) { return winningPlay; }
+
+            winningPlay = EvaluatePieceForWinner(i, j, EvaluationDirection.Right);
+            if (winningPlay != null) { return winningPlay; }
+
+            winningPlay = EvaluatePieceForWinner(i, j, EvaluationDirection.DownRight);
+            if (winningPlay != null) { return winningPlay; }
+        }
+    }
+    return winningPlay;
+}
+
+private WinningPlay EvaluatePieceForWinner(int i, int j, EvaluationDirection dir)
+{
+    GamePiece currentPiece = Board[i, j];
+    if (currentPiece.Color == PieceColor.Blank)
+    {
+        return null;
+    }
+
+    int inARow = 1;
+    int iNext = i;
+    int jNext = j;
+
+    var winningMoves = new List&lt;string&gt;();
+
+    while (inARow &lt; 4)
+    {
+        switch (dir)
+        {
+            case EvaluationDirection.Up:
+            jNext = jNext - 1;
+            break;
+
+            case EvaluationDirection.UpRight:
+            iNext = iNext + 1;
+            jNext = jNext - 1;
+            break;
+
+            case EvaluationDirection.Right:
+            iNext = iNext + 1;
+            break;
+
+            case EvaluationDirection.DownRight:
+            iNext = iNext + 1;
+            jNext = jNext + 1;
+            break;
+        }
+
+        if (iNext &lt; 0 || iNext &gt;= 7 || jNext &lt; 0 || jNext &gt;= 6) { break; }
+
+        if (Board[iNext, jNext].Color == currentPiece.Color)
+        {
+            winningMoves.Add($"{iNext},{jNext}");
+            inARow++;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    if (inARow &gt;= 4)
+    {
+        winningMoves.Add($"{i},{j}");
+
+        return new WinningPlay()
+        {
+            WinningMoves = winningMoves,
+            WinningColor = currentPiece.Color,
+            WinningDirection = dir,
+        };
+    }
+
+    return null;
+}
+</code>
+</pre>
+
+<p>That's it! We now have a working game of ConnectFour running in Blazor WebAssembly!</p>

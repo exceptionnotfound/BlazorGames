@@ -39,6 +39,7 @@ namespace BlazorGames.Models.ConnectFour
 
         public void PieceClicked(int x, int y)
         {
+            //If a winning play has already been made, don't do anything.
             if (WinningPlay != null) { return; }
 
             GamePiece clickedSpace = Board[x, y];
@@ -60,6 +61,7 @@ namespace BlazorGames.Models.ConnectFour
 
             }
 
+            //After every move, check to see if that move was a winning move.
             WinningPlay = GetWinner();
             if (WinningPlay == null)
             {
