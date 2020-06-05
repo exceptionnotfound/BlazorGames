@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BlazorGames.Models.Minesweeper
 {
@@ -144,11 +145,7 @@ namespace BlazorGames.Models.Minesweeper
 
         private void RevealAllMines()
         {
-            var panels = Panels.Where(x => x.IsMine);
-            foreach(var panel in panels)
-            {
-                panel.IsRevealed = true;
-            }
+            Panels.Where(x => x.IsMine).ToList().ForEach(x => x.IsRevealed = true);
         }
 
         private void CompletionCheck()

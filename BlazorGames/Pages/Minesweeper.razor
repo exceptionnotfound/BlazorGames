@@ -33,38 +33,38 @@
 </h2>
 
 <div class="minesweeper-game minesweeper-medium">
-    <div class="minesweeper-board" @oncontextmenu:preventDefault onmousedown="faceOooh(event);" onmouseup="faceSmile();">
-        @{
-            var maxWidth = board.Width + 1;
-            var maxHeight = board.Height + 1;
-        }
+<div class="minesweeper-board" @oncontextmenu:preventDefault onmousedown="faceOooh(event);" onmouseup="faceSmile();">
+    @{
+        var maxWidth = board.Width + 1;
+        var maxHeight = board.Height + 1;
+    }
 
-        <div class="minesweeper-border-topleft"></div>
-        @for (int i = 1; i < maxWidth; i++)
-        {
-            <div class="minesweeper-border-horizontal"></div>
-        }
-        <div class="minesweeper-border-topright"></div>
-        <div class="minesweeper-border-vertical-long"></div>
-        <div class="minesweeper-time-@GetPlace(board.MinesRemaining, 100)" id="mines_hundreds"></div>
-        <div class="minesweeper-time-@GetPlace(board.MinesRemaining, 10)" id="mines_tens"></div>
-        <div class="minesweeper-time-@GetPlace(board.MinesRemaining, 1)" id="mines_ones"></div>
-        @if (board.Status == GameStatus.Failed)
-        {
-            <div class="minesweeper-face-dead" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
-        }
-        else if (board.Status == GameStatus.Completed)
-        {
-            <div class="minesweeper-face-win" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
-        }
-        else
-        {
-            <div class="minesweeper-face-smile" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
-        }
-        <div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,100)" id="seconds_hundreds"></div>
-        <div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,10)" id="seconds_tens"></div>
-        <div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,1)" id="seconds_ones"></div>
-        <div class="minesweeper-border-vertical-long"></div>
+    <div class="minesweeper-border-topleft"></div>
+    @for (int i = 1; i < maxWidth; i++)
+    {
+        <div class="minesweeper-border-horizontal"></div>
+    }
+    <div class="minesweeper-border-topright"></div>
+    <div class="minesweeper-border-vertical-long"></div>
+    <div class="minesweeper-time-@GetPlace(board.MinesRemaining, 100)" id="mines_hundreds"></div>
+    <div class="minesweeper-time-@GetPlace(board.MinesRemaining, 10)" id="mines_tens"></div>
+    <div class="minesweeper-time-@GetPlace(board.MinesRemaining, 1)" id="mines_ones"></div>
+    @if (board.Status == GameStatus.Failed)
+    {
+        <div class="minesweeper-face-dead" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
+    }
+    else if (board.Status == GameStatus.Completed)
+    {
+        <div class="minesweeper-face-win" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
+    }
+    else
+    {
+        <div class="minesweeper-face-smile" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
+    }
+    <div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,100)" id="seconds_hundreds"></div>
+    <div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,10)" id="seconds_tens"></div>
+    <div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,1)" id="seconds_ones"></div>
+    <div class="minesweeper-border-vertical-long"></div>
 
         @for (int i = 0; i <= maxWidth; i++)
         {
@@ -102,15 +102,15 @@
                     var currentPanel = board.Panels.First(m => m.X == x && m.Y == y);
                     if (currentPanel.IsRevealed)
                     {
-                        if (currentPanel.IsMine)
+                        if (currentPanel.IsMine) //Mine
                         {
                             <div class="minesweeper-gamepiece minesweeper-mine"></div>
                         }
-                        else if (currentPanel.AdjacentMines == 0)
+                        else if (currentPanel.AdjacentMines == 0) //Blank
                         {
                             <div class="minesweeper-gamepiece minesweeper-0"></div>
                         }
-                        else
+                        else //Number
                         {
                             <div class="minesweeper-gamepiece minesweeper-@currentPanel.AdjacentMines">@currentPanel.AdjacentMines</div>
                         }
@@ -119,7 +119,7 @@
                     {
                         <div class="minesweeper-gamepiece minesweeper-flagged" @oncontextmenu="@(() => board.FlagPanel(x, y))" @oncontextmenu:preventDefault></div>
                     }
-                    else
+                    else //Unrevealed
                     {
                         <div class="minesweeper-gamepiece minesweeper-unrevealed" @onclick="@(() => board.MakeMove(x, y))" @oncontextmenu:preventDefault @oncontextmenu="@(() => board.FlagPanel(x, y))">
                         </div>
