@@ -83,19 +83,17 @@ namespace BlazorGames.Models.Minesweeper
             {
                 Status = GameStatus.Failed; //Game over!
                 RevealAllMines();
+                return;
             }
 
             //Step 3: If the panel is a zero, cascade reveal neighbors
-            if (!selectedPanel.IsMine && selectedPanel.AdjacentMines == 0)
+            if (selectedPanel.AdjacentMines == 0)
             {
                 RevealZeros(x, y);
             }
 
             //Step 4: If this move caused the game to be complete, mark it as such
-            if (!selectedPanel.IsMine)
-            {
-                CompletionCheck();
-            }
+            CompletionCheck();
         }
 
         public void FirstMove(int x, int y)
