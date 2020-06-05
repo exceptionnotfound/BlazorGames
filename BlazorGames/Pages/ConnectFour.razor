@@ -28,16 +28,25 @@ else
 <div class="connectfour-board">
     @for (int i = 0; i < 7; i++)
     {
-        <div class="connectfour-column">
-            @for (int j = 0; j < 6; j++)
+    <div class="connectfour-column">
+        @for (int j = 0; j < 6; j++)
+        {
+            int x = i;
+            int y = j;
+            var color = board.Board[i, j].Color;
+            if (color == PieceColor.Blank)
             {
-                int x = i;
-                int y = j;
                 <div class="connectfour-gamepiece
-                         connectfour-@board.Board[i,j].Color.ToString().ToLower()" @onclick="@(() => board.PieceClicked(x,y))"
+                         connectfour-blank" @onclick="@(() => board.PieceClicked(x,y))"></div>
+            }
+            else
+            {
+                <div class="connectfour-gamepiece
+                         connectfour-@color.ToString().ToLower()"
                      style="@(board.IsGamePieceAWinningPiece(i, j)? "opacity: 0.6" : "")"></div>
             }
-        </div>
+        }
+    </div>
     }
 </div>
 
@@ -46,7 +55,8 @@ else
 <h2>How To Make ConnectFour in Blazor</h2>
 
 <p>
-    ConnectFour is a bit more complex than the Tic Tac Toe example, but only a bit. Let's see how to make this game in Blazor!
+    ConnectFour is a bit more complex than the <a href="tictactoe.razor">Tic Tac Toe example</a>,
+    but only a bit. Let's see how to make this game in Blazor!
 </p>
 
 <h3>The Sample Project</h3>
@@ -56,7 +66,7 @@ else
     This tutorials assumes you already have a created Blazor WebAssembly and ASP.NET Core 3.1 or greater application.
 </p>
 
-<h3>The Original Blog Post</h3>
+<h3>The Original Game in Blazor Server</h3>
 
 <p>
     This game was originally written in Blazor Server, and the corresponding blog post can be found here:
@@ -226,7 +236,8 @@ else
 <h3>Outputting the Board to the Page</h3>
 
 <p>
-    Now let's see how we can use Blazor to output our starting board to the page. Here's the code for that:
+    Now let's see how we can use Blazor to output our starting board to the page. If a piece
+    is already at the location clicked, nothing should happen. Here's the code for that:
 </p>
 
 <pre class="language-html"><code class="language-html">&lt;div class="connectfour-board"&gt;
@@ -237,11 +248,18 @@ else
         {
             int x = i;
             int y = j;
-            &lt;div class="connectfour-gamepiece
-                        connectfour-@@board.Board[i,j].Color.ToString().ToLower()" @@onclick="@@(() => board.PieceClicked(x,y))"
-                    style="@@(board.IsGamePieceAWinningPiece(i, j)? "opacity: 0.6" : "")"&gt;&lt;/div&gt;
+            if (color == PieceColor.Blank)
+            {
+                &lt;div class="connectfour-gamepiece connectfour-blank" 
+                        @@onclick="@@(() => board.PieceClicked(x,y))"&gt;&lt;/div&gt;
             }
-        &lt;/div&gt;
+            else
+            {
+                &lt;div class="connectfour-gamepiece connectfour-@@color.ToString().ToLower()"
+                        style="@@(board.IsGamePieceAWinningPiece(i, j)? "opacity: 0.6" : "")"&gt;&lt;/div&gt;
+            }
+        }
+    &lt;/div&gt;
     }
 &lt;/div&gt;
 </code></pre>

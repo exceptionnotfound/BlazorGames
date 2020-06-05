@@ -51,7 +51,7 @@ namespace BlazorGames.Models.ConnectFour
                 {
                     GamePiece nextSpace = Board[x, y + 1];
 
-                    y = y + 1;
+                    y += 1;
                     if (nextSpace.Color == PieceColor.Blank)
                     {
                         clickedSpace = nextSpace;
