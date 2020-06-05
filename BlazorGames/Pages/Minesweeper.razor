@@ -3,6 +3,7 @@
 @using BlazorGames.Models.Minesweeper.Enums
 @inject IJSRuntime _jsRuntime
 @inject NavigationManager _navManager
+<!-- Sprites, CSS, and layout modified from http://minesweeperonline.com/ -->
 
 @code {
     GameBoard board = new GameBoard();
@@ -45,9 +46,9 @@
         }
         <div class="minesweeper-border-topright"></div>
         <div class="minesweeper-border-vertical-long"></div>
-        <div class="minesweeper-time-@GetPlace(board.MinesRemaining(), 100)" id="mines_hundreds"></div>
-        <div class="minesweeper-time-@GetPlace(board.MinesRemaining(), 10)" id="mines_tens"></div>
-        <div class="minesweeper-time-@GetPlace(board.MinesRemaining(), 1)" id="mines_ones"></div>
+        <div class="minesweeper-time-@GetPlace(board.MinesRemaining, 100)" id="mines_hundreds"></div>
+        <div class="minesweeper-time-@GetPlace(board.MinesRemaining, 10)" id="mines_tens"></div>
+        <div class="minesweeper-time-@GetPlace(board.MinesRemaining, 1)" id="mines_ones"></div>
         @if (board.Status == GameStatus.Failed)
         {
             <div class="minesweeper-face-dead" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>

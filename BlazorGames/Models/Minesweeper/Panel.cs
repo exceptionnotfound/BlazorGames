@@ -5,35 +5,35 @@ using System.Threading.Tasks;
 
 namespace BlazorGames.Models.Minesweeper
 {
-    public class Panel
+public class Panel
+{
+    public int ID { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
+    public bool IsMine { get; set; }
+    public int AdjacentMines { get; set; }
+    public bool IsRevealed { get; set; }
+    public bool IsFlagged { get; set; }
+
+    public Panel(int id, int x, int y)
     {
-        public int ID { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
-        public bool IsMine { get; set; }
-        public int AdjacentMines { get; set; }
-        public bool IsRevealed { get; set; }
-        public bool IsFlagged { get; set; }
+        ID = id;
+        X = x;
+        Y = y;
+    }
 
-        public Panel(int id, int x, int y)
+    public void Flag()
+    {
+        if(!IsRevealed)
         {
-            ID = id;
-            X = x;
-            Y = y;
+            IsFlagged = !IsFlagged;
         }
+    }
 
-        public void Flag()
-        {
-            if(!IsRevealed)
-            {
-                IsFlagged = !IsFlagged;
-            }
-        }
-
-        public void Reveal()
-        {
-            IsRevealed = true;
-            IsFlagged = false; //Revealed panels cannot be flagged
-        }
+    public void Reveal()
+    {
+        IsRevealed = true;
+        IsFlagged = false; //Revealed panels cannot be flagged
+    }
     }
 }

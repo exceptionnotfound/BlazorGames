@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Timers;
 
 namespace BlazorGames.Models.Minesweeper
 {
@@ -16,10 +14,15 @@ namespace BlazorGames.Models.Minesweeper
         public List<Panel> Panels { get; set; }
         public GameStatus Status { get; set; }
 
-        public double PercentMinesFlagged { get; set; }
-        public double PercentPanelsRevealed { get; set; }
-
         public Stopwatch Stopwatch { get; set; }
+
+        public int MinesRemaining 
+        {  
+            get
+            {
+                return MineCount - Panels.Where(x => x.IsFlagged).Count();
+            } 
+        }
 
         public GameBoard()
         {
@@ -30,16 +33,6 @@ namespace BlazorGames.Models.Minesweeper
         {
             Initialize(Width, Height, MineCount);
             Stopwatch = new Stopwatch();
-        }
-
-        public int PanelsRemaining()
-        {
-            return Panels.Where(x => !x.IsRevealed).Count() - MineCount;
-        }
-
-        public int MinesRemaining()
-        {
-            return MineCount - Panels.Where(x => x.IsFlagged).Count();
         }
 
         public void Initialize(int width, int height, int mines)
@@ -74,18 +67,18 @@ namespace BlazorGames.Models.Minesweeper
         public List<Panel> GetNeighbors(int x, int y)
         {
             var nearbyPanels = Panels.Where(panel => panel.X >= (x - 1) && panel.X <= (x + 1)
-                                                 && panel.Y >= (y - 1) && panel.Y <= (y + 1));
+                                                    && panel.Y >= (y - 1) && panel.Y <= (y + 1));
             var currentPanel = Panels.Where(panel => panel.X == x && panel.Y == y);
             return nearbyPanels.Except(currentPanel).ToList();
         }
 
         public void RevealPanel(int x, int y)
         {
-            //Step 1: Find the Specified Panel
+            //Step 1: Find and reveal the clicked panel
             var selectedPanel = Panels.First(panel => panel.X == x && panel.Y == y);
             selectedPanel.Reveal();
 
-            //Step 2: If the panel is a mine, game over!
+            //Step 2: If the panel is a mine, show all mines. Game over!
             if (selectedPanel.IsMine)
             {
                 Status = GameStatus.Failed; //Game over!
@@ -108,8 +101,9 @@ namespace BlazorGames.Models.Minesweeper
         public void FirstMove(int x, int y)
         {
             Random rand = new Random();
+
             //For any board, take the user's first revealed panel + any neighbors of that panel, and mark them as unavailable for mine placement.
-            var neighbors = GetNeighbors(x, y); //Get all neighbors to specified depth
+            var neighbors = GetNeighbors(x, y); //Get all neighbors
             neighbors.Add(Panels.First(z => z.X == x && z.Y == y));
 
             //Select random panels from set which are not excluded
@@ -135,10 +129,14 @@ namespace BlazorGames.Models.Minesweeper
 
         public void RevealZeros(int x, int y)
         {
+            //Get all neighbor panels
             var neighborPanels = GetNeighbors(x, y).Where(panel => !panel.IsRevealed);
             foreach (var neighbor in neighborPanels)
             {
+                //Reveal the neighbors
                 neighbor.IsRevealed = true;
+
+                //If the neighbor is also a 0, reveal all of its neighbors.
                 if (neighbor.AdjacentMines == 0)
                 {
                     RevealZeros(neighbor.X, neighbor.Y);
@@ -148,12 +146,10 @@ namespace BlazorGames.Models.Minesweeper
 
         private void RevealAllMines()
         {
-            foreach(var panel in Panels)
+            var panels = Panels.Where(x => x.IsMine);
+            foreach(var panel in panels)
             {
-                if(panel.IsMine)
-                {
-                    panel.IsRevealed = true;
-                }
+                panel.IsRevealed = true;
             }
         }
 
