@@ -1,4 +1,12 @@
 ﻿@page "/whatisblazor"
+@inject IJSRuntime _jsRuntime
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await _jsRuntime.InvokeVoidAsync("Prism.highlightAll");
+    }
+}
 
 <h2>What Is Blazor?</h2>
 
@@ -16,7 +24,7 @@
 <h3>Components</h3>
 
 <p>
-    Blazor apps are based upon <span class="italic">components</span>. A component is a UI element and is usually written in the form of
+    Blazor apps are based upon <span class="font-italic">components</span>. A component is a UI element and is usually written in the form of
     a <a href="https://docs.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-3.1">Razor markup</a>
     page with the .razor extension. 
 </p>
@@ -69,14 +77,14 @@
 </p>
 
 <p>
-    <span class="italic">Blazor Server</span> separates the client-side UI from the server-side operation. In doing so, it maintains the link 
+    <span class="font-italic">Blazor Server</span> separates the client-side UI from the server-side operation. In doing so, it maintains the link 
     between them using a <a href="https://docs.microsoft.com/en-us/aspnet/core/signalr/introduction?view=aspnetcore-3.1">SignalR</a>
     connection. Events are sent from the browser to the server over that connection, and changes to the UI are handled by
     the components.
 </p>
 
 <p>
-    <span class="italic">Blazor WebAssembly</span> puts all operation on the client side, making it perfect to build single-page applications (SPAs). 
+    <span class="font-italic">Blazor WebAssembly</span> puts all operation on the client side, making it perfect to build single-page applications (SPAs). 
     Unlike other front-end frameworks, Blazor WebAssembly compiles its code to <a href="https://webassembly.org/">WebAssembly (wasm)</a>, 
     not JavaScript. WebAssembly is able to call JavaScript events through the use of <a href="https://docs.microsoft.com/en-us/aspnet/core/blazor/call-javascript-from-dotnet?view=aspnetcore-3.1">JavaScript Interop</a>.
 </p>
