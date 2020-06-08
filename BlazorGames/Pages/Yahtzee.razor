@@ -24,7 +24,17 @@
 
     public bool IsGameOver { get { return TurnsRemaining <= 0; } }
 
-    public int TotalScore { get { return PlaysMade.GetTotal(); } }
+    public int TotalScore
+    {
+        get
+        {
+            if(PlaysMade.HasBonus())
+            {
+                return PlaysMade.GetTotal() + 35;
+            }
+            return PlaysMade.GetTotal();
+        }
+    }
 
     public Yahtzee()
     {
@@ -254,15 +264,30 @@
             @foreach (PlayType type in (PlayType[])Enum.GetValues(typeof(PlayType)))
             {
                 <ScorecardRow PlayType="type"
-                                RollsRemaining="RollsRemaining"
-                                Score="PlaysMade.GetScore(type)"
-                                IsStartOfTurn="IsStartOfTurn"
-                                ScratchPlay="@(() => ScratchPlay(type))"
-                                HasPlay="PlaysMade.HasPlay(type)"
-                                HasYahtzee="PlaysMade.HasPlay(PlayType.Yahtzee)"
-                                CanMakePlay="@CanMakePlay(type)"
-                                ClaimPlay="@(() => ClaimPlay(type))" />
+                              RollsRemaining="RollsRemaining"
+                              Score="PlaysMade.GetScore(type)"
+                              IsStartOfTurn="IsStartOfTurn"
+                              ScratchPlay="@(() => ScratchPlay(type))"
+                              HasPlay="PlaysMade.HasPlay(type)"
+                              HasYahtzee="PlaysMade.HasYahtzee()"
+                              CanMakePlay="@CanMakePlay(type)"
+                              ClaimPlay="@(() => ClaimPlay(type))" />
             }
+            @if (PlaysMade.HasBonus())
+            {
+                <div class="row">
+                    <div class="col-4 border border-dark font-weight-bold">TOP SECTION BONUS <i class="fa fa-question-circle" title="If your scores for ones, twos, threes, fours, fives, and sixes total 63 or more, you get a 35 point bonus!"></i></div>
+                    <div class="col-4 border border-dark p-1">
+                        35
+                    </div>
+                </div>
+            }
+            <div class="row">
+                <div class="col-4 border border-dark font-weight-bold">GRAND TOTAL</div>
+                <div class="col-4 border border-dark p-1">
+                    @TotalScore
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -15,6 +15,21 @@ namespace BlazorGames.Models.Yahtzee
             return Plays.Select(x => x.Type).Contains(type);
         }
 
+        public bool HasYahtzee()
+        {
+            return Plays.Any(x => x.PointValue > 0 && x.Type == PlayType.Yahtzee);
+        }
+
+        public bool HasBonus()
+        {
+            return (GetScore(PlayType.Ones)
+                    + GetScore(PlayType.Twos)
+                    + GetScore(PlayType.Threes)
+                    + GetScore(PlayType.Fours)
+                    + GetScore(PlayType.Fives)
+                    + GetScore(PlayType.Sixes)) > 63;
+        }
+
         public void Add(PlayType type, int value)
         {
             Plays.Add(new Play(type, value));
