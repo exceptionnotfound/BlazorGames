@@ -1,0 +1,92 @@
+﻿@page "/whatisblazor"
+
+<h2>What Is Blazor?</h2>
+
+<p>Blazor is a framework for building interactive, client-side UI with .NET, created by Microsoft. </p>
+
+<p>
+    In short, this means that we can write C# programs and have them run on the client side, in the browser, with no JavaScript required!
+    Plus, we get all the benefits of .NET, including access to their libraries, reliability, scalability, security, and more.
+</p>
+
+<p>
+    For more information, check out <a href="https://docs.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-3.1">the official documentation</a>.
+</p>
+
+<h3>Components</h3>
+
+<p>
+    Blazor apps are based upon <span class="italic">components</span>. A component is a UI element and is usually written in the form of
+    a <a href="https://docs.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-3.1">Razor markup</a>
+    page with the .razor extension. 
+</p>
+
+<p>
+    If you are familiar with <a href="https://exceptionnotfound.net/tag/aspnetmvc/">ASP.NET MVC</a> or 
+    <a href="https://exceptionnotfound.net/tag/razorpages/">Razor Pages</a>, you are probably also 
+    familiar with the Razor syntax, as those architectures use it.
+</p>
+
+<p>
+    In this particular app, each page you see in the left-hand navigation is a Razor component.
+</p>
+
+<h3>A Basic Razor Component</h3>
+
+<p>
+    Basic Razor components consist of two parts: HTML markup and C# code. C# code can be delimited using the
+    @@code identifier.
+</p>
+
+<pre class="language-html"><code class="language-html">&lt;h1&gt;@@PageTitle&lt;/h1&gt;
+
+&lt;p&gt;@@Description&lt;p&gt;
+
+&lt;button @@onclick="Confirm()"&gt;Yes!&lt;button&gt;
+
+@@code {
+    [Parameter]
+    public string PageTitle { get; set; }
+
+    [Parameter]
+    public string Description { get; set; }
+
+    private void Confirm() {
+        Console.WriteLine("Yes was clicked!");
+    }
+}
+</code></pre>
+
+<p>
+    In the above page, the parameters PageTitle and Description are provided by the component and rendered onto the page.
+    The method Confirm() is a special method that will be called by the button's onclick event.
+</p>
+
+<h3>Blazor Server vs. Blazor WebAssembly</h3>
+
+<p>
+    Blazor comes in two "flavors": Server and WebAssembly. Each are "client-side" architectures, but the way they behave differs.
+</p>
+
+<p>
+    <span class="italic">Blazor Server</span> separates the client-side UI from the server-side operation. In doing so, it maintains the link 
+    between them using a <a href="https://docs.microsoft.com/en-us/aspnet/core/signalr/introduction?view=aspnetcore-3.1">SignalR</a>
+    connection. Events are sent from the browser to the server over that connection, and changes to the UI are handled by
+    the components.
+</p>
+
+<p>
+    <span class="italic">Blazor WebAssembly</span> puts all operation on the client side, making it perfect to build single-page applications (SPAs). 
+    Unlike other front-end frameworks, Blazor WebAssembly compiles its code to <a href="https://webassembly.org/">WebAssembly (wasm)</a>, 
+    not JavaScript. WebAssembly is able to call JavaScript events through the use of <a href="https://docs.microsoft.com/en-us/aspnet/core/blazor/call-javascript-from-dotnet?view=aspnetcore-3.1">JavaScript Interop</a>.
+</p>
+
+<p>
+    When a Blazor WebAssembly project is build, the C# and .NET files are compiled to WebAssembly and they and the .NET runtimes
+    needed are downloaded to the browser. Blazor then bootstraps the NET runtime and configures it to load the assemblies the 
+    app needs. This runtime is also used to handle JavaScript Interop calls, as well as browser API calls.
+</p>
+
+<p>
+    This site, and all games on it, are built using Blazor WebAssembly. 
+</p>
