@@ -1,0 +1,53 @@
+﻿@using BlazorGames.Models.Yahtzee; 
+@using BlazorGames.Models.Yahtzee.Enums; 
+@using BlazorGames.Models.Yahtzee.Extensions; 
+
+@code {
+    [Parameter]
+    public PlayType PlayType { get; set; }
+
+    [Parameter]
+    public bool HasPlay { get; set; }
+
+    [Parameter]
+    public int Score { get; set; }
+
+    [Parameter]
+    public bool CanMakePlay { get; set; }
+
+    [Parameter]
+    public bool IsStartOfTurn { get; set; }
+
+    [Parameter]
+    public bool HasYahtzee { get; set; }
+
+    [Parameter]
+    public int RollsRemaining { get; set; }
+
+    [Parameter]
+    public EventCallback ClaimPlay { get; set; }
+
+    [Parameter]
+    public EventCallback ScratchPlay { get; set; }
+}
+
+@if (PlayType != PlayType.BonusYahtzee || (PlayType == PlayType.BonusYahtzee && HasYahtzee))
+{
+    <div class="row">
+        <div class="col-4 border border-dark font-weight-bold">@PlayType.GetDisplayName()</div>
+        <div class="col-4 border border-dark p-1">
+            @if (HasPlay)
+            {
+                @Score
+            }
+            else if (CanMakePlay && !IsStartOfTurn)
+            {
+                <a class="btn btn-primary" @onclick="@ClaimPlay">Claim</a>
+            }
+            else if (RollsRemaining == 0)
+            {
+                <a class="btn btn-link" @onclick="@ScratchPlay">Scratch</a>
+            }
+        </div>
+    </div>
+}
