@@ -3,7 +3,6 @@
 @using BlazorGames.Models.Yahtzee;
 @using BlazorGames.Models.Yahtzee.Enums;
 @using BlazorGames.Models.Yahtzee.Extensions;
-@inject IJSRuntime _jsRuntime;
 
 <h3>
     Yahtzee&trade;
@@ -200,14 +199,6 @@
         if (TotalScore > 364) return "S+";
 
         return "";
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await _jsRuntime.InvokeAsync<string>("initializeComments");
-        }
     }
 }
 
