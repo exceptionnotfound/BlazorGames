@@ -14,6 +14,7 @@
     }
 }
 
+<PageTitle Title="ConnectFour"/>
 
 @if (board.WinningPlay == null)
 {
@@ -28,25 +29,25 @@ else
 <div class="connectfour-board">
     @for (int i = 0; i < 7; i++)
     {
-    <div class="connectfour-column">
-        @for (int j = 0; j < 6; j++)
-        {
-            int x = i;
-            int y = j;
-            var color = board.Board[i, j].Color;
-            if (color == PieceColor.Blank)
+        <div class="connectfour-column">
+            @for (int j = 0; j < 6; j++)
             {
-                <div class="connectfour-gamepiece
+                int x = i;
+                int y = j;
+                var color = board.Board[i, j].Color;
+                if (color == PieceColor.Blank)
+                {
+                    <div class="connectfour-gamepiece
                          connectfour-blank" @onclick="@(() => board.PieceClicked(x,y))"></div>
-            }
-            else
-            {
-                <div class="connectfour-gamepiece
+                }
+                else
+                {
+                    <div class="connectfour-gamepiece
                          connectfour-@color.ToString().ToLower()"
-                     style="@(board.IsGamePieceAWinningPiece(i, j)? "opacity: 0.6" : "")"></div>
+                         style="@(board.IsGamePieceAWinningPiece(i, j)? "opacity: 0.6" : "")"></div>
+                }
             }
-        }
-    </div>
+        </div>
     }
 </div>
 
@@ -342,7 +343,7 @@ else
 </p>
 
 <p>
-    In order to find the game winner, much like in the <a href="TicTacToe.razor">Tic Tac Toe example</a>, we are going to 
+    In order to find the game winner, much like in the <a href="TicTacToe.razor">Tic Tac Toe example</a>, we are going to
     brute-force check each piece for a four-in-a-row. Once one is found, we can stop looking. However, the implementation
     this time around is different enough from Tic Tac Toe that a new class is needed: WinningPlay.
 </p>
@@ -371,7 +372,7 @@ else
 
 <p>
     With these two enums in place, we can now write the method to find the winning play. Note that this method
-    will be called after every play. 
+    will be called after every play.
 </p>
 
 <pre class="language-csharp"><code class="language-csharp">private WinningPlay GetWinner()

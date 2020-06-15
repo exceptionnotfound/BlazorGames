@@ -1,0 +1,29 @@
+﻿@inject IJSRuntime _jsRuntime;
+@code {
+    private String _title = "";
+    [Parameter]
+    public String Title
+    {
+        get
+        {
+            return this._title;
+        }
+        set
+        {
+            this._title = value;
+            setTitle();
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await setTitle();
+    }
+
+    private async Task setTitle()
+    {
+        System.Console.WriteLine("Blazor setting Title to {0}", this._title);
+        await _jsRuntime.InvokeVoidAsync("setTitle", this._title );
+    }
+}

@@ -1,5 +1,16 @@
 ﻿@page "/"
 
+@inject IJSRuntime _jsRuntime;
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await _jsRuntime.InvokeVoidAsync("setTitle", "BlazorGames.net");
+    }
+}
+
+<PageTitle Title="BlazorGames.net" />
+
 <h1>Welcome to BlazorGames!</h1>
 
 <p>
