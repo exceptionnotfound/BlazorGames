@@ -25,6 +25,8 @@
 
             await _jsRuntime.InvokeAsync<string>("setTime", hundreds, tens, ones);
         }
+
+        await _jsRuntime.InvokeVoidAsync("Prism.highlightAll");
     }
 }
 

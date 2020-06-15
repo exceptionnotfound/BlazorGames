@@ -3,6 +3,7 @@
 @using BlazorGames.Models.Yahtzee;
 @using BlazorGames.Models.Yahtzee.Enums;
 @using BlazorGames.Models.Yahtzee.Extensions;
+@inject IJSRuntime _jsRuntime;  
 
 <div class="container">
     <div class="row">
@@ -199,6 +200,11 @@
         if (TotalScore > 364) return "S+";
 
         return "";
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await _jsRuntime.InvokeVoidAsync("Prism.highlightAll");
     }
 }
 
