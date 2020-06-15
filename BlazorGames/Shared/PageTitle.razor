@@ -1,8 +1,8 @@
 ﻿@inject IJSRuntime _jsRuntime;
 @code {
-    private String _title = "";
+    private string _title = "";
     [Parameter]
-    public String Title
+    public string Title
     {
         get
         {
@@ -11,7 +11,8 @@
         set
         {
             this._title = value;
-            setTitle();
+            setTitle(); //This line will give you a warning in your IDE, because it 
+                        //is an async method being called by a synchronous setter.
         }
     }
 
@@ -23,7 +24,8 @@
 
     private async Task setTitle()
     {
-        System.Console.WriteLine("Blazor setting Title to {0}", this._title);
         await _jsRuntime.InvokeVoidAsync("setTitle", this._title );
     }
 }
+
+<h2>@Title</h2>

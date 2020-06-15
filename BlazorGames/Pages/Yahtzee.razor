@@ -4,15 +4,17 @@
 @using BlazorGames.Models.Yahtzee.Enums;
 @using BlazorGames.Models.Yahtzee.Extensions;
 
-<PageTitle Title="Yahtzee" />
-
-<h3>
-    Yahtzee
-    @if (IsGameOver)
-    {
-        <button class="btn btn-success" @onclick="@(() => Initialize())">Reset</button>
-    }
-</h3>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <PageTitle Title="Yahtzee" />
+            @if (IsGameOver)
+            {
+                <button class="btn btn-success" @onclick="@(() => Initialize())">Reset</button>
+            }
+        </div>
+    </div>
+</div>
 
 @code {
     public DieCollection Dice { get; set; } = new DieCollection();
