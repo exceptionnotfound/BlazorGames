@@ -1,20 +1,8 @@
 ﻿@inject IJSRuntime _jsRuntime;
+
 @code {
-    private string _title = "";
     [Parameter]
-    public string Title
-    {
-        get
-        {
-            return this._title;
-        }
-        set
-        {
-            this._title = value;
-            setTitle(); //This line will give you a warning in your IDE, because it 
-                        //is an async method being called by a synchronous setter.
-        }
-    }
+    public string Title { get; set; }
 
 
     protected override async Task OnInitializedAsync()
@@ -24,7 +12,7 @@
 
     private async Task setTitle()
     {
-        await _jsRuntime.InvokeVoidAsync("setTitle", this._title );
+        await _jsRuntime.InvokeVoidAsync("setTitle", Title );
     }
 }
 
