@@ -8,10 +8,6 @@
     <div class="row">
         <div class="col">
             <PageTitle Title="Yahtzee" />
-            @if (IsGameOver)
-            {
-                <button class="btn btn-success" @onclick="@(() => Initialize())">Reset</button>
-            }
         </div>
     </div>
 </div>
@@ -238,6 +234,7 @@
                     }
                     else if (IsGameOver)
                     {
+                        <button class="btn btn-success" @onclick="@(() => Initialize())">Reset</button>
                         <text>Thanks for playing!<br />Final score: @TotalScore <br />Rank: @GetRank()</text>
                     }
                     else
