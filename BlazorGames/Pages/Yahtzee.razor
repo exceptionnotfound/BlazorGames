@@ -1,15 +1,16 @@
 ﻿@page "/yahtzee"
 
-@using BlazorGames.Models.Yahtzee; 
+@using BlazorGames.Models.Yahtzee;
 @using BlazorGames.Models.Yahtzee.Enums;
+@using BlazorGames.Models.Yahtzee.Extensions;
 
-    <h3>
-        Yahtzee&trade;
-        @if (IsGameOver)
-        {
-            <button class="btn btn-success" @onclick="@(() => Initialize())">Reset</button>
-        }
-    </h3>
+<h3>
+    Yahtzee&trade;
+    @if (IsGameOver)
+    {
+        <button class="btn btn-success" @onclick="@(() => Initialize())">Reset</button>
+    }
+</h3>
 
 @code {
     public DieCollection Dice { get; set; } = new DieCollection();
@@ -28,7 +29,7 @@
     {
         get
         {
-            if(PlaysMade.HasBonus())
+            if (PlaysMade.HasBonus())
             {
                 return PlaysMade.GetTotal() + 35;
             }
@@ -44,11 +45,6 @@
     public void Initialize()
     {
         Dice.Reset();
-        Dice.Add(1);
-        Dice.Add(2);
-        Dice.Add(3);
-        Dice.Add(4);
-        Dice.Add(5);
 
         PlaysMade.Reset();
         TurnsRemaining = 13;
@@ -65,7 +61,7 @@
     {
         RollsRemaining = 3;
         TurnsRemaining--;
-        Dice.Free();
+        Dice.ReleaseHold();
     }
 
     public bool CanMakePlay(PlayType type)
@@ -121,27 +117,27 @@
         switch (type)
         {
             case PlayType.Ones:
-                PlaysMade.Add(type, Dice.GetSum(1));
+                PlaysMade.Add(type, Dice.GetSumOf(1));
                 break;
 
             case PlayType.Twos:
-                PlaysMade.Add(type, Dice.GetSum(2));
+                PlaysMade.Add(type, Dice.GetSumOf(2));
                 break;
 
             case PlayType.Threes:
-                PlaysMade.Add(type, Dice.GetSum(3));
+                PlaysMade.Add(type, Dice.GetSumOf(3));
                 break;
 
             case PlayType.Fours:
-                PlaysMade.Add(type, Dice.GetSum(4));
+                PlaysMade.Add(type, Dice.GetSumOf(4));
                 break;
 
             case PlayType.Fives:
-                PlaysMade.Add(type, Dice.GetSum(5));
+                PlaysMade.Add(type, Dice.GetSumOf(5));
                 break;
 
             case PlayType.Sixes:
-                PlaysMade.Add(type, Dice.GetSum(6));
+                PlaysMade.Add(type, Dice.GetSumOf(6));
                 break;
 
             case PlayType.Yahtzee:
@@ -261,17 +257,29 @@
                     Rolls Remaining This Turn: @RollsRemaining
                 </div>
             </div>
+            <!-- Scorecard rows -->
             @foreach (PlayType type in (PlayType[])Enum.GetValues(typeof(PlayType)))
             {
-                <ScorecardRow PlayType="type"
-                              RollsRemaining="RollsRemaining"
-                              Score="PlaysMade.GetScore(type)"
-                              IsStartOfTurn="IsStartOfTurn"
-                              ScratchPlay="@(() => ScratchPlay(type))"
-                              HasPlay="PlaysMade.HasPlay(type)"
-                              HasYahtzee="PlaysMade.HasYahtzee()"
-                              CanMakePlay="@CanMakePlay(type)"
-                              ClaimPlay="@(() => ClaimPlay(type))" />
+                @if (type != PlayType.BonusYahtzee || (type == PlayType.BonusYahtzee && PlaysMade.HasYahtzee()))
+                {
+                    <div class="row">
+                        <div class="col-4 border border-dark font-weight-bold">@type.GetDisplayName()</div>
+                        <div class="col-4 border border-dark p-1">
+                            @if (PlaysMade.HasPlay(type))
+                            {
+                                @PlaysMade.GetScore(type)
+                            }
+                            else if (CanMakePlay(type) && !IsStartOfTurn)
+                            {
+                                <a class="btn btn-primary" @onclick="@(() => ClaimPlay(type))">Claim</a>
+                            }
+                            else if (RollsRemaining == 0)
+                            {
+                                <a class="btn btn-link" @onclick="@(() => ScratchPlay(type))">Scratch</a>
+                            }
+                        </div>
+                    </div>
+                }
             }
             @if (PlaysMade.HasBonus())
             {
@@ -291,3 +299,11 @@
         </div>
     </div>
 </div>
+
+<hr />
+
+<h2>How To Build This</h2>
+
+<p>
+    Coming soon!
+</p>

@@ -25,20 +25,22 @@ namespace BlazorGames.Models.Yahtzee
             }
         }
 
-        public void Free()
+        public void ReleaseHold()
         {
-            foreach(var die in Dice)
-            {
-                die.IsHeld = false;
-            }
+            Dice.ForEach(x => x.IsHeld = false);
         }
 
         public void Reset()
         {
             Dice.Clear();
+            Add(1);
+            Add(2);
+            Add(3);
+            Add(4);
+            Add(5);
         }
 
-        public int GetSum(int value)
+        public int GetSumOf(int value)
         {
             return Dice.Where(x => x.Value == value).Sum(x => x.Value);
         }

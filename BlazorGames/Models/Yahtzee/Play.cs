@@ -18,10 +18,5 @@ namespace BlazorGames.Models.Yahtzee
             Type = type;
             PointValue = points;
         }
-
-        public string GetDisplay()
-        {
-            return Type.GetDisplayName() + " for " + PointValue.ToString() + " points.";
-        }
     }
 }
