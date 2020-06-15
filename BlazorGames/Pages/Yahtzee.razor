@@ -5,13 +5,7 @@
 @using BlazorGames.Models.Yahtzee.Extensions;
 @inject IJSRuntime _jsRuntime;  
 
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <PageTitle Title="Yahtzee" />
-        </div>
-    </div>
-</div>
+<PageTitle Title="Yahtzee" />
 
 @code {
     public DieCollection Dice { get; set; } = new DieCollection();
