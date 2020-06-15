@@ -246,15 +246,15 @@
         <div class="col-10">
             <div class="row">
                 <div class="col">
-                    Scoreboard (Total Score: @TotalScore)
+                    <h4>Scorecard</h4>
                 </div>
             </div>
             <div class="row">
                 <div class="col-4">
-                    Turns Remaining: @TurnsRemaining
+                    Rolls Remaining This Turn: @RollsRemaining
                 </div>
                 <div class="col-4">
-                    Rolls Remaining This Turn: @RollsRemaining
+                    Turns Remaining: @TurnsRemaining
                 </div>
             </div>
             <!-- Scorecard rows -->
@@ -264,32 +264,36 @@
                 {
                     <div class="row">
                         <div class="col-4 border border-dark font-weight-bold">@type.GetDisplayName()</div>
-                        <div class="col-4 border border-dark p-1">
+                        <div class="col-4 border border-dark p-1 min">
                             @if (PlaysMade.HasPlay(type))
                             {
                                 @PlaysMade.GetScore(type)
                             }
                             else if (CanMakePlay(type) && !IsStartOfTurn)
                             {
-                                <a class="btn btn-primary" @onclick="@(() => ClaimPlay(type))">Claim</a>
+                                <a class="btn btn-primary btn-sm" @onclick="@(() => ClaimPlay(type))">Claim</a>
                             }
                             else if (RollsRemaining == 0)
                             {
-                                <a class="btn btn-link" @onclick="@(() => ScratchPlay(type))">Scratch</a>
+                                <a class="btn btn-outline-secondary btn-sm" @onclick="@(() => ScratchPlay(type))">Scratch</a>
                             }
                         </div>
                     </div>
                 }
             }
-            @if (PlaysMade.HasBonus())
-            {
-                <div class="row">
-                    <div class="col-4 border border-dark font-weight-bold">TOP SECTION BONUS <i class="fa fa-question-circle" title="If your scores for ones, twos, threes, fours, fives, and sixes total 63 or more, you get a 35 point bonus!"></i></div>
-                    <div class="col-4 border border-dark p-1">
-                        35
-                    </div>
+            <div class="row">
+                <div class="col-4 border border-dark font-weight-bold">TOP SECTION BONUS <i class="fa fa-question-circle" title="If your scores for ones, twos, threes, fours, fives, and sixes total 63 or more, you get a 35 point bonus!"></i></div>
+                <div class="col-4 border border-dark p-1">
+                    @if(PlaysMade.HasBonus())
+                    {
+                        <text>35</text>
+                    }
+                    else
+                    {
+                        <text>0</text>
+                    }
                 </div>
-            }
+            </div>
             <div class="row">
                 <div class="col-4 border border-dark font-weight-bold">GRAND TOTAL</div>
                 <div class="col-4 border border-dark p-1">
