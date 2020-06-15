@@ -1,0 +1,1132 @@
+﻿@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 300;
+    src: local("Source Sans Pro Light"),local("SourceSansPro-Light"),url(https://cdn.commento.io/fonts/source-sans-300-cyrillic-ext.woff2) format("woff2");
+    unicode-range: U+0460-052F,U+1C80-1C88,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 300;
+    src: local("Source Sans Pro Light"),local("SourceSansPro-Light"),url(https://cdn.commento.io/fonts/source-sans-300-cyrillic.woff2) format("woff2");
+    unicode-range: U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 300;
+    src: local("Source Sans Pro Light"),local("SourceSansPro-Light"),url(https://cdn.commento.io/fonts/source-sans-300-greek-ext.woff2) format("woff2");
+    unicode-range: U+1F00-1FFF
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 300;
+    src: local("Source Sans Pro Light"),local("SourceSansPro-Light"),url(https://cdn.commento.io/fonts/source-sans-300-greek.woff2) format("woff2");
+    unicode-range: U+0370-03FF
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 300;
+    src: local("Source Sans Pro Light"),local("SourceSansPro-Light"),url(https://cdn.commento.io/fonts/source-sans-300-vietnamese.woff2) format("woff2");
+    unicode-range: U+0102-0103,U+0110-0111,U+1EA0-1EF9,U+20AB
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 300;
+    src: local("Source Sans Pro Light"),local("SourceSansPro-Light"),url(https://cdn.commento.io/fonts/source-sans-300-latin-ext.woff2) format("woff2");
+    unicode-range: U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 300;
+    src: local("Source Sans Pro Light"),local("SourceSansPro-Light"),url(https://cdn.commento.io/fonts/source-sans-300-latin.woff2) format("woff2");
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: local("Source Sans Pro Regular"),local("SourceSansPro-Regular"),url(https://cdn.commento.io/fonts/source-sans-400-cyrillic-ext.woff2) format("woff2");
+    unicode-range: U+0460-052F,U+1C80-1C88,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: local("Source Sans Pro Regular"),local("SourceSansPro-Regular"),url(https://cdn.commento.io/fonts/source-sans-400-cyrillic.woff2) format("woff2");
+    unicode-range: U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: local("Source Sans Pro Regular"),local("SourceSansPro-Regular"),url(https://cdn.commento.io/fonts/source-sans-400-greek-ext.woff2) format("woff2");
+    unicode-range: U+1F00-1FFF
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: local("Source Sans Pro Regular"),local("SourceSansPro-Regular"),url(https://cdn.commento.io/fonts/source-sans-400-greek.woff2) format("woff2");
+    unicode-range: U+0370-03FF
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: local("Source Sans Pro Regular"),local("SourceSansPro-Regular"),url(https://cdn.commento.io/fonts/source-sans-400-vietnamese.woff2) format("woff2");
+    unicode-range: U+0102-0103,U+0110-0111,U+1EA0-1EF9,U+20AB
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: local("Source Sans Pro Regular"),local("SourceSansPro-Regular"),url(https://cdn.commento.io/fonts/source-sans-400-latin-ext.woff2) format("woff2");
+    unicode-range: U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: local("Source Sans Pro Regular"),local("SourceSansPro-Regular"),url(https://cdn.commento.io/fonts/source-sans-400-latin.woff2) format("woff2");
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 700;
+    src: local("Source Sans Pro Bold"),local("SourceSansPro-Bold"),url(https://cdn.commento.io/fonts/source-sans-700-cyrillic-ext.woff2) format("woff2");
+    unicode-range: U+0460-052F,U+1C80-1C88,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 700;
+    src: local("Source Sans Pro Bold"),local("SourceSansPro-Bold"),url(https://cdn.commento.io/fonts/source-sans-700-cyrillic.woff2) format("woff2");
+    unicode-range: U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 700;
+    src: local("Source Sans Pro Bold"),local("SourceSansPro-Bold"),url(https://cdn.commento.io/fonts/source-sans-700-greek-ext.woff2) format("woff2");
+    unicode-range: U+1F00-1FFF
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 700;
+    src: local("Source Sans Pro Bold"),local("SourceSansPro-Bold"),url(https://cdn.commento.io/fonts/source-sans-700-greek.woff2) format("woff2");
+    unicode-range: U+0370-03FF
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 700;
+    src: local("Source Sans Pro Bold"),local("SourceSansPro-Bold"),url(https://cdn.commento.io/fonts/source-sans-700-vietnamese.woff2) format("woff2");
+    unicode-range: U+0102-0103,U+0110-0111,U+1EA0-1EF9,U+20AB
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 700;
+    src: local("Source Sans Pro Bold"),local("SourceSansPro-Bold"),url(https://cdn.commento.io/fonts/source-sans-700-latin-ext.woff2) format("woff2");
+    unicode-range: U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF
+}
+
+@font-face {
+    font-family: source sans pro;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 700;
+    src: local("Source Sans Pro Bold"),local("SourceSansPro-Bold"),url(https://cdn.commento.io/fonts/source-sans-700-latin.woff2) format("woff2");
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD
+}
+
+.commento-root-min-height {
+    min-height: 430px
+}
+
+.commento-root {
+    overflow-x: hidden;
+    padding: 0;
+    width: 100%;
+    font-family: inherit
+}
+
+    .commento-root * {
+        font-family: inherit;
+        font-size: 15px;
+        line-height: 1.5;
+        text-rendering: optimizeLegibility
+    }
+
+    .commento-root code {
+        font-family: monospace;
+        font-size: 13px;
+        white-space: pre
+    }
+
+    .commento-root a {
+        color: #228be6;
+        outline: 0;
+        text-decoration: none
+    }
+
+    .commento-root blockquote {
+        margin: 0 0 0 8px;
+        padding: 0 0 0 5px;
+        border-left: 2px solid #adb5bd;
+        color: #868e96
+    }
+
+    .commento-root .commento-button {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        cursor: pointer;
+        font-weight: 700;
+        line-height: 24px;
+        font-size: 14px;
+        padding: 6px 8px;
+        box-shadow: 0 4px 6px rgba(50,50,93,.11),0 1px 3px rgba(0,0,0,.08);
+        border: 1px solid transparent;
+        border-radius: 3px;
+        color: #fff;
+        margin-left: 5px;
+        margin-right: 5px
+    }
+
+    .commento-root .commento-login {
+        width: 100%
+    }
+
+        .commento-root .commento-login .commento-login-text {
+            text-align: right;
+            margin-right: 16px;
+            height: 38px;
+            color: #868e96;
+            font-weight: 700;
+            cursor: pointer;
+            display: block
+        }
+
+    .commento-root .commento-logged-container {
+        width: 100%;
+        text-align: left;
+        margin-bottom: 16px;
+        position: relative;
+        height: 38px
+    }
+
+        .commento-root .commento-logged-container .commento-profile-button {
+            float: right;
+            cursor: pointer;
+            color: #868e96;
+            margin: 6px 12px;
+            font-size: 13px
+        }
+
+        .commento-root .commento-logged-container .commento-logged-in-as {
+            position: relative
+        }
+
+            .commento-root .commento-logged-container .commento-logged-in-as .commento-name {
+                color: #343a40;
+                border: none;
+                font-weight: 700;
+                position: absolute;
+                top: 6px;
+                left: 48px;
+                cursor: pointer
+            }
+
+    .commento-root .commento-mod-tools {
+        margin-bottom: 16px
+    }
+
+        .commento-root .commento-mod-tools button {
+            text-transform: uppercase;
+            color: #495057;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-left: 12px;
+            background: 0 0;
+            border: none;
+            display: inline
+        }
+
+        .commento-root .commento-mod-tools::before {
+            content: "Moderator Tools";
+            text-transform: uppercase;
+            color: #3b5bdb;
+            font-size: 12px;
+            font-weight: 700
+        }
+
+    .commento-root .commento-round-check input[type=checkbox], .commento-root .commento-round-check input[type=radio] {
+        display: none
+    }
+
+        .commento-root .commento-round-check input[type=checkbox] + label, .commento-root .commento-round-check input[type=radio] + label {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none
+        }
+
+            .commento-root .commento-round-check input[type=checkbox] + label:last-child, .commento-root .commento-round-check input[type=radio] + label:last-child {
+                margin-bottom: 0
+            }
+
+            .commento-root .commento-round-check input[type=checkbox] + label:before, .commento-root .commento-round-check input[type=radio] + label:before {
+                content: '';
+                display: block;
+                width: 13px;
+                height: 13px;
+                margin-top: 2px;
+                background: #f8f9fa;
+                border: 1px solid #dee2e6;
+                border-radius: 3px;
+                position: absolute;
+                left: 0;
+                top: 0;
+                transition: all .15s
+            }
+
+        .commento-root .commento-round-check input[type=checkbox]:disabled + label:before, .commento-root .commento-round-check input[type=radio]:disabled + label:before {
+            background: #f8f9fa;
+            border: 1px solid #ced4da;
+            opacity: .4
+        }
+
+        .commento-root .commento-round-check input[type=checkbox]:checked + label:before, .commento-root .commento-round-check input[type=radio]:checked + label:before {
+            background: #228be6;
+            border: 1px solid #228be6
+        }
+
+        .commento-root .commento-round-check input[type=checkbox] + label:after, .commento-root .commento-round-check input[type=radio] + label:after {
+            position: absolute;
+            left: -7px;
+            top: 4px;
+            content: '';
+            display: inline-block;
+            width: 3px;
+            height: 7px;
+            transform: rotate(45deg);
+            margin-left: 12px;
+            margin-right: 12px;
+            border: solid transparent;
+            border-width: 0 2px 2px 0
+        }
+
+        .commento-root .commento-round-check input[type=checkbox]:disabled + label:after, .commento-root .commento-round-check input[type=radio]:disabled + label:after {
+            border: solid transparent;
+            border-width: 0 2px 2px 0
+        }
+
+        .commento-root .commento-round-check input[type=checkbox]:checked + label:after, .commento-root .commento-round-check input[type=radio]:checked + label:after {
+            border: solid #f8f9fa;
+            border-width: 0 2px 2px 0
+        }
+
+    .commento-root .commento-round-check .pitch {
+        font-size: 14px;
+        color: #a5a5a5;
+        line-height: 20px !important
+    }
+
+    .commento-root input[type=text], .commento-root textarea {
+        background: #fff;
+        border: 1px solid rgba(50,50,93,.1);
+        border-radius: 3px;
+        color: #525f7f
+    }
+
+        .commento-root input[type=text]::placeholder {
+            color: #cacaca
+        }
+
+        .commento-root textarea::placeholder {
+            color: #868e96;
+            font-size: 20px;
+            display: flex;
+            line-height: 110px;
+            justify-content: center;
+            align-items: center;
+            text-align: center
+        }
+
+    .commento-root textarea {
+        display: inline-block;
+        white-space: pre-wrap;
+        padding: 8px;
+        outline: 0;
+        overflow: auto;
+        min-height: 130px;
+        width: 100%
+    }
+
+    .commento-root .commento-red-border {
+        border: 1px solid #f03e3e
+    }
+
+    .commento-root .commento-textarea-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
+
+        .commento-root .commento-textarea-container .commento-submit-button {
+            transform: none
+        }
+
+    .commento-root .commento-blurred-textarea {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        justify-content: space-between;
+        will-change: transform
+    }
+
+    .commento-root .commento-submit-button {
+        float: right;
+        background: #1971c2;
+        text-transform: uppercase;
+        font-size: 12px;
+        margin-top: 10px
+    }
+
+    .commento-root .commento-button-margin {
+        padding-top: 4px
+    }
+
+    .commento-root .commento-anonymous-checkbox-container {
+        float: right;
+        margin: 20px 16px
+    }
+
+        .commento-root .commento-anonymous-checkbox-container input[type=checkbox] + label {
+            padding-left: 24px;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #495057
+        }
+
+            .commento-root .commento-anonymous-checkbox-container input[type=checkbox] + label:before {
+                margin-top: 1px
+            }
+
+            .commento-root .commento-anonymous-checkbox-container input[type=checkbox] + label:after {
+                margin-top: -1px
+            }
+
+    .commento-root .commento-markdown-button {
+        color: #868e96;
+        margin: 0 16px;
+        font-size: 12px;
+        text-transform: uppercase;
+        border: none;
+        line-height: 58px;
+        font-weight: 400;
+        cursor: pointer
+    }
+
+        .commento-root .commento-markdown-button b {
+            font-size: 12px
+        }
+
+    .commento-root .commento-markdown-help {
+        border: 1px solid #dee2e6;
+        padding: 8px
+    }
+
+        .commento-root .commento-markdown-help tr td {
+            padding: 0 6px
+        }
+
+            .commento-root .commento-markdown-help tr td pre {
+                display: inline;
+                font-family: monospace;
+                font-size: 13px
+            }
+
+    .commento-root .commento-card {
+        padding: 12px 0 0 12px;
+        margin-top: 16px;
+        border-top: 1px solid #f0f0f0
+    }
+
+        .commento-root .commento-card .commento-option-button {
+            border: none;
+            cursor: pointer;
+            outline: 0;
+            padding: 0;
+            position: absolute;
+            top: 0;
+            z-index: 3;
+            background: #ced4da
+        }
+
+        .commento-root .commento-card .commento-option-reply {
+            height: 20px;
+            width: 20px;
+            -webkit-mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDQ4IDQ4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyIgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMS43MzU4IDAgMCAxLjczMzUgNC4yNjQyIDE1LjIxNykiPjxwYXRoIGQ9Im0xMCAyLjUgMWUtNiAtNC40NDIxLTkgNy40NDIxIDkgNi41NzU5LTFlLTYgLTQuNjc1OWM2LjQxOTQtMS40ODM5IDExLjczOSAyLjE3NjIgMTEuNzM5IDIuMTc2MnMtMi4wNzc0LTYuNTQ3NS0xMS43MzktNy4wNzYyeiIgZmlsbD0iI2FiYmFjNCIvPjwvZz48L3N2Zz4=);
+            mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDQ4IDQ4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyIgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMS43MzU4IDAgMCAxLjczMzUgNC4yNjQyIDE1LjIxNykiPjxwYXRoIGQ9Im0xMCAyLjUgMWUtNiAtNC40NDIxLTkgNy40NDIxIDkgNi41NzU5LTFlLTYgLTQuNjc1OWM2LjQxOTQtMS40ODM5IDExLjczOSAyLjE3NjIgMTEuNzM5IDIuMTc2MnMtMi4wNzc0LTYuNTQ3NS0xMS43MzktNy4wNzYyeiIgZmlsbD0iI2FiYmFjNCIvPjwvZz48L3N2Zz4=);
+            margin: 9px 3px
+        }
+
+        .commento-root .commento-card .commento-option-cancel {
+            height: 13px;
+            width: 13px;
+            -webkit-mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDEyOSAxMjkiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDEyOSAxMjkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0ibTcuNiAxMjEuNGMwLjggMC44IDEuOCAxLjIgMi45IDEuMnMyLjEtMC40IDIuOS0xLjJsNTEuMS01MS4xIDUxLjEgNTEuMWMwLjggMC44IDEuOCAxLjIgMi45IDEuMiAxIDAgMi4xLTAuNCAyLjktMS4yIDEuNi0xLjYgMS42LTQuMiAwLTUuOGwtNTEuMS01MS4xIDUxLjEtNTEuMWMxLjYtMS42IDEuNi00LjIgMC01LjhzLTQuMi0xLjYtNS44IDBsLTUxLjEgNTEuMS01MS4xLTUxLjFjLTEuNi0xLjYtNC4yLTEuNi01LjggMHMtMS42IDQuMiAwIDUuOGw1MS4xIDUxLjEtNTEuMSA1MS4xYy0xLjYgMS42LTEuNiA0LjIgMCA1Ljh6IiBmaWxsPSIjYWJiYWM0Ii8+PC9zdmc+);
+            mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDEyOSAxMjkiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDEyOSAxMjkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0ibTcuNiAxMjEuNGMwLjggMC44IDEuOCAxLjIgMi45IDEuMnMyLjEtMC40IDIuOS0xLjJsNTEuMS01MS4xIDUxLjEgNTEuMWMwLjggMC44IDEuOCAxLjIgMi45IDEuMiAxIDAgMi4xLTAuNCAyLjktMS4yIDEuNi0xLjYgMS42LTQuMiAwLTUuOGwtNTEuMS01MS4xIDUxLjEtNTEuMWMxLjYtMS42IDEuNi00LjIgMC01LjhzLTQuMi0xLjYtNS44IDBsLTUxLjEgNTEuMS01MS4xLTUxLjFjLTEuNi0xLjYtNC4yLTEuNi01LjggMHMtMS42IDQuMiAwIDUuOGw1MS4xIDUxLjEtNTEuMSA1MS4xYy0xLjYgMS42LTEuNiA0LjIgMCA1Ljh6IiBmaWxsPSIjYWJiYWM0Ii8+PC9zdmc+);
+            margin: 12px 6px;
+            background: #adb5bd
+        }
+
+        .commento-root .commento-card .commento-option-collapse {
+            height: 14px;
+            width: 14px;
+            -webkit-mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQyIDQyIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA0MiA0MiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cG9seWdvbiBwb2ludHM9IjQyIDIwIDAgMjAgMCAyMiAyMCAyMiAyMiAyMiA0MiAyMiIgZmlsbD0iIzFlMjEyNyIvPjwvc3ZnPg==);
+            mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQyIDQyIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA0MiA0MiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cG9seWdvbiBwb2ludHM9IjQyIDIwIDAgMjAgMCAyMiAyMCAyMiAyMiAyMiA0MiAyMiIgZmlsbD0iIzFlMjEyNyIvPjwvc3ZnPg==);
+            margin: 12px 6px;
+            background: #495057
+        }
+
+        .commento-root .commento-card .commento-option-uncollapse {
+            height: 14px;
+            width: 14px;
+            -webkit-mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQyIDQyIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA0MiA0MiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cG9seWdvbiBwb2ludHM9IjQyIDIwIDIyIDIwIDIyIDAgMjAgMCAyMCAyMCAwIDIwIDAgMjIgMjAgMjIgMjAgNDIgMjIgNDIgMjIgMjIgNDIgMjIiIGZpbGw9IiMxZTIxMjciLz48L3N2Zz4=);
+            mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQyIDQyIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA0MiA0MiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cG9seWdvbiBwb2ludHM9IjQyIDIwIDIyIDIwIDIyIDAgMjAgMCAyMCAyMCAwIDIwIDAgMjIgMjAgMjIgMjAgNDIgMjIgNDIgMjIgMjIgNDIgMjIiIGZpbGw9IiMxZTIxMjciLz48L3N2Zz4=);
+            margin: 12px 6px;
+            background: #495057
+        }
+
+        .commento-root .commento-card .commento-option-downvote, .commento-root .commento-card .commento-option-upvote {
+            height: 14px;
+            width: 14px;
+            -webkit-mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI4NC45MjkgMjg0LjkyOSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMjg0LjkzIDI4NC45MyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4JPHBhdGggZD0ibTI4Mi4wOCAxOTUuMjgtMTMzLjA1LTEzMy4wNGMtMS45MDEtMS45MDMtNC4wODgtMi44NTYtNi41NjItMi44NTZzLTQuNjY1IDAuOTUzLTYuNTY3IDIuODU2bC0xMzMuMDQgMTMzLjA0Yy0xLjkwNiAxLjkwNi0yLjg1NiA0LjA5My0yLjg1NiA2LjU2OCAwIDIuNDc0IDAuOTUzIDQuNjY0IDIuODU2IDYuNTY2bDE0LjI3MiAxNC4yNzFjMS45MDMgMS45MDMgNC4wOTMgMi44NTQgNi41NjcgMi44NTRzNC42NjQtMC45NTEgNi41NjctMi44NTRsMTEyLjItMTEyLjIgMTEyLjIxIDExMi4yMWMxLjkwMiAxLjkwMyA0LjA5MyAyLjg0OCA2LjU2MyAyLjg0OCAyLjQ3OCAwIDQuNjY4LTAuOTUxIDYuNTctMi44NDhsMTQuMjc0LTE0LjI3N2MxLjkwMi0xLjkwMiAyLjg0Ny00LjA5MyAyLjg0Ny02LjU2NiAxZS0zIC0yLjQ3Ni0wLjk0NC00LjY2Ni0yLjg0Ni02LjU2OXoiIGZpbGw9IiNhYmJhYzQiLz48L3N2Zz4=);
+            mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI4NC45MjkgMjg0LjkyOSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMjg0LjkzIDI4NC45MyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4JPHBhdGggZD0ibTI4Mi4wOCAxOTUuMjgtMTMzLjA1LTEzMy4wNGMtMS45MDEtMS45MDMtNC4wODgtMi44NTYtNi41NjItMi44NTZzLTQuNjY1IDAuOTUzLTYuNTY3IDIuODU2bC0xMzMuMDQgMTMzLjA0Yy0xLjkwNiAxLjkwNi0yLjg1NiA0LjA5My0yLjg1NiA2LjU2OCAwIDIuNDc0IDAuOTUzIDQuNjY0IDIuODU2IDYuNTY2bDE0LjI3MiAxNC4yNzFjMS45MDMgMS45MDMgNC4wOTMgMi44NTQgNi41NjcgMi44NTRzNC42NjQtMC45NTEgNi41NjctMi44NTRsMTEyLjItMTEyLjIgMTEyLjIxIDExMi4yMWMxLjkwMiAxLjkwMyA0LjA5MyAyLjg0OCA2LjU2MyAyLjg0OCAyLjQ3OCAwIDQuNjY4LTAuOTUxIDYuNTctMi44NDhsMTQuMjc0LTE0LjI3N2MxLjkwMi0xLjkwMiAyLjg0Ny00LjA5MyAyLjg0Ny02LjU2NiAxZS0zIC0yLjQ3Ni0wLjk0NC00LjY2Ni0yLjg0Ni02LjU2OXoiIGZpbGw9IiNhYmJhYzQiLz48L3N2Zz4=);
+            margin: 12px 6px
+        }
+
+        .commento-root .commento-card .commento-option-downvote {
+            transform: rotate(180deg)
+        }
+
+        .commento-root .commento-card .commento-upvoted {
+            background: #f76707
+        }
+
+        .commento-root .commento-card .commento-downvoted {
+            background: #4c6ef5
+        }
+
+        .commento-root .commento-card .commento-option-edit {
+            height: 14px;
+            width: 14px;
+            -webkit-mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDUyOC44OTkgNTI4Ljg5OSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTI4Ljg5OSA1MjguODk5IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im0zMjguODggODkuMTI1bDEwNy41OSAxMDcuNTktMjcyLjM0IDI3Mi4zNC0xMDcuNTMtMTA3LjU5IDI3Mi4yOC0yNzIuMzR6bTE4OS4yMy0yNS45NDhsLTQ3Ljk4MS00Ny45ODFjLTE4LjU0My0xOC41NDMtNDguNjUzLTE4LjU0My02Ny4yNTkgMGwtNDUuOTYxIDQ1Ljk2MSAxMDcuNTkgMTA3LjU5IDUzLjYxMS01My42MTFjMTQuMzgyLTE0LjM4MyAxNC4zODItMzcuNTc3IDAtNTEuOTU5em0tNTE3LjgxIDQ0OS41MWMtMS45NTggOC44MTIgNS45OTggMTYuNzA4IDE0LjgxMSAxNC41NjVsMTE5Ljg5LTI5LjA2OS0xMDcuNTMtMTA3LjU5LTI3LjE3MyAxMjIuMDl6Ii8+PC9zdmc+);
+            mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDUyOC44OTkgNTI4Ljg5OSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTI4Ljg5OSA1MjguODk5IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im0zMjguODggODkuMTI1bDEwNy41OSAxMDcuNTktMjcyLjM0IDI3Mi4zNC0xMDcuNTMtMTA3LjU5IDI3Mi4yOC0yNzIuMzR6bTE4OS4yMy0yNS45NDhsLTQ3Ljk4MS00Ny45ODFjLTE4LjU0My0xOC41NDMtNDguNjUzLTE4LjU0My02Ny4yNTkgMGwtNDUuOTYxIDQ1Ljk2MSAxMDcuNTkgMTA3LjU5IDUzLjYxMS01My42MTFjMTQuMzgyLTE0LjM4MyAxNC4zODItMzcuNTc3IDAtNTEuOTU5em0tNTE3LjgxIDQ0OS41MWMtMS45NTggOC44MTIgNS45OTggMTYuNzA4IDE0LjgxMSAxNC41NjVsMTE5Ljg5LTI5LjA2OS0xMDcuNTMtMTA3LjU5LTI3LjE3MyAxMjIuMDl6Ii8+PC9zdmc+);
+            margin: 12px 6px;
+            background: #adb5bd
+        }
+
+        .commento-root .commento-card .commento-option-remove {
+            height: 14px;
+            width: 14px;
+            -webkit-mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDU5IDU5IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA1OSA1OSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSIjMWUyMTI3Ij48cGF0aCBkPSJtMjkuNSA1MWMwLjU1MiAwIDEtMC40NDcgMS0xdi0zM2MwLTAuNTUzLTAuNDQ4LTEtMS0xcy0xIDAuNDQ3LTEgMXYzM2MwIDAuNTUzIDAuNDQ4IDEgMSAxeiIvPjxwYXRoIGQ9Im0xOS41IDUxYzAuNTUyIDAgMS0wLjQ0NyAxLTF2LTMzYzAtMC41NTMtMC40NDgtMS0xLTFzLTEgMC40NDctMSAxdjMzYzAgMC41NTMgMC40NDggMSAxIDF6Ii8+PHBhdGggZD0ibTM5LjUgNTFjMC41NTIgMCAxLTAuNDQ3IDEtMXYtMzNjMC0wLjU1My0wLjQ0OC0xLTEtMXMtMSAwLjQ0Ny0xIDF2MzNjMCAwLjU1MyAwLjQ0OCAxIDEgMXoiLz48cGF0aCBkPSJNNTIuNSw2SDM4LjQ1NmMtMC4xMS0xLjI1LTAuNDk1LTMuMzU4LTEuODEzLTQuNzExQzM1LjgwOSwwLjQzNCwzNC43NTEsMCwzMy40OTksMEgyMy41Yy0xLjI1MiwwLTIuMzEsMC40MzQtMy4xNDQsMS4yODkgQzE5LjAzOCwyLjY0MiwxOC42NTMsNC43NSwxOC41NDMsNkg2LjVjLTAuNTUyLDAtMSwwLjQ0Ny0xLDFzMC40NDgsMSwxLDFoMi4wNDFsMS45MTUsNDYuMDIxQzEwLjQ5Myw1NS43NDMsMTEuNTY1LDU5LDE1LjM2NCw1OSBoMjguMjcyYzMuNzk5LDAsNC44NzEtMy4yNTcsNC45MDctNC45NThMNTAuNDU5LDhINTIuNWMwLjU1MiwwLDEtMC40NDcsMS0xUzUzLjA1Miw2LDUyLjUsNnogTTIxLjc5MiwyLjY4MSBDMjIuMjQsMi4yMjMsMjIuNzk5LDIsMjMuNSwyaDkuOTk5YzAuNzAxLDAsMS4yNiwwLjIyMywxLjcwOCwwLjY4MWMwLjgwNSwwLjgyMywxLjEyOCwyLjI3MSwxLjI0LDMuMzE5SDIwLjU1MyBDMjAuNjY1LDQuOTUyLDIwLjk4OCwzLjUwNCwyMS43OTIsMi42ODF6IE00Ni41NDQsNTMuOTc5QzQ2LjUzOCw1NC4yODgsNDYuNCw1Nyw0My42MzYsNTdIMTUuMzY0IGMtMi43MzQsMC0yLjg5OC0yLjcxNy0yLjkwOS0zLjA0MkwxMC41NDIsOGgzNy45MTVMNDYuNTQ0LDUzLjk3OXoiLz48L2c+PC9zdmc+);
+            mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDU5IDU5IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA1OSA1OSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSIjMWUyMTI3Ij48cGF0aCBkPSJtMjkuNSA1MWMwLjU1MiAwIDEtMC40NDcgMS0xdi0zM2MwLTAuNTUzLTAuNDQ4LTEtMS0xcy0xIDAuNDQ3LTEgMXYzM2MwIDAuNTUzIDAuNDQ4IDEgMSAxeiIvPjxwYXRoIGQ9Im0xOS41IDUxYzAuNTUyIDAgMS0wLjQ0NyAxLTF2LTMzYzAtMC41NTMtMC40NDgtMS0xLTFzLTEgMC40NDctMSAxdjMzYzAgMC41NTMgMC40NDggMSAxIDF6Ii8+PHBhdGggZD0ibTM5LjUgNTFjMC41NTIgMCAxLTAuNDQ3IDEtMXYtMzNjMC0wLjU1My0wLjQ0OC0xLTEtMXMtMSAwLjQ0Ny0xIDF2MzNjMCAwLjU1MyAwLjQ0OCAxIDEgMXoiLz48cGF0aCBkPSJNNTIuNSw2SDM4LjQ1NmMtMC4xMS0xLjI1LTAuNDk1LTMuMzU4LTEuODEzLTQuNzExQzM1LjgwOSwwLjQzNCwzNC43NTEsMCwzMy40OTksMEgyMy41Yy0xLjI1MiwwLTIuMzEsMC40MzQtMy4xNDQsMS4yODkgQzE5LjAzOCwyLjY0MiwxOC42NTMsNC43NSwxOC41NDMsNkg2LjVjLTAuNTUyLDAtMSwwLjQ0Ny0xLDFzMC40NDgsMSwxLDFoMi4wNDFsMS45MTUsNDYuMDIxQzEwLjQ5Myw1NS43NDMsMTEuNTY1LDU5LDE1LjM2NCw1OSBoMjguMjcyYzMuNzk5LDAsNC44NzEtMy4yNTcsNC45MDctNC45NThMNTAuNDU5LDhINTIuNWMwLjU1MiwwLDEtMC40NDcsMS0xUzUzLjA1Miw2LDUyLjUsNnogTTIxLjc5MiwyLjY4MSBDMjIuMjQsMi4yMjMsMjIuNzk5LDIsMjMuNSwyaDkuOTk5YzAuNzAxLDAsMS4yNiwwLjIyMywxLjcwOCwwLjY4MWMwLjgwNSwwLjgyMywxLjEyOCwyLjI3MSwxLjI0LDMuMzE5SDIwLjU1MyBDMjAuNjY1LDQuOTUyLDIwLjk4OCwzLjUwNCwyMS43OTIsMi42ODF6IE00Ni41NDQsNTMuOTc5QzQ2LjUzOCw1NC4yODgsNDYuNCw1Nyw0My42MzYsNTdIMTUuMzY0IGMtMi43MzQsMC0yLjg5OC0yLjcxNy0yLjkwOS0zLjA0MkwxMC41NDIsOGgzNy45MTVMNDYuNTQ0LDUzLjk3OXoiLz48L2c+PC9zdmc+);
+            margin: 12px 6px;
+            background: #e03131
+        }
+
+        .commento-root .commento-card .commento-option-approve {
+            height: 14px;
+            width: 14px;
+            -webkit-mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI2IDI2IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyNiAyNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMC4zIDE0Yy0wLjItMC4yLTAuMy0wLjUtMC4zLTAuN3MwLjEtMC41IDAuMy0wLjdsMS40LTEuNGMwLjQtMC40IDEtMC40IDEuNCAwbDAuMSAwLjEgNS41IDUuOWMwLjIgMC4yIDAuNSAwLjIgMC43IDBsMTMuNC0xMy45aDAuMXYtOC44ODE4ZS0xNmMwLjQtMC40IDEtMC40IDEuNCAwbDEuNCAxLjRjMC40IDAuNCAwLjQgMSAwIDEuNGwtMTYgMTYuNmMtMC4yIDAuMi0wLjQgMC4zLTAuNyAwLjNzLTAuNS0wLjEtMC43LTAuM2wtNy44LTguNC0wLjItMC4zeiIgZmlsbD0iIzFlMjEyNyIvPjwvc3ZnPg==);
+            mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI2IDI2IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyNiAyNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMC4zIDE0Yy0wLjItMC4yLTAuMy0wLjUtMC4zLTAuN3MwLjEtMC41IDAuMy0wLjdsMS40LTEuNGMwLjQtMC40IDEtMC40IDEuNCAwbDAuMSAwLjEgNS41IDUuOWMwLjIgMC4yIDAuNSAwLjIgMC43IDBsMTMuNC0xMy45aDAuMXYtOC44ODE4ZS0xNmMwLjQtMC40IDEtMC40IDEuNCAwbDEuNCAxLjRjMC40IDAuNCAwLjQgMSAwIDEuNGwtMTYgMTYuNmMtMC4yIDAuMi0wLjQgMC4zLTAuNyAwLjNzLTAuNS0wLjEtMC43LTAuM2wtNy44LTguNC0wLjItMC4zeiIgZmlsbD0iIzFlMjEyNyIvPjwvc3ZnPg==);
+            margin: 12px 6px;
+            background: #37b24d
+        }
+
+        .commento-root .commento-card .commento-option-sticky, .commento-root .commento-card .commento-option-unsticky {
+            height: 14px;
+            width: 14px;
+            -webkit-mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQ4Ny4yMjIgNDg3LjIyMiIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNDg3LjIyIDQ4Ny4yMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtNDg2LjU1IDE4Ni44MWMtMS42LTQuOS01LjgtOC40LTEwLjktOS4ybC0xNTItMjEuNi02OC40LTEzNy41Yy0yLjMtNC42LTctNy41LTEyLjEtNy41cy05LjggMi45LTEyLjEgNy42bC02Ny41IDEzNy45LTE1MiAyMi42Yy01LjEgMC44LTkuMyA0LjMtMTAuOSA5LjJzLTAuMiAxMC4zIDMuNSAxMy44bDExMC4zIDEwNi45LTI1LjUgMTUxLjRjLTAuOSA1LjEgMS4yIDEwLjIgNS40IDEzLjIgMi4zIDEuNyA1LjEgMi42IDcuOSAyLjYgMi4yIDAgNC4zLTAuNSA2LjMtMS42bDEzNS43LTcxLjkgMTM2LjEgNzEuMWMyIDEgNC4xIDEuNSA2LjIgMS41IDcuNCAwIDEzLjUtNi4xIDEzLjUtMTMuNSAwLTEuMS0wLjEtMi4xLTAuNC0zLjFsLTI2LjMtMTUwLjUgMTA5LjYtMTA3LjVjMy45LTMuNiA1LjItOSAzLjYtMTMuOXptLTEzNyAxMDcuMWMtMy4yIDMuMS00LjYgNy42LTMuOCAxMmwyMi45IDEzMS4zLTExOC4yLTYxLjdjLTMuOS0yLjEtOC42LTItMTIuNiAwbC0xMTcuOCA2Mi40IDIyLjEtMTMxLjVjMC43LTQuNC0wLjctOC44LTMuOS0xMS45bC05NS42LTkyLjggMTMxLjktMTkuNmM0LjQtMC43IDguMi0zLjQgMTAuMS03LjRsNTguNi0xMTkuNyA1OS40IDExOS40YzIgNCA1LjggNi43IDEwLjIgNy40bDEzMiAxOC44LTk1LjMgOTMuM3oiIGZpbGw9IiMxZTIxMjciLz48L3N2Zz4=);
+            mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQ4Ny4yMjIgNDg3LjIyMiIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNDg3LjIyIDQ4Ny4yMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtNDg2LjU1IDE4Ni44MWMtMS42LTQuOS01LjgtOC40LTEwLjktOS4ybC0xNTItMjEuNi02OC40LTEzNy41Yy0yLjMtNC42LTctNy41LTEyLjEtNy41cy05LjggMi45LTEyLjEgNy42bC02Ny41IDEzNy45LTE1MiAyMi42Yy01LjEgMC44LTkuMyA0LjMtMTAuOSA5LjJzLTAuMiAxMC4zIDMuNSAxMy44bDExMC4zIDEwNi45LTI1LjUgMTUxLjRjLTAuOSA1LjEgMS4yIDEwLjIgNS40IDEzLjIgMi4zIDEuNyA1LjEgMi42IDcuOSAyLjYgMi4yIDAgNC4zLTAuNSA2LjMtMS42bDEzNS43LTcxLjkgMTM2LjEgNzEuMWMyIDEgNC4xIDEuNSA2LjIgMS41IDcuNCAwIDEzLjUtNi4xIDEzLjUtMTMuNSAwLTEuMS0wLjEtMi4xLTAuNC0zLjFsLTI2LjMtMTUwLjUgMTA5LjYtMTA3LjVjMy45LTMuNiA1LjItOSAzLjYtMTMuOXptLTEzNyAxMDcuMWMtMy4yIDMuMS00LjYgNy42LTMuOCAxMmwyMi45IDEzMS4zLTExOC4yLTYxLjdjLTMuOS0yLjEtOC42LTItMTIuNiAwbC0xMTcuOCA2Mi40IDIyLjEtMTMxLjVjMC43LTQuNC0wLjctOC44LTMuOS0xMS45bC05NS42LTkyLjggMTMxLjktMTkuNmM0LjQtMC43IDguMi0zLjQgMTAuMS03LjRsNTguNi0xMTkuNyA1OS40IDExOS40YzIgNCA1LjggNi43IDEwLjIgNy40bDEzMiAxOC44LTk1LjMgOTMuM3oiIGZpbGw9IiMxZTIxMjciLz48L3N2Zz4=);
+            margin: 12px 6px;
+            background: #adb5bd
+        }
+
+        .commento-root .commento-card .commento-option-unsticky {
+            -webkit-mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHZpZXdCb3g9IjAgMCA0ODcuMjIgNDg3LjIyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnPjx0aXRsZT5iYWNrZ3JvdW5kPC90aXRsZT48cmVjdCB4PSItMSIgeT0iLTEiIGZpbGw9Im5vbmUiLz48L2c+PGc+PHRpdGxlPkxheWVyIDE8L3RpdGxlPjxwYXRoIGQ9Im00ODYuNTUgMTg2LjgxYy0xLjYtNC45LTUuOC04LjQtMTAuOS05LjJsLTE1Mi0yMS42LTY4LjQtMTM3LjVjLTIuMy00LjYtNy03LjUtMTIuMS03LjVzLTkuOCAyLjktMTIuMSA3LjZsLTY3LjUgMTM3LjktMTUyIDIyLjZjLTUuMSAwLjgtOS4zIDQuMy0xMC45IDkuMnMtMC4yIDEwLjMgMy41IDEzLjhsMTEwLjMgMTA2LjktMjUuNSAxNTEuNGMtMC45IDUuMSAxLjIgMTAuMiA1LjQgMTMuMiAyLjMgMS43IDUuMSAyLjYgNy45IDIuNiAyLjIgMCA0LjMtMC41IDYuMy0xLjZsMTM1LjctNzEuOSAxMzYuMSA3MS4xYzIgMSA0LjEgMS41IDYuMiAxLjUgNy40IDAgMTMuNS02LjEgMTMuNS0xMy41IDAtMS4xLTAuMS0yLjEtMC40LTMuMWwtMjYuMy0xNTAuNSAxMDkuNi0xMDcuNWMzLjktMy42IDUuMi05IDMuNi0xMy45eiIgZmlsbD0iIzFlMjEyNyIvPjwvZz48L3N2Zz4=);
+            mask-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHZpZXdCb3g9IjAgMCA0ODcuMjIgNDg3LjIyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnPjx0aXRsZT5iYWNrZ3JvdW5kPC90aXRsZT48cmVjdCB4PSItMSIgeT0iLTEiIGZpbGw9Im5vbmUiLz48L2c+PGc+PHRpdGxlPkxheWVyIDE8L3RpdGxlPjxwYXRoIGQ9Im00ODYuNTUgMTg2LjgxYy0xLjYtNC45LTUuOC04LjQtMTAuOS05LjJsLTE1Mi0yMS42LTY4LjQtMTM3LjVjLTIuMy00LjYtNy03LjUtMTIuMS03LjVzLTkuOCAyLjktMTIuMSA3LjZsLTY3LjUgMTM3LjktMTUyIDIyLjZjLTUuMSAwLjgtOS4zIDQuMy0xMC45IDkuMnMtMC4yIDEwLjMgMy41IDEzLjhsMTEwLjMgMTA2LjktMjUuNSAxNTEuNGMtMC45IDUuMSAxLjIgMTAuMiA1LjQgMTMuMiAyLjMgMS43IDUuMSAyLjYgNy45IDIuNiAyLjIgMCA0LjMtMC41IDYuMy0xLjZsMTM1LjctNzEuOSAxMzYuMSA3MS4xYzIgMSA0LjEgMS41IDYuMiAxLjUgNy40IDAgMTMuNS02LjEgMTMuNS0xMy41IDAtMS4xLTAuMS0yLjEtMC40LTMuMWwtMjYuMy0xNTAuNSAxMDkuNi0xMDcuNWMzLjktMy42IDUuMi05IDMuNi0xMy45eiIgZmlsbD0iIzFlMjEyNyIvPjwvZz48L3N2Zz4=);
+            background: #f59f00
+        }
+
+        .commento-root .commento-card .commento-option-button:focus {
+            outline: 0
+        }
+
+        .commento-root .commento-card .commento-header {
+            padding-bottom: 4px
+        }
+
+        .commento-root .commento-card .commento-avatar::after {
+            content: "";
+            display: block
+        }
+
+        .commento-root .commento-card .commento-name {
+            font-weight: 700;
+            font-size: 14px;
+            color: #555;
+            border: none;
+            display: table;
+            z-index: 1;
+            margin-left: 48px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: fit-content;
+            cursor: pointer
+        }
+
+        .commento-root .commento-card .commento-flagged::after {
+            content: "Flagged";
+            text-transform: uppercase;
+            font-size: 10px;
+            background: #f03e3e;
+            color: #fff;
+            margin-left: 8px;
+            padding: 2px 6px;
+            border-radius: 100px;
+            line-height: 17px
+        }
+
+        .commento-root .commento-card .commento-moderator::after {
+            content: "Moderator";
+            text-transform: uppercase;
+            font-size: 10px;
+            background: #37b24d;
+            color: #fff;
+            margin-left: 8px;
+            padding: 2px 6px;
+            border-radius: 100px;
+            line-height: 17px
+        }
+
+        .commento-root .commento-card .commento-subtitle {
+            display: block;
+            color: #999;
+            font-size: 12px;
+            margin-left: 48px
+        }
+
+        .commento-root .commento-card .commento-timeago {
+            display: inline;
+            color: #888;
+            font-size: 12px
+        }
+
+        .commento-root .commento-card .commento-score {
+            display: inline;
+            color: #888;
+            font-size: 12px;
+            font-weight: 700
+        }
+
+        .commento-root .commento-card .commento-timeago::before {
+            content: "\00a0 \00a0 \00b7 \00a0 \00a0"
+        }
+
+        .commento-root .commento-card .commento-body p {
+            margin-top: 6px;
+            margin-bottom: 6px
+        }
+
+        .commento-root .commento-card .commento-options {
+            float: right;
+            position: relative;
+            height: 38px;
+            z-index: 2
+        }
+
+        .commento-root .commento-card .commento-options-mobile {
+            margin-right: 12px
+        }
+
+        .commento-root .commento-card .commento-options-clearfix {
+            height: 38px;
+            width: 1px;
+            display: block
+        }
+
+        .commento-root .commento-card .commento-moderation {
+            height: 48px
+        }
+
+    .commento-root .commento-dark-card {
+        background: #fff5f5
+    }
+
+    .commento-root .commento-highlighted-card {
+        background: #fff9db
+    }
+
+    .commento-root .commento-avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-size: 22px;
+        float: left;
+        margin-right: 10px;
+        border: 0 transparent
+    }
+
+    .commento-root .commento-avatar-img {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        float: left;
+        margin-right: 10px
+    }
+
+    .commento-root .commento-login-box-container {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        width: 100%;
+        height: 0;
+        overflow: visible
+    }
+
+        .commento-root .commento-login-box-container .commento-login-box {
+            width: 90%;
+            max-width: 500px;
+            min-height: 100px;
+            background: #f1f3f5;
+            z-index: 100;
+            position: absolute;
+            top: 8px;
+            padding: 16px;
+            opacity: 1;
+            transition: opacity .2s
+        }
+
+            .commento-root .commento-login-box-container .commento-login-box .commento-oauth-buttons-container {
+                display: flex;
+                justify-content: center
+            }
+
+                .commento-root .commento-login-box-container .commento-login-box .commento-oauth-buttons-container .commento-oauth-buttons {
+                    align-items: center;
+                    position: absolute;
+                    z-index: 1;
+                    display: contents
+                }
+
+                    .commento-root .commento-login-box-container .commento-login-box .commento-oauth-buttons-container .commento-oauth-buttons .commento-google-button {
+                        background: #dd4b39;
+                        text-transform: uppercase;
+                        font-size: 13px;
+                        width: 70px
+                    }
+
+                    .commento-root .commento-login-box-container .commento-login-box .commento-oauth-buttons-container .commento-oauth-buttons .commento-github-button {
+                        background: #000;
+                        text-transform: uppercase;
+                        font-size: 13px;
+                        width: 70px
+                    }
+
+                    .commento-root .commento-login-box-container .commento-login-box .commento-oauth-buttons-container .commento-oauth-buttons .commento-twitter-button {
+                        background: #00aced;
+                        text-transform: uppercase;
+                        font-size: 13px;
+                        width: 70px
+                    }
+
+                    .commento-root .commento-login-box-container .commento-login-box .commento-oauth-buttons-container .commento-oauth-buttons .commento-gitlab-button {
+                        background: #fc6d26;
+                        text-transform: uppercase;
+                        font-size: 13px;
+                        width: 70px
+                    }
+
+                    .commento-root .commento-login-box-container .commento-login-box .commento-oauth-buttons-container .commento-oauth-buttons .commento-sso-button {
+                        background: #000;
+                        text-transform: uppercase;
+                        font-size: 13px;
+                        width: 200px
+                    }
+
+            .commento-root .commento-login-box-container .commento-login-box hr {
+                border: none;
+                background: #e9ecef;
+                height: 1px;
+                margin: 24px 0
+            }
+
+            .commento-root .commento-login-box-container .commento-login-box .commento-login-box-subtitle {
+                color: #868e96;
+                text-align: center;
+                margin: 12px 0;
+                font-size: 15px
+            }
+
+@font-face {
+    font-style: normal;
+    font-display: swap;
+    font-weight: 300;
+    src: local("Source Sans Pro Light"),local("SourceSansPro-Light"),url(https://cdn.commento.io/fonts/source-sans-300-cyrillic-ext.woff2) format("woff2");
+    unicode-range: U+0460-052F,U+1C80-1C88,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F
+}
+
+.commento-root .commento-login-box-container .commento-login-box button, .commento-root .commento-login-box-container .commento-login-box input, .commento-root .commento-login-box-container .commento-login-box textarea {
+    font-family: source sans pro,sans-serif
+}
+
+.commento-root .commento-login-box-container .commento-login-box html {
+    font-size: 14px;
+    color: #495057;
+    background: #f8f9fa
+}
+
+.commento-root .commento-login-box-container .commento-login-box body {
+    margin: 0
+}
+
+.commento-root .commento-login-box-container .commento-login-box a {
+    text-decoration: none
+}
+
+    .commento-root .commento-login-box-container .commento-login-box a:hover {
+        cursor: pointer
+    }
+
+.commento-root .commento-login-box-container .commento-login-box .commento-email-container .commento-email, .commento-root .commento-login-box-container .commento-login-box .shadow {
+    box-shadow: 0 1px 3px rgba(50,50,93,.15),0 1px 0 rgba(0,0,0,.02)
+}
+
+.commento-root .commento-login-box-container .commento-login-box .footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: 72px
+}
+
+    .commento-root .commento-login-box-container .commento-login-box .footer .copyright {
+        align-items: none;
+        color: #dee2e6;
+        background: #fff;
+        text-align: center;
+        padding: 12px
+    }
+
+    .commento-root .commento-login-box-container .commento-login-box .footer .footer-inner {
+        width: 100%;
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
+
+        .commento-root .commento-login-box-container .commento-login-box .footer .footer-inner .links {
+            display: flex;
+            justify-content: center;
+            width: 600px
+        }
+
+        .commento-root .commento-login-box-container .commento-login-box .footer .footer-inner .link-group {
+            margin: 40px
+        }
+
+            .commento-root .commento-login-box-container .commento-login-box .footer .footer-inner .link-group .header {
+                text-transform: uppercase;
+                font-weight: 700;
+                font-size: 12px;
+                color: #adb5bd
+            }
+
+        .commento-root .commento-login-box-container .commento-login-box .footer .footer-inner .link {
+            margin-top: 12px;
+            margin-bottom: 12px;
+            display: block;
+            color: #adb5bd;
+            transition: all .2s
+        }
+
+            .commento-root .commento-login-box-container .commento-login-box .footer .footer-inner .link:hover {
+                color: #495057
+            }
+
+@media only screen and (max-width:1000px) {
+    .commento-root .commento-login-box-container .commento-login-box .footer .footer-inner .link-group {
+        display: block
+    }
+
+    .commento-root .commento-login-box-container .commento-login-box .footer .footer-inner .links {
+        display: block;
+        width: 90%
+    }
+}
+
+.commento-root .commento-login-box-container .commento-login-box .commento-email-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 8px 0
+}
+
+    .commento-root .commento-login-box-container .commento-login-box .commento-email-container .commento-email {
+        border-radius: 4px;
+        background: #fff;
+        width: 100%;
+        max-width: 400px
+    }
+
+        .commento-root .commento-login-box-container .commento-login-box .commento-email-container .commento-email .commento-input {
+            display: inline;
+            height: 40px;
+            background: #fff;
+            border: none;
+            outline: 0;
+            padding: 5px 5px 5px 10px;
+            width: calc(100% - 150px)
+        }
+
+            .commento-root .commento-login-box-container .commento-login-box .commento-email-container .commento-email .commento-input::placeholder {
+                color: #adb5bd
+            }
+
+        .commento-root .commento-login-box-container .commento-login-box .commento-email-container .commento-email .commento-email-button {
+            height: 40px;
+            min-width: 110px;
+            float: right;
+            background: #fff;
+            border: none;
+            outline: 0;
+            padding: 0 10px;
+            border-left: 1px solid #f1f3f5;
+            font-size: 12px;
+            text-transform: uppercase;
+            text-align: center;
+            font-weight: 700;
+            color: #1c7ed6;
+            cursor: pointer;
+            transition: all .2s;
+            width: unset
+        }
+
+            .commento-root .commento-login-box-container .commento-login-box .commento-email-container .commento-email .commento-email-button:hover {
+                color: #228be6
+            }
+
+            .commento-root .commento-login-box-container .commento-login-box .commento-email-container .commento-email .commento-email-button:disabled {
+                cursor: default;
+                color: #868e96
+            }
+
+.commento-root .commento-login-box-container .commento-login-box .commento-forgot-link-container, .commento-root .commento-login-box-container .commento-login-box .commento-login-link-container {
+    margin: 16px;
+    width: calc(100% - 32px);
+    text-align: center
+}
+
+.commento-root .commento-login-box-container .commento-login-box .commento-forgot-link, .commento-root .commento-login-box-container .commento-login-box .commento-login-link {
+    font-size: 14px;
+    font-weight: 700;
+    border-bottom: none
+}
+
+.commento-root .commento-login-box-container .commento-login-box .commento-forgot-link {
+    font-size: 13px;
+    color: #868e96;
+    font-weight: 400
+}
+
+.commento-root .commento-login-box-container .commento-login-box .commento-login-box-close {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    width: 16px;
+    height: 16px;
+    opacity: .3
+}
+
+    .commento-root .commento-login-box-container .commento-login-box .commento-login-box-close:hover {
+        opacity: 1;
+        cursor: pointer
+    }
+
+    .commento-root .commento-login-box-container .commento-login-box .commento-login-box-close:after, .commento-root .commento-login-box-container .commento-login-box .commento-login-box-close:before {
+        position: absolute;
+        left: 7px;
+        content: ' ';
+        height: 17px;
+        width: 2px;
+        background-color: #495057
+    }
+
+    .commento-root .commento-login-box-container .commento-login-box .commento-login-box-close:before {
+        transform: rotate(45deg)
+    }
+
+    .commento-root .commento-login-box-container .commento-login-box .commento-login-box-close:after {
+        transform: rotate(-45deg)
+    }
+
+.commento-root .commento-footer {
+    margin: 36px 0 12px;
+    padding-right: 12px
+}
+
+    .commento-root .commento-footer .commento-logo-container {
+        float: right
+    }
+
+        .commento-root .commento-footer .commento-logo-container .commento-logo {
+            border: none;
+            width: auto;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            border-radius: 3px
+        }
+
+        .commento-root .commento-footer .commento-logo-container .commento-logo-text::before {
+            content: "Powered by ";
+            font-weight: 400
+        }
+
+        .commento-root .commento-footer .commento-logo-container .commento-logo-text {
+            font-size: 13px;
+            color: #495057;
+            display: inline;
+            line-height: 24px;
+            position: relative;
+            font-weight: 700
+        }
+
+.commento-root .commento-hidden {
+    display: none
+}
+
+.commento-root .commento-blurred {
+    opacity: .4
+}
+
+.commento-root .commento-main-area {
+    transition: filter .2s
+}
+
+.commento-root .commento-error-box {
+    width: 100%;
+    border-radius: 4px;
+    height: 32px;
+    text-align: center;
+    color: #f03e3e;
+    font-weight: 700
+}
+
+.commento-root .commento-moderation-notice {
+    width: 100%;
+    border-radius: 4px;
+    height: 32px;
+    text-align: center;
+    color: #f76707;
+    font-weight: 700;
+    margin-top: 16px
+}
+
+.commento-root .commento-sort-policy-buttons-container {
+    padding: 12px 0;
+    font-weight: 400
+}
+
+    .commento-root .commento-sort-policy-buttons-container .commento-sort-policy-buttons {
+        float: right
+    }
+
+        .commento-root .commento-sort-policy-buttons-container .commento-sort-policy-buttons .commento-sort-policy-button {
+            color: #868e96;
+            font-size: 13px;
+            padding: 0 7px
+        }
+
+            .commento-root .commento-sort-policy-buttons-container .commento-sort-policy-buttons .commento-sort-policy-button:hover {
+                cursor: pointer
+            }
+
+        .commento-root .commento-sort-policy-buttons-container .commento-sort-policy-buttons .commento-sort-policy-button-selected {
+            color: #1971c2;
+            font-weight: 700
+        }
+
+.commento-root-font * {
+    font-family: source sans pro,sans-serif
+}
