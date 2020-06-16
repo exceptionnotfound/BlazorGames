@@ -161,9 +161,12 @@ namespace BlazorGames.Models.Minesweeper
 
         public void FlagPanel(int x, int y)
         {
-            var panel = Panels.Where(z => z.X == x && z.Y == y).First();
+            if (MinesRemaining > 0)
+            {
+                var panel = Panels.Where(z => z.X == x && z.Y == y).First();
 
-            panel.Flag();
+                panel.Flag();
+            }
         }
     }
 }

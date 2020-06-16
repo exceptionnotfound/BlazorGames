@@ -2,13 +2,6 @@
 
 @inject IJSRuntime _jsRuntime;
 
-@code {
-    protected override async Task OnInitializedAsync()
-    {
-        await _jsRuntime.InvokeVoidAsync("setTitle", "BlazorGames.net");
-    }
-}
-
 <PageTitle Title="Welcome to BlazorGames!" />
 
 <p>
@@ -47,7 +40,7 @@
         <div class="col">
             <NavLink class="nav-link" href="yahtzee">
                 <h3>Yahtzee</h3>
-                <img class="img-fluid" src="yahtzee-bookmark.png" />
+                <img class="img-fluid lazy" src="yahtzee-bookmark.png" />
             </NavLink>
         </div>
     </div>
