@@ -2,6 +2,16 @@
 
 @inject IJSRuntime _jsRuntime;
 
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            await _jsRuntime.InvokeVoidAsync("commento.main");
+        }
+    }
+}
+
 <PageTitle Title="Welcome to BlazorGames!" />
 
 <p>
