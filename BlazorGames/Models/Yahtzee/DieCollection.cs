@@ -17,7 +17,7 @@ namespace BlazorGames.Models.Yahtzee
 
         public void Roll()
         {
-            Random rand = new Random(DateTime.Now.Millisecond);
+            Random rand = new Random();
             foreach(var die in Dice)
             {
                 if(!die.IsHeld)
