@@ -8,46 +8,46 @@ namespace BlazorGames.Models.Yahtzee.Enums
 {
     public enum PlayType
     {
-        [Description("Three 1s")]
+        [Name("Three 1s", "Roll at least three 1s, score the total of the 1s.")]
         Ones,
 
-        [Description("Three 2s")]
+        [Name("Three 1s", "Roll at least three 2s, score the total of the 2s.")]
         Twos,
 
-        [Description("Three 3s")]
+        [Name("Three 1s", "Roll at least three 3s, score the total of the 3s.")]
         Threes,
 
-        [Description("Three 4s")]
+        [Name("Three 1s", "Roll at least three 4s, score the total of the 4s.")]
         Fours,
 
-        [Description("Three 5s")]
+        [Name("Three 5s", "Roll at least three 1s, score the total of the 5s.")]
         Fives,
 
-        [Description("Three 6s")]
+        [Name("Three 6s", "Roll at least three 1s, score the total of the 6s.")]
         Sixes,
 
-        [Description("Yahtzee!")]
+        [Name("Yahtzee!", "Roll all five dice as the same number, score 50.")]
         Yahtzee,
 
-        [Description("Three of a Kind")]
+        [Name("Three of a Kind", "Roll at least 3 of the same number, score the total of that number.")]
         ThreeOfAKind,
 
-        [Description("Four of a Kind")]
+        [Name("Four of a Kind", "Roll at least 4 of the same number, score the total of that number.")]
         FourOfAKind,
 
-        [Description("Small Straight")]
+        [Name("Small Straight", "Roll four dice in sequential order (e.g. 2-3-4-5), score 30.")]
         SmallStraight,
 
-        [Description("Large Straight")]
+        [Name("Large Straight", "Roll five dice in sequential order (e.g. 2-3-4-5-6), score 40.")]
         LargeStraight,
 
-        [Description("Full House")]
+        [Name("Full House", "Roll three of one number and two of another (e.g. 5-5-5-2-2), score 25.")]
         FullHouse,
 
-        [Description("Chance")]
+        [Name("Chance", "Score tbe total of all five dice.")]
         Chance,
 
-        [Description("Bonus Yahtzee!")]
+        [Name("Bonus Yahtzee!", "Worth 100 points!")]
         BonusYahtzee
     }
 }

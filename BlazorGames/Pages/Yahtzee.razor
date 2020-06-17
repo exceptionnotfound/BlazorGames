@@ -264,7 +264,10 @@
                 @if (type != PlayType.BonusYahtzee || (type == PlayType.BonusYahtzee && PlaysMade.HasYahtzee()))
                 {
                     <div class="row">
-                        <div class="col-4 border border-dark font-weight-bold">@type.GetDisplayName()</div>
+                        <div class="col-4 border border-dark font-weight-bold">
+                            @type.GetDisplayName()
+                            <i class="fa fa-question-circle" title="@type.GetDisplayDescription()"></i>
+                        </div>
                         <div class="col-4 border border-dark p-1 min">
                             @if (PlaysMade.HasPlay(type))
                             {
