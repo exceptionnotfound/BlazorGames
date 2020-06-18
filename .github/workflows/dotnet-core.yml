@@ -1,5 +1,5 @@
-name: BlazorGames #your workflow name
-on: [push] #on push to your branch run this workflow
+name: BlazorGames
+on: [push]
 
 jobs:
   build:
