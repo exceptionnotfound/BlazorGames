@@ -3,7 +3,7 @@
 @using BlazorGames.Models.Yahtzee;
 @using BlazorGames.Models.Yahtzee.Enums;
 @using BlazorGames.Models.Yahtzee.Extensions;
-@inject IJSRuntime _jsRuntime;  
+@inject IJSRuntime _jsRuntime;
 
 <PageTitle Title="Yahtzee" />
 
@@ -19,6 +19,8 @@
     public bool IsStartOfTurn { get { return RollsRemaining >= 3; } }
 
     public bool IsGameOver { get { return TurnsRemaining <= 0; } }
+
+    public bool ShowRules { get; set; }
 
     public int TotalScore
     {
@@ -307,6 +309,7 @@
         </div>
     </div>
 </div>
+<BlazorGames.Pages.YahtzeeRules />
 
 <hr />
 

@@ -11,13 +11,13 @@ namespace BlazorGames.Models.Yahtzee.Enums
         [Name("Three 1s", "Roll at least three 1s, score the total of the 1s.")]
         Ones,
 
-        [Name("Three 1s", "Roll at least three 2s, score the total of the 2s.")]
+        [Name("Three 2s", "Roll at least three 2s, score the total of the 2s.")]
         Twos,
 
-        [Name("Three 1s", "Roll at least three 3s, score the total of the 3s.")]
+        [Name("Three 3s", "Roll at least three 3s, score the total of the 3s.")]
         Threes,
 
-        [Name("Three 1s", "Roll at least three 4s, score the total of the 4s.")]
+        [Name("Three 4s", "Roll at least three 4s, score the total of the 4s.")]
         Fours,
 
         [Name("Three 5s", "Roll at least three 1s, score the total of the 5s.")]

@@ -1,0 +1,77 @@
+﻿<hr />
+
+@code{
+    public bool ShowRules { get; set; }
+}
+
+<a href="#" @onclick="(() => ShowRules = !ShowRules)" @onclick:preventDefault>
+    @if (ShowRules)
+    {
+        <text>Hide Rules</text>
+    }
+    else
+    {
+        <text>Show Rules</text>
+    }
+</a>
+
+@if (ShowRules)
+{
+    <h3>Yahtzee Rules</h3>
+
+    <p>
+        GOAL: Get the highest score possible in thirteen turns of three rows each.
+    </p>
+
+    <p>
+        Each turn in Yahtzee consists of three "rolls". On each turn, players use their first roll
+        to roll all five dice. Prior to subsequent rolls, Players may "hold" dice by clicking them,
+        which means they will not roll.
+    </p>
+
+    <p>
+        Each turn ends with the players either "claiming" or "scratching" a row in the scorecard.
+        A player may only claim a roll when their dice meet that row's criteria.
+        A player does not need to use all "rolls" in a turn before claiming a score.
+        If there is no score the player can claim at the end of three rolls, they can "scratch" a row,
+        which marks that row with a 0. Scratched rows cannot be claimed later.
+    </p>
+
+    <h4>Example Rolls</h4>
+
+    <p>
+        <i class="fas fa-3x fa-dice-four" />
+        <i class="fas fa-3x fa-dice-three" />
+        <i class="fas fa-3x fa-dice-four" />
+        <i class="fas fa-3x fa-dice-three" />
+        <i class="fas fa-3x fa-dice-four" />
+        Full House, worth 25 points.
+    </p>
+
+    <p>
+        <i class="fas fa-3x fa-dice-one" />
+        <i class="fas fa-3x fa-dice-six" />
+        <i class="fas fa-3x fa-dice-six" />
+        <i class="fas fa-3x fa-dice-six" />
+        <i class="fas fa-3x fa-dice-six" />
+        Can be used for three 6s, three-of-a-kind, or four-of-a-kind, each worth 6 + 6 + 6 + 6 = 24 points.
+    </p>
+
+    <p>
+        <i class="fas fa-3x fa-dice-three" />
+        <i class="fas fa-3x fa-dice-five" />
+        <i class="fas fa-3x fa-dice-two" />
+        <i class="fas fa-3x fa-dice-one" />
+        <i class="fas fa-3x fa-dice-four" />
+        A large straight, worth 40 points.
+    </p>
+
+    <p>
+        <i class="fas fa-3x fa-dice-five" />
+        <i class="fas fa-3x fa-dice-six" />
+        <i class="fas fa-3x fa-dice-five" />
+        <i class="fas fa-3x fa-dice-three" />
+        <i class="fas fa-3x fa-dice-two" />
+        Can only be used for Chance, this matches no other row.
+    </p>
+}
