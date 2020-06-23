@@ -318,3 +318,39 @@
 .tictactoe-blank {
     background-image: none;
 }
+
+.gameoflife-deadcell-faces {
+    background-image: url("../images/gameoflife/skull-emoji.png");
+    width:40px;
+    height:40px;
+}
+
+.gameoflife-alivecell-faces {
+    background-image: url("../images/gameoflife/smiley-emoji.png");
+    width: 40px;
+    height: 40px;
+}
+
+.gameoflife-deadcell-cats {
+    background-image: url("../images/gameoflife/cat-emoji.png");
+    width: 40px;
+    height: 40px;
+}
+
+.gameoflife-alivecell-cats {
+    background-image: url("../images/gameoflife/mouse-emoji.png");
+    width: 40px;
+    height: 40px;
+}
+
+.gameoflife-deadcell-aliens {
+    background-image: url("../images/gameoflife/alien-emoji.png");
+    width: 40px;
+    height: 40px;
+}
+
+.gameoflife-alivecell-aliens {
+    background-image: url("../images/gameoflife/astronaut-emoji.png");
+    width: 40px;
+    height: 40px;
+}

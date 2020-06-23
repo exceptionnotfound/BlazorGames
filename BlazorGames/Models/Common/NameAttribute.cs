@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
-namespace BlazorGames.Models.Yahtzee
+namespace BlazorGames.Models.Common
 {
     public class NameAttribute : Attribute
     {

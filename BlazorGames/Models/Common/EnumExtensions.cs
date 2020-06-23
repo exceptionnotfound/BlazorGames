@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace BlazorGames.Models.Yahtzee.Extensions
+namespace BlazorGames.Models.Common
 {
     public static class EnumExtensions
     {
