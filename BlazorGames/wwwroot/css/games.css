@@ -321,52 +321,38 @@
 
 .gameoflife-container div {
     background-image: url(../images/gameoflife/gameoflife-sprites.png);
+    width: 40px;
+    height: 40px;
 }
 
 .gameoflife-deadcell-faces {
     background-position: 0px 0px;
-    width:40px;
-    height:40px;
 }
 
 .gameoflife-alivecell-faces {
     background-position: -41px 0px;
-    width: 40px;
-    height: 40px;
 }
 
 .gameoflife-deadcell-cats {
     background-position: -82px 0px;
-    width: 40px;
-    height: 40px;
 }
 
 .gameoflife-alivecell-cats {
     background-position: -122px 0px;
-    width: 40px;
-    height: 40px;
 }
 
 .gameoflife-deadcell-aliens {
     background-position: 0px -40px;
-    width: 40px;
-    height: 40px;
 }
 
 .gameoflife-alivecell-aliens {
     background-position: -41px -40px;
-    width: 40px;
-    height: 40px;
 }
 
 .gameoflife-deadcell-boxes {
     background-position: -82px -40px;
-    width: 40px;
-    height: 40px;
 }
 
 .gameoflife-alivecell-boxes {
     background-position: -122px -40px;
-    width: 40px;
-    height: 40px;
 }
