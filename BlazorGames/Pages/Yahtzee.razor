@@ -232,7 +232,7 @@
                 <div class="col">
                     @if (RollsRemaining > 0 && !IsGameOver)
                     {
-                        <a class="btn btn-primary" @onclick:preventDefault @onclick="@(() => RollDice())">Roll</a>
+                        <button class="btn btn-primary" @onclick:preventDefault @onclick="@(() => RollDice())">Roll</button>
                     }
                     else if (IsGameOver)
                     {
@@ -241,7 +241,7 @@
                     }
                     else
                     {
-                        <a class="btn btn-primary disabled" @onclick:preventDefault @onclick="@(() => RollDice())">Roll</a><text>Please mark a score.</text>
+                        <button class="btn btn-primary disabled" @onclick:preventDefault @onclick="@(() => RollDice())">Roll</button><text>Please mark a score.</text>
                     }
                 </div>
             </div>
