@@ -43,7 +43,7 @@ namespace BlazorGames.Models.Yahtzee.Enums
         [Name("Chance", "Score tbe total of all five dice.")]
         Chance,
 
-        [Name("Bonus Yahtzee!", "Worth 100 points!")]
+        [Name("Bonus Yahtzee!", "Worth 100 points! Only available if you already have a Yahtzee!")]
         BonusYahtzee
     }
 }
