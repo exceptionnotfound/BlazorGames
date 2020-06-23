@@ -15,6 +15,9 @@ namespace BlazorGames.Models.GameOfLife.Enums
         Cats,
 
         [Name("aliens", "Aliens and astronauts")]
-        Aliens
+        Aliens,
+
+        [Name("boxes", "Simple boxes")]
+        Boxes
     }
 }

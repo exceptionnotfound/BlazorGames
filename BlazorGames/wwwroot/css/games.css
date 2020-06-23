@@ -319,38 +319,54 @@
     background-image: none;
 }
 
+.gameoflife-container div {
+    background-image: url(../images/gameoflife/gameoflife-sprites.png);
+}
+
 .gameoflife-deadcell-faces {
-    background-image: url("../images/gameoflife/skull-emoji.png");
+    background-position: 0px 0px;
     width:40px;
     height:40px;
 }
 
 .gameoflife-alivecell-faces {
-    background-image: url("../images/gameoflife/smiley-emoji.png");
+    background-position: -41px 0px;
     width: 40px;
     height: 40px;
 }
 
 .gameoflife-deadcell-cats {
-    background-image: url("../images/gameoflife/cat-emoji.png");
+    background-position: -82px 0px;
     width: 40px;
     height: 40px;
 }
 
 .gameoflife-alivecell-cats {
-    background-image: url("../images/gameoflife/mouse-emoji.png");
+    background-position: -122px 0px;
     width: 40px;
     height: 40px;
 }
 
 .gameoflife-deadcell-aliens {
-    background-image: url("../images/gameoflife/alien-emoji.png");
+    background-position: 0px -40px;
     width: 40px;
     height: 40px;
 }
 
 .gameoflife-alivecell-aliens {
-    background-image: url("../images/gameoflife/astronaut-emoji.png");
+    background-position: -41px -40px;
+    width: 40px;
+    height: 40px;
+}
+
+.gameoflife-deadcell-boxes {
+    background-position: -82px -40px;
+    width: 40px;
+    height: 40px;
+}
+
+.gameoflife-alivecell-boxes {
+    background-position: -122px -40px;
     width: 40px;
     height: 40px;
 }

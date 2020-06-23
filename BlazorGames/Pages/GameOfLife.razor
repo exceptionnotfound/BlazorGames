@@ -40,9 +40,10 @@
         <div class="col-4">
             <label>Theme: </label>
             <select @onchange="@SetTheme">
-                <option value="@Theme.Faces">Skulls and smileys</option>
-                <option value="@Theme.Cats">Cats and mice</option>
-                <option value="@Theme.Aliens">Aliens and astronauts</option>
+                <option value="@Theme.Faces">@Theme.Faces.GetDisplayDescription()</option>
+                <option value="@Theme.Cats">@Theme.Cats.GetDisplayDescription()</option>
+                <option value="@Theme.Aliens">@Theme.Aliens.GetDisplayDescription()</option>
+                <option value="@Theme.Boxes">@Theme.Boxes.GetDisplayDescription()</option>
             </select>
         </div>
         <div class="col-2">
@@ -71,7 +72,7 @@
 <div class="container">
     @for (int i = 1; i < board.Rows; i++)
     {
-        <div class="row flex-nowrap">
+        <div class="row flex-nowrap gameoflife-container">
             @for (int j = 1; j < board.Columns; j++)
             {
                 var x = i;
@@ -85,7 +86,7 @@
                 }
                 else
                 {
-                    <div class="gameoflife-deadcell-@board.Theme.GetDisplayName()"
+                    <div class="gameoflife-cell gameoflife-deadcell-@board.Theme.GetDisplayName()"
                          @onclick="(() => board.ChangeStatus(x,y))"></div>
                 }
             }
