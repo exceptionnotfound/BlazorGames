@@ -44,12 +44,15 @@ namespace BlazorGames.Models.GameOfLife
             }
         }
 
+        //Code for this method originally by Khalid Abuhakmeh.
+        //https://khalidabuhakmeh.com/program-the-game-of-life-with-csharp-and-emojis
         public void CalculateNextGeneration()
         {
             var nextGeneration = new Status[Rows, Columns];
 
             // Loop through every cell 
             for (var row = 1; row < Rows - 1; row++)
+            {
                 for (var column = 1; column < Columns - 1; column++)
                 {
                     // find your alive neighbors
@@ -88,12 +91,13 @@ namespace BlazorGames.Models.GameOfLife
                     {
                         nextGeneration[row, column] = Status.Alive;
                     }
-                    // stays the same
+                    // All other cells stay the same
                     else
                     {
                         nextGeneration[row, column] = currentCell;
                     }
                 }
+            }
             Grid = nextGeneration;
         }
     }
