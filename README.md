@@ -7,9 +7,7 @@ You can see the deployed site here: [https://blazorgames.net/](https://blazorgam
 This project is used in many blog posts on my site, including:
 
 * [Minesweeper in Blazor WebAssembly Part 1: C# Implementation](https://exceptionnotfound.net/minesweeper-in-blazor-webassembly-part-1-csharp-implementation/)
-* Minesweeper in Blazor WebAssembly Part 2: The Blazor Component (Coming Soon!)
-* Setting the Page Title in a Blazor App (Coming Soon!)
+* [Minesweeper in Blazor WebAssembly Part 2: The Blazor Component](https://exceptionnotfound.net/minesweeper-in-blazor-webassembly-part-2-the-blazor-component/)
+* [Setting the Page Title in a Blazor App](https://exceptionnotfound.net/setting-the-page-title-in-a-blazor-app-net-core/)
 
-More to come!
-
-Pull requests are welcome on this project.
+More to come! Pull requests are welcome on this project.
