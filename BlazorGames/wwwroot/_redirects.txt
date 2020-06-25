@@ -1,2 +1,2 @@
-﻿/yahtzee       /
-/about         /
+﻿/yahtzee /
+/about /
