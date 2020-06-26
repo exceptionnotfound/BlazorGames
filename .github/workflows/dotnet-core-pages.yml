@@ -11,14 +11,12 @@ jobs:
       with:
         dotnet-version: 3.1.300
     - name: Build with dotnet
-      run: dotnet publish --configuration Release
+      run: dotnet publish --configuration Release --output build
 #create Blazor WebAssembly dist output folder in the project directory
-    - name: Install rsync 📚
-      run: |
-        apt-get update && apt-get install -y rsync
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BRANCH: master
+          BASE_BRANCH: master # The branch the action should deploy from.
+          BRANCH: gh-pages-from-actions # The branch the action should deploy to.
           FOLDER:  build/wwwroot  
