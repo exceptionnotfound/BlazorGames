@@ -1,0 +1,22 @@
+name: BlazorGames
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.300
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+    - name: Publish Blazor webassembly using dotnet 
+#create Blazor WebAssembly dist output folder in the project directory
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: master
+          FOLDER: publishoutput/wwwroot  
