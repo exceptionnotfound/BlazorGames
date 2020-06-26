@@ -12,7 +12,6 @@ jobs:
         dotnet-version: 3.1.300
     - name: Build with dotnet
       run: dotnet build --configuration Release
-    - name: Publish Blazor webassembly using dotnet 
 #create Blazor WebAssembly dist output folder in the project directory
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@releases/v3
