@@ -11,11 +11,11 @@ jobs:
       with:
         dotnet-version: 3.1.300
     - name: Build with dotnet
-      run: dotnet build --configuration Release
+      run: dotnet publish --configuration Release
 #create Blazor WebAssembly dist output folder in the project directory
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: master
-          FOLDER: publishoutput/wwwroot  
+          FOLDER:  build/wwwroot  
