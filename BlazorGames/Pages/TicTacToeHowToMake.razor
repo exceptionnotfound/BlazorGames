@@ -1,6 +1,30 @@
-﻿<h2>How To Make Tic Tac Toe in Blazor</h2>
+﻿@using BlazorGames.Pages.Shared 
+@using BlazorGames.Models.Common 
 
-<p>The source code for this sample is available <a href="https://github.com/exceptionnotfound/BlazorGames">over on GitHub</a>.</p>
+<h2 id="howtomake">How To Make Tic-Tac-Toe in Blazor</h2>
+Let's make this classic childhood game using Blazor, C#, and ASP.NET Core!
+
+<h3>Table of Contents</h3>
+<ul>
+    <li><AnchorLink href="#thesampleproject">The Sample Project</AnchorLink></li>
+    <li>
+        <AnchorLink href="#modelingthegame">Modeling the Game</AnchorLink>
+        <ul>
+            <li><AnchorLink href="#letstaketurns">Let's Take Turns</AnchorLink></li>
+            <li><AnchorLink href="#dealingwithdraws">Dealing with Draws</AnchorLink></li>
+            <li><AnchorLink href="#winningthegame">Winning the Game</AnchorLink></li>
+            <li><AnchorLink href="#extras">Extras</AnchorLink></li>
+        </ul>
+    </li>
+    <li><AnchorLink href="#buildingtherazorcomponent">Building the Razor Component</AnchorLink></li>
+    <li><AnchorLink href="#weredone">We're Done!</AnchorLink></li>
+</ul>
+
+<AnchorHeader ID="thesampleproject" Size="HeaderSize.H3">The Sample Project</AnchorHeader>
+
+<p>The source code for this tic-tac-toe implementation is available <a href="https://github.com/exceptionnotfound/BlazorGames">over on GitHub</a>.</p>
+
+<AnchorHeader ID="modelingthegame" Size="HeaderSize.H3">Modeling the Game</AnchorHeader>
 
 <p>
     As always when attempting to model a game, we first need to consider the kinds of items we will interact with.
@@ -70,7 +94,7 @@
 
 <p>Now we begin the real work, and consider this question: how do we model a game being played?</p>
 
-<h3>Let's Take Turns</h3>
+<AnchorHeader ID="letstaketurns" Size="HeaderSize.H4">Let's Take Turns</AnchorHeader>
 
 <p>
     In order to allow our system to simulate turn-taking, we need to track whose turn it currently is.
@@ -155,7 +179,7 @@
 
 <p>That's all the code we need for our tic-tac-toe players to take turns! Now let's deal with some other scenarios.</p>
 
-<h3>Dealing with Draws</h3>
+<AnchorHeader ID="dealingwithdraws" Size="HeaderSize.H4">Dealing with Draws</AnchorHeader>
 
 <p>
     NOTE: The code in this section and the next was originally submitted by
@@ -190,7 +214,7 @@
 }
 </code></pre>
 
-<h3>Winning the Game</h3>
+<AnchorHeader ID="winningthegame" Size="HeaderSize.H4">Winning the Game</AnchorHeader>
 
 <p>
     Now we come to the most complex of the
@@ -327,7 +351,7 @@
 }
 </code></pre>
 
-<h3>Extras</h3>
+<AnchorHeader ID="extras" Size="HeaderSize.H4">Extras</AnchorHeader>
 
 <p>
     Finally, let's implement two more methods: one which gets a message to
@@ -353,7 +377,13 @@
 
 <p>
     With all of that, our GameBoard class is complete! Now we just need to use it
-    on a razor component. Below is a basic razor component (which is what Blazor
+    on a razor component. 
+</p>
+
+<AnchorHeader ID="buildingtherazorcomponent" Size="HeaderSize.H3">Building the Razor Component</AnchorHeader>
+
+<p>
+    Below is a basic razor component (which is what Blazor
     calls the .razor files) that we will modify to host our tic-tac-toe game.
 </p>
 
@@ -412,6 +442,8 @@ else
     &lt;/h2&gt;
 }
 </code></pre>
+
+<AnchorHeader ID="weredone" Size="HeaderSize.H3">We're Done!</AnchorHeader>
 
 <p>
     And with that, we have a working tic-tac-toe game written in C# and Blazor WebAssembly!
