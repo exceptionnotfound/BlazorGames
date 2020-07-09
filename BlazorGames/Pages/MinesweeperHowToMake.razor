@@ -1,0 +1,1024 @@
+﻿@using BlazorGames.Pages.Shared
+@using BlazorGames.Models.Common
+
+<h2 id="howtomake">How To Make Minesweeper in Blazor WebAssembly</h2>
+
+<p>
+    Minesweeper is considerably more complex than either the <NavLink href="tictactoe">Tic Tac Toe</NavLink>
+    or <NavLink href="connectfour">ConnectFour</NavLink> examples. But that's not going to stop us!
+</p>
+
+<h3>Table of Contents</h3>
+
+<ul>
+    <li><AnchorLink href="#thesampleproject">The Sample Project</AnchorLink></li>
+    <li>
+        <AnchorLink href="#modelingthegame">Modeling the Game</AnchorLink>
+        <ul>
+            <li><AnchorLink href="#thegameboard">The Game Board</AnchorLink></li>
+            <li><AnchorLink href="#thegamestatus">The Game Status</AnchorLink></li>
+            <li><AnchorLink href="#initializingthegame">Initializing The Game</AnchorLink></li>
+            <li><AnchorLink href="#thefirstmove">The First Move and Getting Neighbors</AnchorLink></li>
+            <li><AnchorLink href="#revealingpanels">Revealing Panels</AnchorLink></li>
+            <li><AnchorLink href="#revealingallmines">Revealing All Mines</AnchorLink></li>
+            <li><AnchorLink href="#cascaderevealneighbors">Cascade Reveal Neighbors</AnchorLink></li>
+            <li><AnchorLink href="#isthegamecomplete">Is The Game Complete?</AnchorLink></li>
+            <li><AnchorLink href="#flaggingapanel">Flagging a Panel</AnchorLink></li>
+            <li><AnchorLink href="#implementingatimer">Implementing a Timer</AnchorLink></li>
+        </ul>
+    </li>
+    <li>
+        <AnchorLink href="#creatingtheblazorcomponent">Creating the Blazor Component</AnchorLink>
+        <ul>
+            <li><AnchorLink href="#displayingthepanels">Displaying the Panels</AnchorLink></li>
+            <li><AnchorLink href="#leftclicktoreveal">Left-Click to Reveal</AnchorLink></li>
+            <li><AnchorLink href="#theheader">The Header</AnchorLink></li>
+            <li><AnchorLink href="#makeemsayoooh">Make 'Em Say "Oooh"</AnchorLink></li>
+            <li><AnchorLink href="#whattimeisitanyway">What Time Is It Anyway?</AnchorLink></li>
+        </ul>
+    </li>
+    <li><AnchorLink href="#weredone">We're Done!</AnchorLink></li>
+</ul>
+
+<AnchorHeader ID="thesampleproject" Size="HeaderSize.H3">The Sample Project</AnchorHeader>
+
+<p>
+    The sample project for this code is <a href="https://github.com/exceptionnotfound/BlazorGames">over on GitHub</a>.
+    This tutorials assumes you already have a created Blazor WebAssembly and ASP.NET Core 3.1 or greater application.
+</p>
+
+<AnchorHeader ID="modelingthegame" Size="HeaderSize.H3">Modeling the Game</AnchorHeader>
+
+<p>
+    In order to model a game of Minesweeper, we must break it down into components that we can use. Let's take a look at a
+    game of Minesweeper in progress:
+</p>
+
+<img src="../images/minesweeper/minesweeper-example.png" />
+
+<p>
+    Our modeling starts with the individual little "panels" on a game of Minesweeper.
+    Each panel can be either unrevealed (the starting state) or revealed, and once revealed,
+    each panel has either a mine, a number that represents the count of adjacent mines,
+    or a blank space. Further, an unrevealed panel can be "flagged" so that the user cannot
+    accidentally click on it; this is done to mark where the mines likely are.
+</p>
+
+<p>
+    Let's create a C# class that has all of these attributes:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class Panel
+{
+    public int ID { get; set; }
+
+    //Horizontal position
+    public int X { get; set; }
+
+    //Vertical position
+    public int Y { get; set; }
+
+    public bool IsMine { get; set; }
+
+    public int AdjacentMines { get; set; }
+
+    public bool IsRevealed { get; set; }
+
+    public bool IsFlagged { get; set; }
+
+    public Panel(int id, int x, int y)
+    {
+        ID = id;
+        X = x;
+        Y = y;
+    }
+}
+</code></pre>
+
+<p>
+    Each panel has two possible actions that can be performed against it:
+    they can be revealed (when clicked), or flagged (when right-clicked).
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class Panel
+{
+    //... Properties
+
+    public void Flag()
+    {
+        if(!IsRevealed)
+        {
+            IsFlagged = !IsFlagged;
+        }
+    }
+
+    public void Reveal()
+    {
+        IsRevealed = true;
+        IsFlagged = false; //Revealed panels cannot be flagged
+    }
+}
+</code></pre>
+
+<p>
+    As far as the panels are concerned, this is the extent of their
+    functionality. The real work comes next, as we begin to design the game board itself.
+</p>
+
+<AnchorHeader ID="thegameboard" Size="HeaderSize.H4">The Game Board</AnchorHeader>
+
+<p>
+    A game of minesweeper takes place on a board of X width and Y height, where
+    those numbers are defined by the user. Each board has Z mines hidden in its panels.
+    For every panel that is not a mine, a number is placed showing the count of mines
+    adjacent to that panel. We therefore need our GameBoard class to keep track of its
+    own dimensions, mine count, and collection of panels.
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    public int Width { get; set; } = 16;
+    public int Height { get; set; } = 16;
+    public int MineCount { get; set; } = 40;
+    public List&lt;Panel&gt; Panels { get; set; }
+}
+</code></pre>
+
+<p>
+    We will be greatly expanding this class as we develop our game.
+</p>
+
+<AnchorHeader ID="thegamestatus" Size="HeaderSize.H4">The Game Status</AnchorHeader>
+
+<p>
+    Because the appearance of the Minesweeper board is determined by
+    the state of the game, we can use an enumeration to track said state.
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public enum GameStatus
+{
+    AwaitingFirstMove,
+    InProgress,
+    Failed,
+    Completed
+}
+</code></pre>
+
+<p>
+    We must also allow the board to track the game state:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Other properties
+
+    public GameStatus Status { get; set; }
+}
+</code></pre>
+
+<p>
+    Now let's build out the functionality of this board, starting with this question: how do "begin"
+    a game of Minesweeper?
+</p>
+
+<AnchorHeader ID="initializingthegame" Size="HeaderSize.H4">Initializing the Game</AnchorHeader>
+
+<p>
+    Every game of Minesweeper begins in the same state, with all panels hidden.
+    Let's create a method to initialize a game, including creating the collection of panels.
+    Given the height, width, and mine count as parameters, here's what our initialization
+    method would look like:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Properties
+
+    public void Initialize(int width, int height, int mines)
+    {
+        Width = width;
+        Height = height;
+        MineCount = mines;
+        Panels = new List&lt;Panel&gt;();
+
+        int id = 1;
+        for (int i = 1; i &lt;= height; i++)
+        {
+            for (int j = 1; j &lt;= width; j++)
+            {
+                Panels.Add(new Panel(id, j, i));
+                id++;
+            }
+        }
+
+        Status = GameStatus.AwaitingFirstMove;
+    }
+}
+</code></pre>
+
+<p>
+    You might be wondering: why didn't we place the mines and calculate the
+    adjacent numbers? That's because of a trick in most implementations of
+    Minesweeper: they don't calculate where the mines are placed until after
+    the user makes the first move. This is so that the user doesn't click on
+    a mine on the first move, because that's no fun.
+</p>
+
+<p>
+    For later usage, let's also implement a Reset method, which will reset
+    the board to a new game using the same width, height, and mine count:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Other Properties and Methods
+
+    public void Reset()
+    {
+        Initialize(Width, Height, MineCount);
+    }
+}
+</code></pre>
+
+<p>
+    Now we can work on the next major step of this implementation: the first move.
+</p>
+
+<AnchorHeader ID="thefirstmove" Size="HeaderSize.H4">The First Move and Getting Neighbors</AnchorHeader>
+
+<p>
+    We now need a method which represents the user's first move, and therefore
+    determines where the mines go and calculates the adjacent mines
+    numbers. That algorithm looks something like this:
+</p>
+
+<ol>
+    <li>
+        When the user makes the first move, take that panel and a certain number
+        of neighbor panels, and mark them as unavailable for mines.
+    </li>
+    <li>
+        For every other panel, place the mines randomly.
+    </li>
+    <li>
+        For every panel which is not a mine (including the panels from Step 1),
+        calculate the adjacent mines.
+    </li>
+    <li>
+        Mark the game as started.
+    </li>
+</ol>
+
+<p>
+    The trickiest part of this algorithm is calculating the neighbors of a given panel.
+    Remember that the neighbors of any given panel are the first panel above, below,
+    to the left, to the right, and on each diagonal.
+</p>
+
+<img src="../images/minesweeper/minesweeper-neighbors.png" />
+
+<p>
+    For our implementation, we have an entire method to do this:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Other Properties and Methods
+
+    public List&lt;Panel&gt; GetNeighbors(int x, int y)
+    {
+        var nearbyPanels = Panels.Where(panel =&gt; panel.X &gt;= (x - 1)
+        && panel.X &lt;= (x + 1)
+        && panel.Y &gt;= (y - 1)
+        && panel.Y &gt;= (y + 1));
+
+        var currentPanel = Panels.Where(panel =&gt; panel.X == x && panel.Y == y);
+
+        return nearbyPanels.Except(currentPanel).ToList();
+    }
+}
+</code></pre>
+
+<p>
+    Using our "first move" algorithm, the new GetNeighbors() method,
+    and some fancy LINQ, we end up with this method to implement the first move:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Other Properties and Methods
+    
+    public void FirstMove(int x, int y)
+    {
+        Random rand = new Random();
+
+        //For any board, take the user's first revealed panel 
+        // and any neighbors of that panel, and mark them 
+        // as unavailable for mine placement.
+        var neighbors = GetNeighbors(x, y); //Get all neighbors
+        
+        //Add the clicked panel to the "unavailable for mines" group.
+        neighbors.Add(Panels.First(z => z.X == x && z.Y == y));
+
+        //Select all panels from set which are available for mine placement.
+        //Order them randomly.
+        var mineList = Panels.Except(neighbors)
+                             .OrderBy(user => rand.Next());
+                             
+        //Select the first Z random panels.
+        var mineSlots = mineList.Take(MineCount)
+                                .ToList()
+                                .Select(z => new { z.X, z.Y });
+
+        //Place the mines in the randomly selected panels.
+        foreach (var mineCoord in mineSlots)
+        {
+            Panels.Single(panel => panel.X == mineCoord.X 
+                                   && panel.Y == mineCoord.Y)
+                  .IsMine = true;
+        }
+
+        //For every panel which is not a mine, 
+        // including the unavailable ones from earlier,
+        // determine and save the adjacent mines.
+        foreach (var openPanel in Panels.Where(panel => !panel.IsMine))
+        {
+            var nearbyPanels = GetNeighbors(openPanel.X, openPanel.Y);
+            openPanel.AdjacentMines = nearbyPanels.Count(z => z.IsMine);
+        }
+
+        //Mark the game as started.
+        Status = GameStatus.InProgress;
+    }
+}</code></pre>
+
+<p>
+    There's one last thing we need to finish the first move implementation:
+    a method which activates when a user makes a move, and if it is the first move,
+    calls our FirstMove() method. Here's that method:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Other Properties and Methods
+    
+    public void MakeMove(int x, int y)
+    {
+        if (Status == GameStatus.AwaitingFirstMove)
+        {
+            FirstMove(x, y);
+        }
+        RevealPanel(x, y);
+    }
+}</code></pre>
+
+<p>
+    All right! First move implementation is complete, and we can now move on to what happens on every other panel.
+</p>
+
+<AnchorHeader ID="revealingpanels" Size="HeaderSize.H4">Revealing Panels</AnchorHeader>
+
+<p>
+    For every move except the first one, clicking on a panel reveals that panel.
+    A more specific algorithm for moves after the first one might be this:
+</p>
+
+<ol>
+    <li>
+        When the user left-clicks on a panel, reveal that panel.
+    </li>
+    <li>
+        If that panel is a mine, show all mines and end the game.
+    </li>
+    <li>
+        If that panel is a zero, show that panel and all neighbors.
+        If any neighbors are also zero, show all their neighbors,
+        and continue until all adjacent zeroes and their neighbors are revealed.
+        (I termed this a "cascade reveal").
+    </li>
+    <li>
+        If that panel is NOT a mine, check to see if any remaining unrevealed
+        panels are not mines. If there are any, the game continues.
+    </li>
+    <li>
+        If all remaining unrevealed panels are mines, the game is complete. This is the "win" condition.
+    </li>
+</ol>
+
+<p>
+    Using that algorithm, we end up with this method:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Other Properties and Methods
+    
+    public void RevealPanel(int x, int y)
+    {
+        //Step 1: Find and reveal the clicked panel
+        var selectedPanel = Panels.First(panel => panel.X == x 
+                                                  && panel.Y == y);
+        selectedPanel.Reveal();
+
+        //Step 2: If the panel is a mine, show all mines. Game over!
+        if (selectedPanel.IsMine)
+        {
+            Status = GameStatus.Failed;
+            RevealAllMines();
+            return;
+        }
+
+        //Step 3: If the panel is a zero, cascade reveal neighbors.
+        if (selectedPanel.AdjacentMines == 0)
+        {
+            RevealZeros(x, y);
+        }
+
+        //Step 4: If this move caused the game to be complete, mark it as such
+        CompletionCheck();
+    }
+}</code></pre>
+
+<p>
+    We now have several methods to create to finish this part of our implementation.
+</p>
+
+<AnchorHeader ID="revealingallmines" Size="HeaderSize.H4">Revealing All Mines</AnchorHeader>
+
+<p>
+    The simplest of the new methods we need is this one: showing all mines on the board.
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Other Methods and Properties
+
+    private void RevealAllMines()
+    {
+        Panels.Where(x => x.IsMine)
+        	  .ToList()
+              .ForEach(x => x.IsRevealed = true);
+    }
+}</code></pre>
+
+<AnchorHeader ID="cascaderevealneighbors" Size="HeaderSize.H4">Cascade Reveal Neighbors</AnchorHeader>
+
+<p>
+    When a zero-value panel is revealed, the game needs to then reveal all of that panel's neighbors,
+    and if any of the neighbors are zero, reveal the neighbors of that panel as well.
+    This calls for a recursive method:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Other Methods and Properties
+    
+    public void RevealZeros(int x, int y)
+    {
+        //Get all neighbor panels
+        var neighborPanels = GetNeighbors(x, y)
+                               .Where(panel => !panel.IsRevealed);
+                               
+        foreach (var neighbor in neighborPanels)
+        {
+            //For each neighbor panel, reveal that panel.
+            neighbor.IsRevealed = true;
+            
+            //If the neighbor is also a 0, reveal all of its neighbors too.
+            if (neighbor.AdjacentMines == 0)
+            {
+                RevealZeros(neighbor.X, neighbor.Y);
+            }
+        }
+    }
+}</code></pre>
+
+<AnchorHeader ID="isthegamecomplete" Size="HeaderSize.H4">Is The Game Complete?</AnchorHeader>
+
+<p>
+    A game of Minesweeper is complete when all remaining unrevealed panels are mines.
+    We can use this method to check for that:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Other Properties and Methods
+    
+    private void CompletionCheck()
+    {
+        var hiddenPanels = Panels.Where(x => !x.IsRevealed)
+                                 .Select(x => x.ID);
+                                 
+        var minePanels = Panels.Where(x => x.IsMine)
+                               .Select(x => x.ID);
+                               
+        if (!hiddenPanels.Except(minePanels).Any())
+        {
+            Status = GameStatus.Completed;
+            Stopwatch.Stop();
+        }
+    }
+}</code></pre>
+
+<p>
+    With this functionality in place, there's only one thing left to do: flagging.
+</p>
+
+<AnchorHeader ID="flaggingapanel" Size="HeaderSize.H4">Flagging a Panel</AnchorHeader>
+
+<p>
+    "Flagging" a panel means marking it as the location of a mine. Doing this
+    means that left-clicking that panel will do nothing.
+</p>
+
+<img src="../images/minesweeper/minesweeper-flags.png" />
+
+<p>I mean, that is ONE way to get all the mines...</p>
+
+<p>
+    In our game, we will use right-click to flag a panel. Recall that our
+    Panel class already has a Flag() method. Now we just need to call
+    that method from the GameBoard class:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Other Properties and Methods
+    
+    public void FlagPanel(int x, int y)
+    {
+        if (MinesRemaining > 0)
+        {
+            var panel = Panels.Where(z => z.X == x && z.Y == y).First();
+
+            panel.Flag();
+        }
+    }
+}</code></pre>
+
+<p>
+    There's only a little bit of the C# implementation left to do.
+</p>
+
+<AnchorHeader ID="implementingatimer" Size="HeaderSize.H4">Implementing a Timer</AnchorHeader>
+
+<p>
+    Take a look at the top part of the Minesweeper game we saw earlier:
+</p>
+
+<img src="../images/minesweeper/minesweeper-example.png" />
+
+<p>
+    Other than the smiley face's piercing stare, what do you notice? The counters!
+</p>
+
+<p>
+    The left counter is for mines; it goes down as the number of flagged
+    panels increases. The right counter is for the time; it ticks up every second.
+    We need to implement a timer for our Minesweeper game.
+</p>
+
+<p>
+    For this, we will use the C#
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.stopwatch?view=netcore-3.1">Stopwatch class</a>.
+    We will use the following algorithm:
+</p>
+
+<ol>
+    <li>Whenever the game is created or reset, we reset the timer.</li>
+    <li>When the player makes their first move, start the timer.</li>
+    <li>When the game is either complete or failed, stop the timer.</li>
+</ol>
+
+<p>
+    The changes we need to make to our GameBoard class look like this:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class GameBoard
+{
+    //...Other Properties
+    public Stopwatch Stopwatch { get; set; }
+    
+    //...Other Methods
+    
+    public void Reset()
+    {
+        Initialize(Width, Height, MineCount);
+        Stopwatch = new Stopwatch();
+    }
+    
+    public void FirstMove()
+    {
+        //...Implementation
+        Stopwatch.Start();
+    }
+    
+    private void CompletionCheck()
+    {
+        var hiddenPanels = Panels.Where(x => !x.IsRevealed)
+                                 .Select(x => x.ID);
+                                 
+        var minePanels = Panels.Where(x => x.IsMine)
+                               .Select(x => x.ID);
+                               
+        if (!hiddenPanels.Except(minePanels).Any())
+        {
+            Status = GameStatus.Completed;
+            Stopwatch.Stop(); //New line
+        }
+    }
+}</code></pre>
+
+<p>
+    Ta-da! With the timer implemented, all of our C# implementation for this Minesweeper game is
+    complete! But we're not done yet, oh no: we still need to write up the Blazor component and wire
+    everything up.
+</p>
+
+<AnchorHeader ID="creatingtheblazorcomponent" Size="HeaderSize.H3">Creating the Blazor Component</AnchorHeader>
+
+<p>
+    In Blazor, we do not have "pages"; rather we use Components (files that have the .razor suffix).
+    To be fair, they look almost exactly like <a href="https://exceptionnotfound.net/tag/razorpages/">Razor Pages</a>.
+</p>
+
+<p>
+    Here's a starting Blazor Component (.razor file) we can use for this post:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">@@page "/minesweeper"
+@@using BlazorGames.Models.Minesweeper
+@@using BlazorGames.Models.Minesweeper.Enums
+
+@@code {
+    GameBoard board = new GameBoard();
+}</code></pre>
+
+<p>
+    As a reminder, the @@page directive sets the URI for the current component.
+</p>
+
+<p>
+    Let's take a look at a Minesweeper board again:
+</p>
+
+<img src="../images/minesweeper/minesweeper-almost-done.png" />
+
+<p>
+    See the border running around the game area and the header? We need to have
+    a way to create that border. Since it is essentially an additional space on
+    any given side of the board, we need extra space in our calculations. Keep that in mind.
+</p>
+
+<p>
+    For now, let's concentrate on the area of the board where the numbers and mines are.
+    For the size of the board X by Y, we need X + 2  columns of Y + 2 height, where
+    the extremes (uppermost, lowermost, leftmost, rightmost) rows and columns are the border.
+    Therefore our markup might look like this:
+</p>
+
+<pre class="language-html"><code class="language-html">&lt;div class="minesweeper-board"&gt;
+    @@{
+        var maxWidth = board.Width + 1;
+        var maxHeight = board.Height + 1;
+    }
+
+    @@for (int i = 0; i &lt;= maxWidth; i++)
+    {
+        @@for (int j = 0; j &lt;= maxHeight; j++)
+        {
+            int x = i;
+            int y = j;
+
+            if (x == 0 && y == 0) //Upper-left corner
+            {
+                &lt;div class="minesweeper-border-jointleft"&gt;&lt;/div&gt;
+            }
+            else if (x == 0 && y == maxHeight) //Upper-right corner
+            {
+                &lt;div class="minesweeper-border-jointright"&gt;&lt;/div&gt;
+            }
+            else if (x == maxWidth && y == 0) //Lower-left corner
+            {
+                &lt;div class="minesweeper-border-bottomleft"&gt;&lt;/div&gt;
+            }
+            else if (x == maxWidth && y == maxHeight) //Lower-right corner
+            {
+                &lt;div class="minesweeper-border-bottomright"&gt;&lt;/div&gt;
+            }
+            else if (y == 0 || y == maxHeight) //Leftmost column
+            {
+                &lt;div class="minesweeper-border-vertical"&gt;&lt;/div&gt;
+            }
+            else if (x == 0 || x == maxWidth) //Rightmost column
+            {
+                &lt;div class="minesweeper-border-horizontal"&gt;&lt;/div&gt;
+            }
+            else if (y &gt; 0 && y &lt; maxHeight)
+            {
+                &lt;!-- Output panels --&gt;
+            }
+        }
+    }
+&lt;/div&gt;</code></pre>
+
+<p class="font-italic">
+    NOTE: The CSS classes in use here are originally from
+    <a href="http://minesweeperonline.com/">Minesweeper Online</a>, were
+    modified and renamed by me for use in this project, and
+    <a href="https://github.com/exceptionnotfound/BlazorGames/blob/master/BlazorGames/wwwroot/css/games.css">can be viewed on GitHub</a>.
+</p>
+
+<p>
+    We now need to consider how to output the panels themselves.
+</p>
+
+<AnchorHeader ID="displayingthepanels" Size="HeaderSize.H4">Displaying the Panels</AnchorHeader>
+
+<p>
+    In our implementation a Panel may, at any time, be in one of five potential states:
+</p>
+
+<ul>
+    <li>Revealed Mine</li>
+    <li>Revealed Number</li>
+    <li>Revealed Blank</li>
+    <li>Flagged</li>
+    <li>Unrevealed</li>
+</ul>
+
+<p>
+    We need special CSS classes for each state, and so the finished markup
+    for the page will need to include the following:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">&lt;div class="minesweeper-board"&gt;
+@@{
+    var maxWidth = board.Width + 1;
+    var maxHeight = board.Height + 1;
+}
+
+@@for (int i = 0; i &lt;= maxWidth; i++)
+{
+    @@for (int j = 0; j &lt;= maxHeight; j++)
+    {
+        int x = i;
+        int y = j;
+
+        if (x == 0 && y == 0) //Upper-left corner
+        {
+            &lt;div class="minesweeper-border-jointleft"&gt;&lt;/div&gt;
+        }
+
+        //...All the other IF clauses
+
+        else if (y &gt; 0 && y &lt; maxHeight)
+        {
+            var currentPanel = board.Panels.First(m =&gt; m.X == x
+                                                          && m.Y == y);
+            if (currentPanel.IsRevealed)
+            {
+                if (currentPanel.IsMine) //Mine
+                {
+                    &lt;div class="minesweeper-gamepiece minesweeper-mine"&gt;&lt;/div&gt;
+                }
+                else if (currentPanel.AdjacentMines == 0) //Blank
+                {
+                    &lt;div class="minesweeper-gamepiece minesweeper-0"&gt;&lt;/div&gt;
+                }
+                else //Number
+                {
+                    &lt;div class="minesweeper-gamepiece minesweeper-@@currentPanel.AdjacentMines"&gt;@@currentPanel.AdjacentMines&lt;/div&gt;
+                }
+            }
+            else if (currentPanel.IsFlagged)
+            {
+                &lt;div class="minesweeper-gamepiece minesweeper-flagged"&gt;&lt;/div&gt;
+            }
+            else //Unrevealed
+            {
+                &lt;div class="minesweeper-gamepiece minesweeper-unrevealed"&gt;&lt;/div&gt;
+            }
+        }
+    }
+}
+&lt;/div&gt;</code></pre>
+
+<p>
+    There's an additional wrinkle to consider: in some of these states, namely the
+    Flagged and Unrevealed ones, the user can interact with the panel by left clicking (to reveal)
+    or right-clicking (to flag). We need to implement that functionality.
+</p>
+
+<AnchorHeader ID="leftclicktoreveal" Size="HeaderSize.H4">Left-Click to Reveal</AnchorHeader>
+
+<p>
+    You may recall that we implemented a MakeMove() method in the C# implementation. The reason why
+    was so that it could be called here. This is the markup for the unrevealed panel,
+    now with an @@onclick event:
+</p>
+
+<pre class="language-html"><code class="language-html">&lt;div class="minesweeper-gamepiece minesweeper-unrevealed"
+     @@onclick="@@(() => board.MakeMove(x, y))"
+     @@oncontextmenu="@@(() => board.FlagPanel(x, y))"
+     @@oncontextmenu:preventDefault>
+&lt;/div&gt;</code></pre>
+
+<p>
+    There's a lot to dissect here:
+</p>
+
+<ul>
+    <li>
+        The @@onclick directive is a Blazor directive that binds a C# method to an onclick event.
+        In this case, we are calling MakeMove() and passing the coordinates of the clicked panel.
+    </li>
+    <li>
+        The @@oncontextmenu directive allows us to specify what should happen when the context menu
+        (AKA the right-click menu) should be displayed. Since we want to flag panels on right-click,
+        we say that here.
+    </li>
+    <li>
+        The @@oncontextmenu:preventDefault is a specialized instruction to Blazor that prevents
+        the context menu from displaying on right-clicks.
+    </li>
+</ul>
+
+<p>
+    Let's also see the markup for the flagged panel:
+</p>
+
+<pre class="language-html"><code class="language-html">&lt;div class="minesweeper-gamepiece minesweeper-flagged"
+     @@oncontextmenu="@@(() => board.FlagPanel(x, y))"
+     @@oncontextmenu:preventDefault>
+&lt;/div&gt;</code></pre>
+
+<p>
+    Okay! We have our playing area ready. Now let's build the header where the mine counter, timer, and face are placed.
+</p>
+
+<AnchorHeader ID="theheader" Size="HeaderSize.H4">The Header</AnchorHeader>
+
+<p>
+    Here's the full markup for the header area:
+</p>
+
+<pre class="language-html"><code class="language-html">&lt;div class="minesweeper-board"
+     @@oncontextmenu:preventDefault
+     onmousedown="faceOooh(event);" &lt;!-- Explanation below --&gt;
+     onmouseup="faceSmile();"&gt;
+&lt;div class="minesweeper-border-topleft"&gt;&lt;/div&gt;
+@@for (int i = 1; i &lt; maxWidth; i++)
+{
+    &lt;div class="minesweeper-border-horizontal"&gt;&lt;/div&gt;
+}
+&lt;div class="minesweeper-border-topright"&gt;&lt;/div&gt;
+&lt;div class="minesweeper-border-vertical-long"&gt;&lt;/div&gt;
+&lt;div class="minesweeper-time-@@GetPlace(board.MinesRemaining, 100)"
+     id="mines_hundreds"&gt;&lt;/div&gt;
+&lt;div class="minesweeper-time-@@GetPlace(board.MinesRemaining, 10)"
+     id="mines_tens"&gt;&lt;/div&gt;
+&lt;div class="minesweeper-time-@@GetPlace(board.MinesRemaining, 1)"
+     id="mines_ones"&gt;&lt;/div&gt;
+@@if (board.Status == GameStatus.Failed)
+{
+    &lt;div class="minesweeper-face-dead"
+         id="face"
+         style="margin-left:70px; margin-right:70px;"
+         @@onclick="@@(() => board.Reset())"&gt;&lt;/div&gt;
+}
+else if (board.Status == GameStatus.Completed)
+{
+    &lt;div class="minesweeper-face-win"
+         id="face"
+         style="margin-left:70px; margin-right:70px;"
+         @@onclick="@@(() => board.Reset())"&gt;&lt;/div&gt;
+}
+else
+{
+    &lt;div class="minesweeper-face-smile"
+         id="face"
+         style="margin-left:70px; margin-right:70px;"
+         @@onclick="@@(() => board.Reset())"&gt;&lt;/div&gt;
+}
+&lt;div class="minesweeper-time-@@GetPlace(board.Stopwatch.Elapsed.Seconds,100)"
+     id="seconds_hundreds"&gt;&lt;/div&gt;
+&lt;div class="minesweeper-time-@@GetPlace(board.Stopwatch.Elapsed.Seconds,10)"
+     id="seconds_tens"&gt;&lt;/div&gt;
+&lt;div class="minesweeper-time-@@GetPlace(board.Stopwatch.Elapsed.Seconds,1)"
+     id="seconds_ones"&gt;&lt;/div&gt;
+&lt;div class="minesweeper-border-vertical-long"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<AnchorHeader ID="makeemsayoooh" Size="HeaderSize.H4">Make 'Em Say "Oooh"</AnchorHeader>
+
+<p>
+    There are certain things that Blazor, in its current form, is just not good at.
+    For example, in the desktop version of Minesweeper, whenever the user left-clicks
+    a panel the smiley face turns to an "oooh" face. Blazor cannot do this (or, more
+    accurately, I could not figure out how to do this in Blazor). So, I turned to
+    good old JavaScript to get the face to say "oooh!".
+</p>
+
+<pre class="language-javascript"><code class="language-javascript">function faceOooh(event) {
+    if (event.button === 0) { //Left-click only
+        document.getElementById("face").className = "minesweeper-face-oooh";
+    }
+}
+
+function faceSmile() {
+    var face = document.getElementById("face");
+    
+    if (face !== undefined)
+        face.className = "minesweeper-face-smile";
+}</code></pre>
+
+<AnchorHeader ID="whattimeisitanyway" Size="HeaderSize.H4">What Time Is It Anyway?</AnchorHeader>
+
+<p>
+    Surprisingly, to me anyway, the timer proved to be the most difficult part of
+    this entire implementation, and exactly why that is true requires some explaining.
+</p>
+
+<p>
+    Blazor has a special method, ```StateHasChanged()```, which allows us developers
+    to notify Blazor that the state of its object has changed and it should re-render
+    the display. But my timer, you might remember, was implemented on the backend
+    as a C# Stopwatch class, and of course the C# code has no way to notify the Blazor
+    frontend that something has changed (namely, that a second has gone by).
+</p>
+
+<p>
+    So, I had to fake it, and that required a couple parts. First I needed a JavaScript
+    method to display a passed-in time:
+</p>
+
+<pre class="language-javascript"><code class="language-javascript">function setTime(hundreds, tens, ones) {
+    var hundredsElement = document.getElementById("seconds_hundreds");
+    var tensElement = document.getElementById("seconds_tens");
+    var onesElement = document.getElementById("seconds_ones");
+
+    if (hundredsElement !== null) {
+        hundredsElement.className = "minesweeper-time-" + hundreds;
+    }
+    if (tensElement !== null) {
+        tensElement.className = "minesweeper-time-" + tens;
+    }
+    if (onesElement !== null) {
+        onesElement.className = "minesweeper-time-" + ones;
+    }
+}</code></pre>
+
+<p>
+    On the Blazor component itself, I needed to use the special method
+    OnAfterRenderAsync, which fires after the control is rendered to the browser:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">@@inject IJSRuntime _jsRuntime
+@@inject NavigationManager _navManager
+
+@@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        while (board.Status == GameStatus.InProgress && _navManager.Uri.Contains("minesweeper"))
+        {
+            await Task.Delay(500);
+            var elapsedTime = (int)board.Stopwatch.Elapsed.TotalSeconds;
+            var hundreds = GetPlace(elapsedTime, 100);
+            var tens = GetPlace(elapsedTime, 10);
+            var ones = GetPlace(elapsedTime, 1);
+
+            await _jsRuntime.InvokeAsync&lt;string&gt;("setTime", hundreds, tens, ones);
+        }
+    }
+}</code></pre>
+
+<p>
+    This solution is 100% a hack; every half-second it invokes a JS method to display
+    the new time. To even be able to do this I had to inject two new dependencies to the component:
+</p>
+
+<ul>
+    <li>
+        IJSRuntime, which allows Blazor code to
+        <a href="https://docs.microsoft.com/en-us/aspnet/core/blazor/call-javascript-from-dotnet?view=aspnetcore-3.1">invoke JavaScript functions</a> AND
+    </li>
+    <li>
+        NavigationManager, which allows <a href="https://docs.microsoft.com/en-us/aspnet/core/blazor/routing?view=aspnetcore-3.1">access to URIs used by a Blazor app</a>.
+    </li>
+</ul>
+
+<p>
+    Obviously this is not a perfect solution, but it works, which is <a href="https://exceptionnotfound.net/doing-it-right-vs-getting-it-done/">good enough for now</a>.
+</p>
+
+<AnchorHeader ID="weredone" Size="HeaderSize.H3">We're Done!</AnchorHeader>
+
+<p>Phew! That was a lot of work, but we now have a Minesweeper game built in Blazor WebAssembly! Thanks for reading.</p>
+
+<p>
+    If you see a way we can improve the game itself or this walkthrough of how to make it, feel free to
+    <a href="https://github.com/exceptionnotfound/BlazorGames/pulls">submit a pull request.</a>
+</p>
+
+<p>Happy Coding!</p>

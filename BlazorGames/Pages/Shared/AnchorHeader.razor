@@ -1,0 +1,52 @@
+﻿@using BlazorGames.Models.Common;
+
+@code {
+    [Parameter]
+    public string ID { get; set; }
+
+    [Parameter]
+    public string ReturnID { get; set; } = "#howtomake";
+
+    [Parameter]
+    public HeaderSize Size { get; set; }
+
+    [Parameter]
+    public string ReturnText { get; set; } = "Back to Top";
+
+    /// <summary>
+    /// Supports child content for the component.
+    /// </summary>
+    /// <see cref="https://docs.microsoft.com/en-us/aspnet/core/blazor/components#child-content"/>
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}
+
+<div class="inline-headers">
+    @switch (Size)
+    {
+        case HeaderSize.H1:
+            <h1 id="@ID">@ChildContent</h1>
+            break;
+
+        case HeaderSize.H2:
+            <h2 id="@ID">@ChildContent</h2>
+            break;
+
+        case HeaderSize.H3:
+            <h3 id="@ID">@ChildContent</h3>
+            break;
+
+        case HeaderSize.H4:
+            <h4 id="@ID">@ChildContent</h4>
+            break;
+
+        case HeaderSize.H5:
+            <h5 id="@ID">@ChildContent</h5>
+            break;
+
+        case HeaderSize.H6:
+            <h6 id="@ID">@ChildContent</h6>
+            break;
+    }
+    <AnchorLink href="@ReturnID">@ReturnText</AnchorLink>
+</div>

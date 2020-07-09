@@ -1,0 +1,69 @@
+﻿@code {
+
+    public AnchorLink()
+    {
+        this.Attributes = new Dictionary<string, object>();
+    }
+
+    private string targetId = null;
+    private bool preventDefault = false;
+
+    /// <summary>
+    /// This parameter supports arbitrary attributes.
+    /// </summary>
+    /// <remarks>
+    /// Any attribute specified on the component, which is not defined as a parameter, whill be added to this dictionary.
+    /// It is then uses as the source for attributes rendered onto the resulting HTML element below in the markup section
+    /// of this component.
+    /// For details, refer to <see cref="https://docs.microsoft.com/en-us/aspnet/core/blazor/components#attribute-splatting-and-arbitrary-parameters"/>.
+    /// </remarks>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object> Attributes { get; set; }
+
+    /// <summary>
+    /// Supports child content for the component.
+    /// </summary>
+    /// <see cref="https://docs.microsoft.com/en-us/aspnet/core/blazor/components#child-content"/>
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Inject]
+    protected IJSRuntime JsInterop { get; set; }
+
+
+    protected override void OnParametersSet()
+    {
+        string href = null;
+        if (this.Attributes.ContainsKey("href"))
+        {
+            // If the href attribute has been specified, we examine the value of it. If if starts with '#'
+            // we assume the rest of the value contains the ID of the element the link points to.
+            href = $"{this.Attributes["href"]}";
+            if (href.StartsWith("#"))
+            {
+                // If the href contains an anchor link we don't want the default click action to occur, but
+                // rather take care of the click in our own method.
+                this.targetId = href.Substring(1);
+                this.preventDefault = true;
+            }
+        }
+        base.OnParametersSet();
+    }
+
+    private async Task AnchorOnClickAsync()
+    {
+        if (!string.IsNullOrEmpty(this.targetId))
+        {
+            // If the target ID has been specified, we know this is an anchor link that we need to scroll
+            // to, so we call the JavaScript method to take care of this for us.
+            await this.JsInterop.InvokeVoidAsync("anchorLink.scrollIntoView", this.targetId);
+        }
+    }
+
+}
+
+<a @attributes="this.Attributes" @onclick="this.AnchorOnClickAsync" @onclick:preventDefault="@this.preventDefault">@this.ChildContent</a>
+
+@code {
+
+}

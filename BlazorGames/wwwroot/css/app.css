@@ -136,6 +136,14 @@ app {
     top: 0.5rem;
 }
 
+.inline-headers h1, .inline-headers h2,
+.inline-headers h3, .inline-headers h4,
+.inline-headers h5, .inline-headers h6,
+.inline-headers a{
+    display: inline-block;
+    vertical-align: baseline;
+}
+
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
         display: none;
@@ -181,3 +189,5 @@ app {
         display: block;
     }
 }
+
+
