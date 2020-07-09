@@ -1,18 +1,39 @@
-﻿<h2>How To Make ConnectFour in Blazor</h2>
+﻿@using BlazorGames.Pages.Shared
+@using BlazorGames.Models.Common  
+
+<h2 id="howtomake">How To Make ConnectFour in Blazor</h2>
 
 <p>
     ConnectFour is a bit more complex than the <NavLink href="tictactoe">Tic Tac Toe</NavLink>,
     but only a bit. Let's see how to make this game in Blazor!
 </p>
 
-<h3>The Sample Project</h3>
+<h3>Table of Contents</h3>
+<ul>
+    <li><AnchorLink href="#thesampleproject">The Sample Project</AnchorLink></li>
+    <li><AnchorLink href="#theoriginalgame">The Original Game in Blazor Server</AnchorLink></li>
+    <li>
+        <AnchorLink href="#modelingthegame">Modeling the Game</AnchorLink>
+        <ul>
+            <li><AnchorLink href="#thefirstfewclasses">The First Few Classes and Enums</AnchorLink></li>
+        </ul>
+    </li>
+    <li><AnchorLink href="#creatinganewrazorcomponent">Creating a New Razor Component</AnchorLink></li>
+    <li><AnchorLink href="#makingthegamelooknice">Making the Game Look Nice</AnchorLink></li>
+    <li><AnchorLink href="#outputtingtheboard">Outputting the Board to the Page</AnchorLink></li>
+    <li><AnchorLink href="#clickingapiece">Clicking a Piece</AnchorLink></li>
+    <li><AnchorLink href="#findingthegamewinner">Finding the Game Winner</AnchorLink></li>
+    <li><AnchorLink href="#weredone">We're Done!</AnchorLink></li>
+</ul>
+
+<AnchorHeader ID="thesampleproject" Size="HeaderSize.H3">The Sample Project</AnchorHeader>
 
 <p>
     The sample project for this code is <a href="https://github.com/exceptionnotfound/BlazorGames">over on GitHub</a>.
     This tutorials assumes you already have a created Blazor WebAssembly and ASP.NET Core 3.1 or greater application.
 </p>
 
-<h3>The Original Game in Blazor Server</h3>
+<AnchorHeader ID="theoriginalgame" Size="HeaderSize.H3">The Original Game in Blazor Server</AnchorHeader>
 
 <p>
     This game was originally written in Blazor Server, and the corresponding blog post can be found here:
@@ -21,7 +42,7 @@
     </a>
 </p>
 
-<h3>Modeling the Game</h3>
+<AnchorHeader ID="modelingthegame" Size="HeaderSize.H3">Modeling the Game</AnchorHeader>
 
 <p>
     As with the <NavLink href="tictactoe">Tic Tac Toe example</NavLink>, before we can start writing the code we must
@@ -36,7 +57,7 @@
     so (lucky for us) the amount of modeling we have to do is limited.
 </p>
 
-<h3>The First Few Classes and Enums</h3>
+<AnchorHeader ID="thefirstfewclasses" Size="HeaderSize.H4">The First Few Classes and Enums</AnchorHeader>
 
 <p>
     Game pieces in ConnectFour are either red or yellow, and a single space on the game board can also be blank.
@@ -96,7 +117,7 @@
 
 <p>That's all the models we need! Now we can get started modeling the actual game.</p>
 
-<h3>Creating a New Razor Page</h3>
+<AnchorHeader ID="creatinganewrazorcomponent" Size="HeaderSize.H3">Creating a New Razor Component</AnchorHeader>
 
 <p>
     At this point, you need to create a new Razor Component in your application. Depending on
@@ -134,7 +155,7 @@
     For this demo, we only need a GameBoard class declared in that directive.
 </p>
 
-<h3>Making the Game Look Nice</h3>
+<AnchorHeader ID="makingthegamelooknice" Size="HeaderSize.H3">Making the Game Look Nice</AnchorHeader>
 
 <p>
     This game isn't going to look like anything if we don't put together some nice CSS for it. Here's
@@ -179,7 +200,7 @@
     We'll be using all of these classes in just a little bit.
 </p>
 
-<h3>Outputting the Board to the Page</h3>
+<AnchorHeader ID="outputtingtheboard" Size="HeaderSize.H3">Outputting the Board to the Page</AnchorHeader>
 
 <p>
     Now let's see how we can use Blazor to output our starting board to the page. If a piece
@@ -218,7 +239,7 @@
     around this limitation.
 </p>
 
-<h3>Clicking a Piece</h3>
+<AnchorHeader ID="clickingapiece" Size="HeaderSize.H3">Clicking a Piece</AnchorHeader>
 
 <p>
     The @@onclick declaration for our game piece &lt;div&gt; calls a method named PieceClicked() in the GameBoard
@@ -280,7 +301,7 @@
     point out which pieces were a part of that win. To do that, let's implement the GetWinner() method.
 </p>
 
-<h3>Finding the Game Winner</h3>
+<AnchorHeader ID="findingthegamewinner" Size="HeaderSize.H3">Finding the Game Winner</AnchorHeader>
 
 <p>
     NOTE: The code in this section was originally submitted by
@@ -410,5 +431,7 @@ private WinningPlay EvaluatePieceForWinner(int i, int j, EvaluationDirection dir
 }
 </code>
 </pre>
+
+<AnchorHeader ID="weredone" Size="HeaderSize.H3">We're Done!</AnchorHeader>
 
 <p>That's it! We now have a working game of ConnectFour running in Blazor WebAssembly!</p>
