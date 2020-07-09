@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://blazorgames.net/</loc>
+    <lastmod>2020-07-09T18:50:35+00:00</lastmod>
+  </url>
+  <url>
+    <loc>https://blazorgames.net/about</loc>
+    <lastmod>2020-07-09T18:50:35+00:00</lastmod>
+  </url>
+  <url>
+    <loc>https://blazorgames.net/whatisblazor</loc>
+    <lastmod>2020-07-09T18:50:35+00:00</lastmod>
+  </url>
+  <url>
+    <loc>https://blazorgames.net/tictactoe</loc>
+    <lastmod>2020-07-09T18:50:35+00:00</lastmod>
+  </url>
+  <url>
+    <loc>https://blazorgames.net/connectfour</loc>
+    <lastmod>2020-07-09T18:50:35+00:00</lastmod>
+  </url>
+  <url>
+    <loc>https://blazorgames.net/minesweeper</loc>
+    <lastmod>2020-07-09T18:50:35+00:00</lastmod>
+  </url>
+  <url>
+    <loc>https://blazorgames.net/yahtzee</loc>
+    <lastmod>2020-07-09T18:50:35+00:00</lastmod>
+  </url>
+  <url>
+    <loc>https://blazorgames.net/gameoflife</loc>
+    <lastmod>2020-07-09T18:50:35+00:00</lastmod>
+  </url>
+</urlset>
