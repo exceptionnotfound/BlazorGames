@@ -84,12 +84,12 @@ namespace BlazorGames.Models.Yahtzee
 
         public bool HasThreeOfAKind()
         {
-            return HasThreeOfAKind(1)
-                || HasThreeOfAKind(2)
-                || HasThreeOfAKind(3)
-                || HasThreeOfAKind(4)
-                || HasThreeOfAKind(5)
-                || HasThreeOfAKind(6);
+            return HasThreeOnes()
+                || HasThreeTwos()
+                || HasThreeThrees()
+                || HasThreeFours()
+                || HasThreeFives()
+                || HasThreeSixes();
         }
 
         public bool HasFourOfAKind()
@@ -112,7 +112,7 @@ namespace BlazorGames.Models.Yahtzee
             return Dice.Where(x => x.Value == value).Count() >= 4;
         }
 
-        public int GetOfAKindTotal(int count)
+        public int GetOfAKindTotal(int count) //Count will be 3 or 4
         {
             var groups = Dice.GroupBy(x => x.Value)
                              .Select(group => new
@@ -168,12 +168,12 @@ namespace BlazorGames.Models.Yahtzee
             //By definition, only two values of dice can be shown for a full house.
 
             var values = Dice.GroupBy(x => x.Value)
-                             .Select(group => new
-                             {
-                                 Value = group.Key,
-                                 Count = group.Count()
-                             })
-                             .OrderByDescending(x => x.Count);
+                                .Select(group => new
+                                {
+                                    Value = group.Key,
+                                    Count = group.Count()
+                                })
+                                .OrderByDescending(x => x.Count);
 
             if (values.Count() != 2) return false;
 
