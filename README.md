@@ -11,5 +11,7 @@ This project is used in many blog posts on my site, including:
 * [Setting the Page Title in a Blazor App](https://exceptionnotfound.net/setting-the-page-title-in-a-blazor-app-net-core/)
 * [Deploying a .NET Core Blazor App to Netlify using GitHub Actions](https://exceptionnotfound.net/deploying-a-net-core-blazor-app-to-netlify-using-github-actions/)
 * [Conway's Game of Life (With Emojis!) in C# and Blazor WebAssembly](https://exceptionnotfound.net/conways-game-of-life-with-emojis-in-csharp-and-blazor-webassembly/)
+* [Yahtzee in Blazor WebAssembly Part 1: The C# Model](https://exceptionnotfound.net/yahtzee-in-blazor-webassembly-part-1-the-csharp-model/)
+* [Yahtzee in Blazor WebAssembly Part 2: The Blazor Component](https://exceptionnotfound.net/yahtzee-in-blazor-webassembly-part-2-the-blazor-component/)
 
 More to come! Pull requests are welcome on this project.
