@@ -96,49 +96,31 @@ namespace BlazorGames.Models.Yahtzee
 		public bool HasSmallStraight()
 		{
 			// Straight impossible with 3 of a kind.
-			if (_rollCounts[0].Count>2)
+			if (HasThreeOfAKind())
 				return false;
 
-			// possible small straights w/5 distinct dice.
-			// A) 1,2,3,4,5  (also large straight)
-			// B) 1,2,3,4,6
-			// C) 1,3,4,5,6
-			// D) 2,3,4,5,6 (also large straight)
-			if (_rollCounts[0].Count == 1)
+			// Large straight is also a small sraight
+			if (HasLargeStraight())
+				return true;
+
+			// small straight must start with a 1, 2 or a 3 and have four unique die
+			if (_sorted[0] > 3 || _sorted[1] > 3 || _rollCounts.Count < 4)
+				return false;
+
+			var consecutive = 1;
+			for (var i = 1; i < _sorted.Length; i++)
 			{
-				if (_sorted[0] == 1 && _sorted[3] == 4)		// Handles A & B
-					return true;
-				if (_sorted[1] == 3 && _sorted[4] == 6)		// Handles C & D
-					return true;
+				if (_sorted[i] - 1 == _sorted[i - 1])
+					consecutive++;
+				else if (_sorted[i] == _sorted[i - 1])
+					continue;
+				else
+					consecutive = 1;
 
-				return false;
+				// small straight must have four consecutive die
+				if (consecutive == 4)
+					return true;
 			}
-
-			// possible small straights w/two similar dice
-			// E) 1,1,2,3,4
-			// F) 1,2,2,3,4
-			// G) 1,2,3,3,4
-			// H) 1,2,3,4,4
-
-			// I) 2,2,3,4,5
-			// J) 2,3,3,4,5
-			// K) 2,3,4,4,5
-			// L) 2,3,4,5,5
-
-			// M) 3,3,4,5,6
-			// N) 3,4,4,5,6
-			// O) 3,4,5,5,6
-			// P) 3,4,5,6,6
-
-			// _rollCounts[0].Count == 2
-			if (_sorted[0] == 1 && _sorted[4] == 4)		// Handle E thru H
-				return true;
-
-			if (_sorted[0] == 2 && _sorted[4] == 5)		// Handles I thru L
-				return true;
-
-			if (_sorted[0] == 3 && _sorted[4] == 6)		// Handles M thru P
-				return true;
 
 			return false;
 		}
