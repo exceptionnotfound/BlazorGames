@@ -1,0 +1,114 @@
+﻿<hr/>
+
+<h2>Blackjack Rules</h2>
+
+<p>
+    <a href="https://bicyclecards.com/how-to-play/blackjack/">Blackjack</a> is a casino-style card game in which players
+    attempt to get card values as close to 21 as possible, without going over. It is played with a standard 52-card deck.
+</p>
+
+<h4>Card Values</h4>
+<p>Each card has a value, a number of points that it is worth.</p>
+<ul>
+    <li>Each number card (2-9) is worth the number of points it shows.</li>
+    <li>Tens, Jacks, Queens, and Kings are each worth ten points, and are collectively referred to as "ten-cards".</li>
+    <li>An Ace is worth either 1 or 11 points.</li>
+</ul>
+<p>
+    In the real world, an Ace is worth 1 or 11 points at the player's discretion.
+    In this simulation, Aces are automatically considered to be worth 11 points unless doing so makes the player go bust.
+</p>
+
+<h2>Normal Gameplay</h2>
+
+<h4>Betting</h4>
+<p>
+    Before each hand, players must make a bet.
+    This bet will be lost if the players bust (go over 21) or end up with less points than the dealer.
+</p>
+
+<h4>Getting Cards</h4>
+<p>
+    After placing their bets, each player is dealt two cards face up. The dealer is dealt one card face down, and one card face up.
+    At this point, each player may choose to either <strong>stand</strong> (decline to draw more cards) or <strong>hit</strong> (draw more cards, one at a time).
+</p>
+
+<p>
+    If the player chooses to hit, they get another card face up from the dealer.
+    If this card causes the player to bust, they lose their bet immediately.
+    If the player does not bust, they can continue to hit, drawing one card each time, until they either bust or choose to stand.
+</p>
+
+<p>Once all players chose to stand, the dealer takes their turn (see "Dealer Behavior"). Once their turn is complete, the dealer will calculate and give out payouts (see "Payouts").</p>
+
+<h4>Going Bust</h4>
+<p>
+    A player who has more than 21 points is said to have <strong>gone bust</strong>, or <strong>busted</strong>. For the player, this is an automatic loss, and they lose their bet.
+</p>
+
+<h4>Naturals</h4>
+
+<p>
+    Any player (including the dealer) who is dealt an Ace and a ten-card is said to have a <strong>natural</strong>, more commonly known as a <strong>blackjack</strong>.
+    There are certain rules that determine what happens when either the player or the dealer, or both, have a natural:
+</p>
+
+<ul>
+    <li>
+        If the player has a natural and the dealer does not, the dealer pays them one-and-a-half the amount of their bet (so, if a player bet $20, they would keep the $20 bet AND receive an additional $30).
+    </li>
+    <li>
+        If the dealer has a natural, any player who does not also have a natural immediately loses their bet. No players are allowed to hit in this situation.
+    </li>
+    <li>
+        If both a player and the dealer have a natural, we have a push; the player does not lose their bet, but does not gain any additional money.
+    </li>
+</ul>
+
+<h4>Dealer Behavior</h4>
+
+<p>
+    The dealer's turn will always come after every player has had their turn.
+</p>
+
+<p>
+    On the dealer's turn, they flip over their "hidden" card, and are compelled to "hit" as long as their score is 16 or less, or they have busted.
+    If their total is 17 or greater without busting, the dealer will stand.
+</p>
+
+<h4>Payouts</h4>
+
+<p>Once the dealer's turn is complete, they will calculate which bets have won and which have not, according to these rules:</p>
+
+<ul>
+    <li>If the player has a natural and the dealer does not, the player gets one-and-a-half again the value of their bet (a bet of $20 means the player keeps their original $20 and gets an additional $30).</li>
+    <li>If the dealer has a natural, the player has gone bust, or the player has less points than the dealer and neither have gone bust, the player loses their bet.</li>
+    <li>If the player has more points than the dealer, or the dealer has gone bust, they win the hand (a bet of $20 and a winning hand means the player keeps their original $20 and gets an additional $20).</li>
+    <li>If neither the players nor the dealer have gone bust and they have the same number of points, we have a <strong>push</strong>; the players keep their bets, but receive no additional money.</li>
+</ul>
+
+<h2>Special Plays</h2>
+
+<p>
+    In addition to the normal gameplay of Blackjack, there are a few special plays that can be made by the player under certain circumstances.
+</p>
+
+<h4>Doubling Down</h4>
+
+<p>
+    If the player has a score of 9, 10, or 11 in their initial two cards, they can choose to "double down". 
+    Doing this means they double their bet, and will receive one additional card.
+    The player is forced to stand after receiving this card (they cannot draw further cards).
+</p>
+
+<p>
+    The dealer will then take their turn, and gameplay proceeds as normal. 
+    If they player wins the hand, they receive back their doubled bet, plus the doubled bet again. 
+    In this way, an original bet of $20 results in a $40 bet if doubled down, and the player will receive the $40 bet plus an additional $40 if they win the hand.
+</p>
+
+<p>If the player loses the hand, they lose their doubled bet (an original bet of $20, doubled down, means the player will lose $40).</p>
+
+<p>
+    The dealer does not have the option to double down.
+</p>

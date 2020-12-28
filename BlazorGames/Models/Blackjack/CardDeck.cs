@@ -21,6 +21,7 @@ namespace BlazorGames.Models.Blackjack
         public CardDeck()
         {
             List<Card> cards = new List<Card>();
+
             foreach (CardSuit suit in (CardSuit[])Enum.GetValues(typeof(CardSuit)))
             {
                 foreach (CardValue value in (CardValue[])Enum.GetValues(typeof(CardValue)))

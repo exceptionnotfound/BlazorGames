@@ -10,7 +10,7 @@ namespace BlazorGames.Models.Blackjack
     {
         public List<Card> Cards { get; set; } = new List<Card>();
 
-        public decimal Funds { get; set; } = 100M;
+        public decimal Funds { get; set; } = 200M;
 
         public string ScoreDisplay
         {
