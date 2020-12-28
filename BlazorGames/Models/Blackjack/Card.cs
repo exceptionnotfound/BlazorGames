@@ -1,0 +1,36 @@
+﻿using BlazorGames.Models.Blackjack.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace BlazorGames.Models.Blackjack
+{
+    public class Card
+    {
+        public CardSuit Suit { get; set; }
+        public CardValue Value { get; set; }
+        public string CssClass { get; set; }
+        public bool IsVisible { get; set; } = true;
+
+        public int Score
+        {
+            get
+            {
+                if (Value == CardValue.King || Value == CardValue.Queen || Value == CardValue.Jack)
+                {
+                    return 10;
+                }
+                if(Value == CardValue.Ace)
+                {
+                    return 11;
+                }
+                else
+                {
+                    return (int)Value;
+                }
+            }
+            
+        }
+    }
+}

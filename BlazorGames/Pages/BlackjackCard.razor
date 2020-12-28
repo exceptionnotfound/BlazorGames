@@ -1,0 +1,15 @@
+﻿@using BlazorGames.Models.Blackjack;
+
+@code {
+    [Parameter]
+    public Card Card { get; set; }
+}
+
+@if (Card.IsVisible)
+{
+    <img class="blackjack-card" src="images/blackjack/@(Card.CssClass).png" />
+}
+else
+{
+    <img class="blackjack-card" src="images/blackjack/cardBack.png" />
+}

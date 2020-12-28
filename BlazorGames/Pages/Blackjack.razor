@@ -1,0 +1,158 @@
+﻿@page "/blackjack"
+
+@using BlazorGames.Models.Blackjack
+
+<PageTitle Title="Blackjack" />
+
+@code {
+    CardDeck deck = new CardDeck();
+    Player dealerHand = new Player();
+    Player playerHand = new Player();
+
+    GameStatus status = GameStatus.NotStarted;
+
+    public async Task InitializeGame()
+    {
+        deck = new CardDeck();
+        status = GameStatus.Dealing;
+
+        //Deal a card to each player. The dealer's card is not visible.
+        playerHand.AddCard(deck.Draw());
+        await ForceDelay(300);
+        StateHasChanged();
+
+        var dealerCard = deck.Draw();
+        dealerCard.IsVisible = false;
+        dealerHand.AddCard(dealerCard);
+        await ForceDelay(300);
+        StateHasChanged();
+
+        //Deal another card to each player; these will both be visible.
+        playerHand.AddCard(deck.Draw());
+        await ForceDelay(300);
+        dealerHand.AddCard(deck.Draw());
+        StateHasChanged();
+
+        status = GameStatus.InProgress;
+    }
+
+    public async Task StartHand()
+    {
+        playerHand.Clear();
+        dealerHand.Clear();
+        status = GameStatus.NotStarted;
+        await InitializeGame();
+    }
+
+    public async Task ForceDelay(int millis)
+    {
+        await Task.Delay(millis);
+        StateHasChanged();
+    }
+
+    public async Task DealerMove()
+    {
+        if(dealerHand.Score() < 17)
+        {
+            dealerHand.AddCard(deck.Draw());
+            await ForceDelay(300);
+        }
+    }
+
+    public async Task Hit()
+    {
+        playerHand.AddCard(deck.Draw());
+        await DealerMove();
+        if(playerHand.IsBusted)
+        {
+            await Stand();
+        }
+    }
+
+    public async Task Stand()
+    {
+        dealerHand.Reveal();
+        while(dealerHand.Score() < 17)
+        {
+            await DealerMove();
+        }
+        status = GameStatus.HandOver;
+    }
+}
+
+<div class="row">
+    <div class="col-4">
+        <div class="blackjack-drawdeck">
+            <img src="images/blackjack/cardBack.png" />
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="blackjack-hand">
+            @foreach (var card in dealerHand.Cards)
+            {
+                <BlackjackCard Card="card" />
+            }
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-4">
+        Dealer's Visible Score: @dealerHand.ScoreDisplay
+        <br />
+        Player's Score: @playerHand.ScoreDisplay
+    </div>
+    <div class="col-4">
+        @if (status == GameStatus.NotStarted)
+        {
+            <button class="btn btn-secondary" @onclick="(() => StartHand())">Start Game</button>
+        }
+        @if(status == GameStatus.HandOver)
+        {
+            @if(playerHand.IsBusted)
+            {
+                <div class="alert alert-danger">Player Busts!</div>
+            }
+            else if(dealerHand.IsBusted)
+            {
+                <div class="alert alert-success">House Busts!</div>
+            }
+            else if (playerHand.Score() > dealerHand.Score())
+            {
+                <div class="alert alert-success">Player Wins!</div>
+            }
+            else if (dealerHand.Score() > playerHand.Score())
+            {
+                <div class="alert alert-danger">House Wins!</div>
+            }
+            else if(playerHand.Score() == dealerHand.Score())
+            {
+                <div class="alert alert-info">Push</div>
+            }
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-4">
+        @if (!playerHand.IsBusted && status == GameStatus.InProgress)
+        {
+            @if (playerHand.Score() < 21)
+            {
+                <button class="btn btn-primary" @onclick="(() => Hit())">Hit</button>
+            }
+            <button class="btn btn-primary" @onclick="(() => Stand())">Stand</button>
+        }
+        @if (status == GameStatus.HandOver)
+        {
+            <button class="btn btn-secondary" @onclick="(() => StartHand())">Next Hand</button>
+        }
+    </div>
+    <div class="col-4">
+        <div class="blackjack-hand">
+            @foreach (var card in playerHand.Cards)
+            {
+                <BlackjackCard Card="card" />
+            }
+        </div>
+    </div>
+</div>
