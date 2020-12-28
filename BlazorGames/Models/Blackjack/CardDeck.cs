@@ -43,7 +43,24 @@ namespace BlazorGames.Models.Blackjack
         public void Shuffle()
         {
             Random rnd = new Random();
-            Cards = new Stack<Card>(Cards.OrderBy(x => rnd.Next()));
+            var array = Cards.ToArray();
+
+            //Step 1: For each unshuffled item in the collection
+            for (int n = array.Count() - 1; n > 0; --n)
+            {
+                //Step 2: Randomly pick an item which has not been shuffled
+                int k = rnd.Next(n + 1);
+
+                //Step 3: Swap the selected item with the last "unstruck" letter in the collection
+                Card temp = array[n];
+                array[n] = array[k];
+                array[k] = temp;
+            }
+
+            for(int n = 0; n < array.Count(); n++)
+            {
+                Cards.Push(array[n]);
+            }
         }
     }
 }

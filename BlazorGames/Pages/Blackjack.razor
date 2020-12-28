@@ -13,9 +13,15 @@
     GameStatus status = GameStatus.NotStarted;
 
     decimal pot = 0M;
+    decimal change = 0M;
+
+    bool hasStood = false;
 
     public void InitializeGame()
     {
+        playerHand.Funds += change;
+        change = 0M;
+
         deck = new CardDeck();
         status = GameStatus.Betting;
     }
@@ -97,6 +103,7 @@
 
     public async Task Stand()
     {
+        hasStood = true;
         dealerHand.Reveal();
         while(dealerHand.Score() < 17)
         {
@@ -111,17 +118,17 @@
         if (playerHand.HasNaturalBlackjack() && dealerHand.Score() != 21)
         {
             //Player gets their bet back, plus 1.5 * the bet
-            playerHand.Funds += pot * 2.5M;
+            change = pot * 2.5M;
         }
         else if (!playerHand.IsBusted && dealerHand.IsBusted)
         {
             //If the player is not busted but the dealer is, the player gets the amount of their bet back, plus the bet again.
-            playerHand.Funds += pot * 2;
+            change = pot * 2;
         }
         else if (!dealerHand.IsBusted && !playerHand.IsBusted && playerHand.Score() > dealerHand.Score())
         {
             //This is a "normal" win condition; the player has more than the dealer and neither are busted.
-            playerHand.Funds += pot * 2;
+            change = pot * 2;
         }
         else if (!dealerHand.IsBusted && !playerHand.IsBusted && playerHand.Score() == dealerHand.Score())
         {
@@ -129,11 +136,12 @@
         }
         else
         {
-            playerHand.Funds -= pot;
+            change = pot * -1;
         }
 
         //No matter what, the pot gets reset
         pot = 0;
+        hasStood = false;
     }
 }
 
@@ -152,18 +160,7 @@
 </div>
 <div class="row">
     <div class="col-4">
-        @if (playerHand.Funds < 50)
-        {
-            <h1 class="display-3 text-danger">$@playerHand.Funds</h1>
-        }
-        else if (playerHand.Funds >= 50 && playerHand.Funds < 100)
-        {
-            <h1 class="display-3 text-warning">$@playerHand.Funds</h1>
-        }
-        else
-        {
-            <h1 class="display-3 text-success">$@playerHand.Funds</h1>
-        }
+        <FundsDisplay Funds="playerHand.Funds" Change="change"/>
     </div>
     <div class="col-4">
         @if (status == GameStatus.Betting)
@@ -222,13 +219,13 @@
         {
             <button class="btn btn-secondary" @onclick="(() => StartHand())">Start Game</button>
         }
-        @if (!playerHand.IsBusted && status == GameStatus.InProgress)
+        @if (!playerHand.IsBusted && status == GameStatus.InProgress && !hasStood)
         {
+            <button class="btn btn-primary" @onclick="(() => Stand())">Stand</button>
             @if (playerHand.Score() < 21)
             {
                 <button class="btn btn-primary" @onclick="(() => Hit())">Hit</button>
             }
-            <button class="btn btn-primary" @onclick="(() => Stand())">Stand</button>
         }
         @if (status == GameStatus.HandOver)
         {

@@ -1,0 +1,31 @@
+﻿@code {
+    [Parameter]
+    public decimal Funds { get; set; }
+
+    [Parameter]
+    public decimal Change { get; set; }
+}
+
+@{ 
+    string cssClass = "text-success";
+
+    if (Funds < 100 && Funds >= 50)
+        cssClass = "text-warning";
+    if (Funds < 50)
+        cssClass = "text-danger";
+
+    string changeDisplay = "+$" + Change;
+    string changeCss = "text-success";
+
+    if(Change < 0M)
+    {
+        changeDisplay = "-$" + (Change * -1);
+        changeCss = "text-danger";
+    }
+}
+
+<span class="display-3 @cssClass">$@Funds</span>
+@if (Change != 0)
+{
+    <span class="display-3 @changeCss">@changeDisplay</span>
+}
