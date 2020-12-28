@@ -97,7 +97,7 @@
 
     public async Task DealerMove()
     {
-        if(dealer.Score() < 17)
+        if(dealer.Score < 17)
         {
             await dealer.AddCard(deck.Draw());
         }
@@ -116,7 +116,7 @@
     {
         hasStood = true;
         dealer.Reveal();
-        while(dealer.Score() < 17)
+        while(dealer.Score < 17)
         {
             await DealerMove();
         }
@@ -125,11 +125,12 @@
 
     public async Task DoubleDown()
     {
+        hasStood = true;
         //The player may only do this if their shown score is 9, 10, or 11.
         //If this happens, the player doubles their bet.
         pot *= 2;
 
-        await ForceDelay(1000);
+        await ForceDelay(300);
 
         //The player then gets one additional card
         await player.AddCard(deck.Draw());
@@ -141,7 +142,7 @@
     public void ProcessBets()
     {
         status = GameStatus.HandOver;
-        if (player.HasNaturalBlackjack() && dealer.Score() != 21)
+        if (player.HasNaturalBlackjack() && dealer.Score != 21)
         {
             //Player gets their bet back, plus 1.5 * the bet
             change = pot * 2.5M;
@@ -151,12 +152,12 @@
             //If the player is not busted but the dealer is, the player gets the amount of their bet back, plus the bet again.
             change = pot * 2;
         }
-        else if (!dealer.IsBusted && !player.IsBusted && player.Score() > dealer.Score())
+        else if (!dealer.IsBusted && !player.IsBusted && player.Score > dealer.Score)
         {
             //This is a "normal" win condition; the player has more than the dealer and neither are busted.
             change = pot * 2;
         }
-        else if (!dealer.IsBusted && !player.IsBusted && player.Score() == dealer.Score())
+        else if (!dealer.IsBusted && !player.IsBusted && player.Score == dealer.Score)
         {
             //If there's a push, no money changes hands
         }
@@ -191,13 +192,9 @@
     <div class="col-4">
         @if (status == GameStatus.Betting)
         {
-            @if(player.Funds < 5)
+            @if (player.Funds < 10)
             {
                 <span class="display-3 text-danger">Not enough money!</span>
-            }
-            @if (player.Funds >= 5)
-            {
-                <button class="btn btn-primary" @onclick="(() => Bet(5))">Bet $5</button>
             }
             @if (player.Funds >= 10)
             {
@@ -207,18 +204,22 @@
             {
                 <button class="btn btn-primary" @onclick="(() => Bet(20))">Bet $20</button>
             }
+            @if (player.Funds >= 50)
+            {
+                <button class="btn btn-primary" @onclick="(() => Bet(50))">Bet $50</button>
+            }
         }
         @if (status == GameStatus.Dealing || status == GameStatus.InProgress)
         {
             <span class="display-3 text-primary">$@pot</span>
         }
-        @if(status == GameStatus.Shuffling)
+        @if (status == GameStatus.Shuffling)
         {
             <span class="display-3 text-info">Shuffling...</span>
         }
         @if (status == GameStatus.HandOver)
         {
-            <HandResultDisplay Player="player" Dealer="dealer"/>
+            <HandResultDisplay Player="player" Dealer="dealer" />
         }
     </div>
 </div>
@@ -233,7 +234,7 @@
         {
             <button class="btn btn-primary" @onclick="(() => Stand())">Stand</button>
             <button class="btn btn-primary" @onclick="(() => Hit())">Hit</button>
-            @if(player.Score() >= 9 && player.Score() <= 11)
+            @if(player.Score >= 9 && player.Score <= 11 && player.Cards.Count == 2)
             {
                 <br/>
                 <button class="btn btn-warning" @onclick="(() => DoubleDown())">Double Down</button>

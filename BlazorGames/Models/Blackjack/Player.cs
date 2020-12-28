@@ -19,7 +19,7 @@ namespace BlazorGames.Models.Blackjack
                 if (HasNaturalBlackjack())
                     return "Blackjack!";
 
-                var score = Score(true);
+                var score = VisibleScore;
                 
                 if (score > 21)
                     return "Busted!";
@@ -33,7 +33,23 @@ namespace BlazorGames.Models.Blackjack
             await Task.Delay(300);
         }
 
-        public int Score(bool onlyVisible = false)
+        public int Score 
+        { 
+            get
+            {
+                return ScoreCalculation();
+            } 
+        }
+
+        public int VisibleScore
+        {
+            get
+            {
+                return ScoreCalculation(true);
+            }
+        }
+
+        private int ScoreCalculation(bool onlyVisible = false)
         {
             var cards = Cards;
 
@@ -68,7 +84,7 @@ namespace BlazorGames.Models.Blackjack
             return cards.Sum(x => x.Score);
         }
 
-        public bool IsBusted => Score() > 21;
+        public bool IsBusted => Score > 21;
 
         public void Reveal()
         {
@@ -83,7 +99,7 @@ namespace BlazorGames.Models.Blackjack
         public bool HasNaturalBlackjack()
         {
             if(Cards.Count == 2
-                && Score() == 21
+                && Score == 21
                 && Cards.Any(x=>x.Value == CardValue.Ace)
                 && Cards.Any(x=>x.Value == CardValue.King || x.Value == CardValue.Queen || x.Value == CardValue.Jack || x.Value == CardValue.Ten))
             {
