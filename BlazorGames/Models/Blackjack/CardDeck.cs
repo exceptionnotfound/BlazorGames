@@ -10,8 +10,17 @@ namespace BlazorGames.Models.Blackjack
     {
         protected Stack<Card> Cards { get; set; } = new Stack<Card>();
 
+        public int Count
+        {
+            get
+            {
+                return Cards.Count;
+            }
+        }
+
         public CardDeck()
         {
+            List<Card> cards = new List<Card>();
             foreach (CardSuit suit in (CardSuit[])Enum.GetValues(typeof(CardSuit)))
             {
                 foreach (CardValue value in (CardValue[])Enum.GetValues(typeof(CardValue)))
@@ -23,27 +32,13 @@ namespace BlazorGames.Models.Blackjack
                         CssClass = "card" + suit.GetDisplayName() + value.GetDisplayName()
                     };
 
-                    Cards.Push(newCard);
+                    cards.Add(newCard);
                 }
             }
 
-            Shuffle();
-        }
+            var array = cards.ToArray();
 
-        public void Add(Card card)
-        {
-            Cards.Push(card);
-        }
-
-        public Card Draw()
-        {
-            return Cards.Pop();
-        }
-
-        public void Shuffle()
-        {
             Random rnd = new Random();
-            var array = Cards.ToArray();
 
             //Step 1: For each unshuffled item in the collection
             for (int n = array.Count() - 1; n > 0; --n)
@@ -57,10 +52,20 @@ namespace BlazorGames.Models.Blackjack
                 array[k] = temp;
             }
 
-            for(int n = 0; n < array.Count(); n++)
+            for (int n = 0; n < array.Count(); n++)
             {
                 Cards.Push(array[n]);
             }
+        }
+
+        public void Add(Card card)
+        {
+            Cards.Push(card);
+        }
+
+        public Card Draw()
+        {
+            return Cards.Pop();
         }
     }
 }

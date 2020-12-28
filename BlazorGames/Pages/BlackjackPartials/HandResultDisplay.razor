@@ -9,13 +9,13 @@
 }
 
 @if (Player.HasNaturalBlackjack()
-               && (Player.Score() > Dealer.Score() || Dealer.IsBusted))
+     && (Player.Score() > Dealer.Score() || Dealer.IsBusted))
 {
     <h1 class="display-3 text-success">Blackjack!</h1>
 }
 else if (Player.IsBusted)
 {
-    <h1 class="display-3 text-danger">Busted!</h1>
+    <h1 class="display-3 text-danger">Busted...</h1>
 }
 else if (Dealer.IsBusted || Player.Score() > Dealer.Score())
 {
@@ -23,7 +23,7 @@ else if (Dealer.IsBusted || Player.Score() > Dealer.Score())
 }
 else if (Dealer.Score() > Player.Score())
 {
-    <h1 class="display-3 text-danger">Lose!</h1>
+    <h1 class="display-3 text-danger">Lose...</h1>
 }
 else if (Player.Score() == Dealer.Score())
 {

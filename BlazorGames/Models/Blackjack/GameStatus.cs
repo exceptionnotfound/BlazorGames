@@ -11,6 +11,7 @@ namespace BlazorGames.Models.Blackjack
         Betting,
         Dealing,
         InProgress,
-        HandOver
+        HandOver,
+        Shuffling
     }
 }

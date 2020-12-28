@@ -17,12 +17,18 @@
 
     bool hasStood = false;
 
-    public void InitializeGame()
+    public async Task InitializeGame()
     {
         player.Funds += change;
         change = 0M;
 
-        deck = new CardDeck();
+        if (deck.Count <= 13)
+        {
+            status = GameStatus.Shuffling;
+            await ForceDelay(1000);
+            deck = new CardDeck();
+        }
+
         status = GameStatus.Betting;
     }
 
@@ -31,11 +37,11 @@
         if (player.Funds >= amount)
         {
             pot += amount;
-            await FirstDeal();
+            await Deal();
         }
     }
 
-    public async Task FirstDeal()
+    public async Task Deal()
     {
         status = GameStatus.Dealing;
         //Deal a card to each player. The dealer's card is not visible.
@@ -68,20 +74,20 @@
         }
     }
 
-    public void StartGame()
+    public async Task StartGame()
     {
         player = new Player();
         dealer = new Player();
         status = GameStatus.NotStarted;
-        InitializeGame();
+        await InitializeGame();
     }
 
-    public void StartHand()
+    public async Task StartHand()
     {
         player.Clear();
         dealer.Clear();
         status = GameStatus.NotStarted;
-        InitializeGame();
+        await InitializeGame();
     }
 
     public async Task ForceDelay(int millis)
@@ -175,7 +181,7 @@
         {
             @if(player.Funds < 5)
             {
-                <h1 class="display-3 text-danger">Not enough money!</h1>
+                <span class="display-3 text-danger">Not enough money!</span>
             }
             @if (player.Funds >= 5)
             {
@@ -192,7 +198,11 @@
         }
         @if (status == GameStatus.Dealing || status == GameStatus.InProgress)
         {
-            <h1 class="display-3 text-primary">$@pot</h1>
+            <span class="display-3 text-primary">$@pot</span>
+        }
+        @if(status == GameStatus.Shuffling)
+        {
+            <span class="display-3 text-info">Shuffling...</span>
         }
         @if (status == GameStatus.HandOver)
         {
