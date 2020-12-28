@@ -7,8 +7,8 @@
 
 @code {
     CardDeck deck = new CardDeck();
-    Player dealerHand = new Player();
-    Player playerHand = new Player();
+    Player dealer = new Player();
+    Player player = new Player();
 
     GameStatus status = GameStatus.NotStarted;
 
@@ -19,7 +19,7 @@
 
     public void InitializeGame()
     {
-        playerHand.Funds += change;
+        player.Funds += change;
         change = 0M;
 
         deck = new CardDeck();
@@ -28,7 +28,7 @@
 
     public async Task Bet(decimal amount)
     {
-        if (playerHand.Funds >= amount)
+        if (player.Funds >= amount)
         {
             pot += amount;
             await FirstDeal();
@@ -39,39 +39,47 @@
     {
         status = GameStatus.Dealing;
         //Deal a card to each player. The dealer's card is not visible.
-        playerHand.AddCard(deck.Draw());
+        player.AddCard(deck.Draw());
         await ForceDelay(300);
         StateHasChanged();
 
         var dealerCard = deck.Draw();
         dealerCard.IsVisible = false;
-        dealerHand.AddCard(dealerCard);
+        dealer.AddCard(dealerCard);
         await ForceDelay(300);
         StateHasChanged();
 
         //Deal another card to each player; these will both be visible.
-        playerHand.AddCard(deck.Draw());
+        player.AddCard(deck.Draw());
         await ForceDelay(300);
-        dealerHand.AddCard(deck.Draw());
+        dealer.AddCard(deck.Draw());
         StateHasChanged();
 
         status = GameStatus.InProgress;
 
         //If either the player or the dealer has a natural blackjack, the hand is over.
-        if (playerHand.HasNaturalBlackjack() || dealerHand.HasNaturalBlackjack())
+        if (player.HasNaturalBlackjack() || dealer.HasNaturalBlackjack())
         {
-            if (dealerHand.HasNaturalBlackjack())
+            if (dealer.HasNaturalBlackjack())
             {
-                dealerHand.Reveal();
+                dealer.Reveal();
             }
             ProcessBets();
         }
     }
 
+    public void StartGame()
+    {
+        player = new Player();
+        dealer = new Player();
+        status = GameStatus.NotStarted;
+        InitializeGame();
+    }
+
     public void StartHand()
     {
-        playerHand.Clear();
-        dealerHand.Clear();
+        player.Clear();
+        dealer.Clear();
         status = GameStatus.NotStarted;
         InitializeGame();
     }
@@ -84,18 +92,18 @@
 
     public async Task DealerMove()
     {
-        if(dealerHand.Score() < 17)
+        if(dealer.Score() < 17)
         {
-            dealerHand.AddCard(deck.Draw());
+            dealer.AddCard(deck.Draw());
             await ForceDelay(300);
         }
     }
 
     public async Task Hit()
     {
-        playerHand.AddCard(deck.Draw());
+        player.AddCard(deck.Draw());
         await ForceDelay(300);
-        if(playerHand.IsBusted)
+        if(player.IsBusted)
         {
             ProcessBets();
         }
@@ -104,8 +112,8 @@
     public async Task Stand()
     {
         hasStood = true;
-        dealerHand.Reveal();
-        while(dealerHand.Score() < 17)
+        dealer.Reveal();
+        while(dealer.Score() < 17)
         {
             await DealerMove();
         }
@@ -115,22 +123,22 @@
     public void ProcessBets()
     {
         status = GameStatus.HandOver;
-        if (playerHand.HasNaturalBlackjack() && dealerHand.Score() != 21)
+        if (player.HasNaturalBlackjack() && dealer.Score() != 21)
         {
             //Player gets their bet back, plus 1.5 * the bet
             change = pot * 2.5M;
         }
-        else if (!playerHand.IsBusted && dealerHand.IsBusted)
+        else if (!player.IsBusted && dealer.IsBusted)
         {
             //If the player is not busted but the dealer is, the player gets the amount of their bet back, plus the bet again.
             change = pot * 2;
         }
-        else if (!dealerHand.IsBusted && !playerHand.IsBusted && playerHand.Score() > dealerHand.Score())
+        else if (!dealer.IsBusted && !player.IsBusted && player.Score() > dealer.Score())
         {
             //This is a "normal" win condition; the player has more than the dealer and neither are busted.
             change = pot * 2;
         }
-        else if (!dealerHand.IsBusted && !playerHand.IsBusted && playerHand.Score() == dealerHand.Score())
+        else if (!dealer.IsBusted && !player.IsBusted && player.Score() == dealer.Score())
         {
             //If there's a push, no money changes hands
         }
@@ -152,32 +160,32 @@
         </div>
     </div>
     <div class="col-4">
-        <BlackjackHand Cards="dealerHand.Cards" />
+        <BlackjackHand Cards="dealer.Cards" />
     </div>
     <div class="col-4">
-        <ScoreDisplay Status="status" Player="dealerHand" />
+        <ScoreDisplay Status="status" Player="dealer" />
     </div>
 </div>
 <div class="row">
     <div class="col-4">
-        <FundsDisplay Funds="playerHand.Funds" Change="change"/>
+        <FundsDisplay Funds="player.Funds" Change="change"/>
     </div>
     <div class="col-4">
         @if (status == GameStatus.Betting)
         {
-            @if(playerHand.Funds < 5)
+            @if(player.Funds < 5)
             {
                 <h1 class="display-3 text-danger">Not enough money!</h1>
             }
-            @if (playerHand.Funds >= 5)
+            @if (player.Funds >= 5)
             {
                 <button class="btn btn-primary" @onclick="(() => Bet(5))">Bet $5</button>
             }
-            @if (playerHand.Funds >= 10)
+            @if (player.Funds >= 10)
             {
                 <button class="btn btn-primary" @onclick="(() => Bet(10))">Bet $10</button>
             }
-            @if (playerHand.Funds >= 20)
+            @if (player.Funds >= 20)
             {
                 <button class="btn btn-primary" @onclick="(() => Bet(20))">Bet $20</button>
             }
@@ -188,44 +196,21 @@
         }
         @if (status == GameStatus.HandOver)
         {
-            @if (playerHand.HasNaturalBlackjack() 
-                && (playerHand.Score() > dealerHand.Score() || dealerHand.IsBusted))
-            {
-                <h1 class="display-3 text-success">Blackjack!</h1>
-            }
-            else if (playerHand.IsBusted)
-            {
-                <h1 class="display-3 text-danger">Busted!</h1>
-            }
-            else if (dealerHand.IsBusted || playerHand.Score() > dealerHand.Score())
-            {
-                <h1 class="display-3 text-success">Win!</h1>
-            }
-            else if (dealerHand.Score() > playerHand.Score())
-            {
-                <h1 class="display-3 text-danger">Lose!</h1>
-            }
-            else if (playerHand.Score() == dealerHand.Score())
-            {
-                <h1 class="display-3 text-info">Push</h1>
-            }
+            <HandResultDisplay Player="player" Dealer="dealer"/>
         }
     </div>
 </div>
 
 <div class="row">
     <div class="col-4">
-        @if (status == GameStatus.NotStarted || playerHand.Funds < 5)
+        @if (status == GameStatus.NotStarted || player.Funds < 5)
         {
-            <button class="btn btn-secondary" @onclick="(() => StartHand())">Start Game</button>
+            <button class="btn btn-secondary" @onclick="(() => StartGame())">Start Game</button>
         }
-        @if (!playerHand.IsBusted && status == GameStatus.InProgress && !hasStood)
+        @if (!player.IsBusted && status == GameStatus.InProgress && !hasStood)
         {
             <button class="btn btn-primary" @onclick="(() => Stand())">Stand</button>
-            @if (playerHand.Score() < 21)
-            {
-                <button class="btn btn-primary" @onclick="(() => Hit())">Hit</button>
-            }
+            <button class="btn btn-primary" @onclick="(() => Hit())">Hit</button>
         }
         @if (status == GameStatus.HandOver)
         {
@@ -233,9 +218,9 @@
         }
     </div>
     <div class="col-4">
-        <BlackjackHand Cards="playerHand.Cards" />
+        <BlackjackHand Cards="player.Cards" />
     </div>
     <div class="col-4">
-        <ScoreDisplay Status="status" Player="playerHand"/>
+        <ScoreDisplay Status="status" Player="player"/>
     </div>
 </div>
