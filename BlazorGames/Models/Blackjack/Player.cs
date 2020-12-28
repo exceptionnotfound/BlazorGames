@@ -27,9 +27,10 @@ namespace BlazorGames.Models.Blackjack
             }
         }
 
-        public void AddCard(Card card)
+        public async Task AddCard(Card card)
         {
             Cards.Add(card);
+            await Task.Delay(300);
         }
 
         public int Score(bool onlyVisible = false)

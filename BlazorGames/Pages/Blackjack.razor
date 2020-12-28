@@ -45,20 +45,19 @@
     {
         status = GameStatus.Dealing;
         //Deal a card to each player. The dealer's card is not visible.
-        player.AddCard(deck.Draw());
-        await ForceDelay(300);
+        await player.AddCard(deck.Draw());
         StateHasChanged();
 
         var dealerCard = deck.Draw();
         dealerCard.IsVisible = false;
-        dealer.AddCard(dealerCard);
-        await ForceDelay(300);
+        await dealer.AddCard(dealerCard);
         StateHasChanged();
 
         //Deal another card to each player; these will both be visible.
-        player.AddCard(deck.Draw());
-        await ForceDelay(300);
-        dealer.AddCard(deck.Draw());
+        await player.AddCard(deck.Draw());
+        StateHasChanged();
+
+        await dealer.AddCard(deck.Draw());
         StateHasChanged();
 
         status = GameStatus.InProgress;
@@ -100,15 +99,13 @@
     {
         if(dealer.Score() < 17)
         {
-            dealer.AddCard(deck.Draw());
-            await ForceDelay(300);
+            await dealer.AddCard(deck.Draw());
         }
     }
 
     public async Task Hit()
     {
-        player.AddCard(deck.Draw());
-        await ForceDelay(300);
+        await player.AddCard(deck.Draw());
         if(player.IsBusted)
         {
             ProcessBets();
@@ -124,6 +121,21 @@
             await DealerMove();
         }
         ProcessBets();
+    }
+
+    public async Task DoubleDown()
+    {
+        //The player may only do this if their shown score is 9, 10, or 11.
+        //If this happens, the player doubles their bet.
+        pot *= 2;
+
+        await ForceDelay(1000);
+
+        //The player then gets one additional card
+        await player.AddCard(deck.Draw());
+
+        //At this point, the player is forced to stand, and we continue as normal.
+        await Stand();
     }
 
     public void ProcessBets()
@@ -221,6 +233,11 @@
         {
             <button class="btn btn-primary" @onclick="(() => Stand())">Stand</button>
             <button class="btn btn-primary" @onclick="(() => Hit())">Hit</button>
+            @if(player.Score() >= 9 && player.Score() <= 11)
+            {
+                <br/>
+                <button class="btn btn-warning" @onclick="(() => DoubleDown())">Double Down</button>
+            }
         }
         @if (status == GameStatus.HandOver)
         {
