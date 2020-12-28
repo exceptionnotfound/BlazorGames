@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlazorGames.Models.Blackjack.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,11 +10,17 @@ namespace BlazorGames.Models.Blackjack
     {
         public List<Card> Cards { get; set; } = new List<Card>();
 
+        public decimal Funds { get; set; } = 100M;
+
         public string ScoreDisplay
         {
             get
             {
+                if (HasNaturalBlackjack())
+                    return "Blackjack!";
+
                 var score = Score(true);
+                
                 if (score > 21)
                     return "Busted!";
                 else return score.ToString();
@@ -70,6 +77,19 @@ namespace BlazorGames.Models.Blackjack
         public void Clear()
         {
             Cards = new List<Card>();
+        }
+
+        public bool HasNaturalBlackjack()
+        {
+            if(Cards.Count == 2
+                && Score() == 21
+                && Cards.Any(x=>x.Value == CardValue.Ace)
+                && Cards.Any(x=>x.Value == CardValue.King || x.Value == CardValue.Queen || x.Value == CardValue.Jack || x.Value == CardValue.Ten))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

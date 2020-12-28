@@ -1,0 +1,14 @@
+﻿@using BlazorGames.Models.Blackjack;
+
+@code
+{
+    [Parameter]
+    public List<Card> Cards { get; set; }
+}
+
+<div class="blackjack-hand">
+    @foreach (var card in Cards)
+    {
+        <BlackjackCard Card="card" />
+    }
+</div>

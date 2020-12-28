@@ -8,6 +8,7 @@ namespace BlazorGames.Models.Blackjack
     public enum GameStatus
     {
         NotStarted,
+        Betting,
         Dealing,
         InProgress,
         HandOver
