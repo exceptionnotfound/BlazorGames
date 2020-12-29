@@ -9,5 +9,9 @@ namespace BlazorGames.Models.Blackjack
     public class Player : Person
     {
         public decimal Funds { get; set; } = 200M;
+
+        public bool HasStood { get; set; }
+
+        public bool HasInsurance { get; set; }
     }
 }

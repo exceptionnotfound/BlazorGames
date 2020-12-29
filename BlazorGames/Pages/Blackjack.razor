@@ -16,24 +16,13 @@
     decimal change = 0M;
     decimal insurance = 0M;
 
-    bool hasStood = false;
-    bool hasInsurance = false;
-
-    public async Task StartGame()
-    {
-        player = new Player();
-        dealer = new Dealer();
-        status = GameStatus.NotStarted;
-        await InitializeHand();
-    }
-
     public async Task InitializeHand()
     {
         if (dealer.Deck.Count <= 13)
         {
             status = GameStatus.Shuffling;
-            await ForceDelay(1000);
             dealer.Deck = new CardDeck();
+            await ForceDelay(1000);
         }
 
         status = GameStatus.Betting;
@@ -52,7 +41,7 @@
     {
         status = GameStatus.Dealing;
         //Deal a card to each player. The dealer's card is not visible.
-        await player.AddCard(dealer.Deal());
+        await dealer.DealToPlayer(player);
         StateHasChanged();
 
         var dealerCard = dealer.Deal();
@@ -61,10 +50,10 @@
         StateHasChanged();
 
         //Deal another card to each player; these will both be visible.
-        await player.AddCard(dealer.Deal());
+        await dealer.DealToPlayer(player);
         StateHasChanged();
 
-        await dealer.AddCard(dealer.Deal());
+        await dealer.DealToSelf();
         StateHasChanged();
 
         status = GameStatus.InProgress;
@@ -88,7 +77,7 @@
 
         //Reset the game area
         status = GameStatus.NotStarted;
-        hasInsurance = false;
+        player.HasInsurance = false;
 
         //Easter egg!
         if(player.Funds > 1000)
@@ -111,14 +100,14 @@
     {
         if(dealer.Score < 17)
         {
-            await dealer.AddCard(dealer.Deal());
+            await dealer.DealToSelf();
             StateHasChanged();
         }
     }
 
     public async Task Hit()
     {
-        await player.AddCard(dealer.Deal());
+        await dealer.DealToPlayer(player);
         if(player.IsBusted)
         {
             EndHand();
@@ -127,7 +116,7 @@
 
     public async Task Stand()
     {
-        hasStood = true;
+        player.HasStood = true;
         dealer.Reveal();
         while(dealer.Score < 17)
         {
@@ -165,12 +154,12 @@
 
         //No matter what, the pot gets reset
         pot = 0;
-        hasStood = false;
+        player.HasStood = false;
     }
 
     public async Task DoubleDown()
     {
-        hasStood = true;
+        player.HasStood = true;
         //The player may only do this if their shown score is 9, 10, or 11.
         //If this happens, the player doubles their bet.
         pot *= 2;
@@ -192,7 +181,7 @@
     public async void Insurance()
     {
         status = GameStatus.Insurance;
-        hasInsurance = true;
+        player.HasInsurance = true;
 
         if(dealer.HasAceShowing)
         {
@@ -255,27 +244,14 @@
             }
         }
 
-        @if(status == GameStatus.Dealing)
-        {
-            <span class="display-3 text-info">Dealing...</span>
-        }
-        @if (status == GameStatus.InProgress)
-        {
-            <span class="display-3 text-primary">$@pot</span>
-        }
-        @if (status == GameStatus.Shuffling)
-        {
-            <span class="display-3 text-info">Shuffling...</span>
-        }
         @if (status == GameStatus.HandOver)
         {
             <HandResultDisplay Player="player" Dealer="dealer" />
         }
-        @if(status == GameStatus.EscortedOut)
+        @if(status == GameStatus.Dealing || status == GameStatus.Shuffling
+          || status == GameStatus.InProgress || status == GameStatus.EscortedOut)
         {
-            <span class="display-3 text-danger">The House is having you escorted out.</span>
-            <br/>
-            <span>You won the game! Thanks for playing!</span>
+            <MessageDisplay Status="status" Pot="pot"/>
         }
     </div>
 </div>
@@ -284,9 +260,9 @@
     <div class="col-4">
         @if (status == GameStatus.NotStarted || status == GameStatus.EscortedOut || player.Funds < 10)
         {
-            <button class="btn btn-secondary" @onclick="(() => StartGame())">Start Game</button>
+            <button class="btn btn-secondary" @onclick="(() => InitializeHand())">Start Game</button>
         }
-        @if (!player.IsBusted && status == GameStatus.InProgress && !hasStood)
+        @if (!player.IsBusted && status == GameStatus.InProgress && !player.HasStood)
         {
             <button class="btn btn-primary" @onclick="(() => Stand())">Stand</button>
             <button class="btn btn-primary" @onclick="(() => Hit())">Hit</button>
@@ -298,7 +274,7 @@
                 <br />
                 <button class="btn btn-warning" @onclick="(() => DoubleDown())">Double Down</button>
             }
-            @if (dealer.HasAceShowing && !hasInsurance)
+            @if (dealer.HasAceShowing && !player.HasInsurance)
             {
                 <br />
                 <button class="btn btn-warning" @onclick="(() => Insurance())">Insurance ($@(pot / 2))</button>

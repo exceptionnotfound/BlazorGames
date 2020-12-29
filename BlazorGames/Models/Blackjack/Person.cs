@@ -61,13 +61,13 @@ namespace BlazorGames.Models.Blackjack
             if (totalScore <= 21) return totalScore;
 
             //If there are no Aces and the sum total is > 21, we are busted
-            bool hasAces = cards.Any(x => x.Value == Enums.CardValue.Ace);
+            bool hasAces = cards.Any(x => x.Value == CardValue.Ace);
             if (!hasAces && totalScore > 21) return totalScore;
 
             //By this point, the sum will be greater than 21 if all Aces are worth 11
             //So, make each Ace worth 1, until the sum is <= 21
             //There can only ever be four aces in one hand
-            var acesCount = cards.Where(x => x.Value == Enums.CardValue.Ace).Count();
+            var acesCount = cards.Where(x => x.Value == CardValue.Ace).Count();
             var acesScore = cards.Sum(x => x.Score);
 
             while (acesCount > 0)
@@ -94,7 +94,7 @@ namespace BlazorGames.Models.Blackjack
             if (Cards.Count == 2
                 && Score == 21
                 && Cards.Any(x => x.Value == CardValue.Ace)
-                && Cards.Any(x => x.Value == CardValue.King || x.Value == CardValue.Queen || x.Value == CardValue.Jack || x.Value == CardValue.Ten))
+                && Cards.Any(x => x.IsTenCard))
             {
                 return true;
             }

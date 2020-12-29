@@ -1,0 +1,28 @@
+﻿@using BlazorGames.Models.Blackjack.Enums;
+
+@code {
+    [Parameter]
+    public GameStatus Status { get; set; }
+
+    [Parameter]
+    public decimal Pot { get; set; }
+}
+
+@if (Status == GameStatus.Dealing)
+{
+    <span class="display-3 text-info">Dealing...</span>
+}
+@if (Status == GameStatus.InProgress)
+{
+    <span class="display-3 text-primary">$@Pot</span>
+}
+@if (Status == GameStatus.Shuffling)
+{
+    <span class="display-3 text-info">Shuffling...</span>
+}
+@if (Status == GameStatus.EscortedOut)
+{
+    <span class="display-3 text-danger">The House is having you escorted out.</span>
+    <br />
+    <span>You won the game! Thanks for playing!</span>
+}
