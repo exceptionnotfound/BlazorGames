@@ -358,10 +358,13 @@
 }
 
 .blackjack-drawdeck {
-    max-width: 140px;
-    max-height: 190px;
-    border: solid 1px black;
-    background-image: url(../images/blackjack/cardBack.png);
+    height:190px;
+    width:140px;
+    float:left;
+}
+
+.blackjack-drawdeck:not(:first-child) {
+    margin-left: -130px;
 }
 
 .blackjack-card {

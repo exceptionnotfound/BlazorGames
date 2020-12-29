@@ -14,7 +14,7 @@
 
     public async Task InitializeHand()
     {
-        if (dealer.Deck.Count <= 13)
+        if (dealer.Deck.Count < 13)
         {
             status = GameStatus.Shuffling;
             dealer.Deck = new CardDeck();
@@ -202,8 +202,17 @@
 
 <div class="row">
     <div class="col-4">
-        <div class="blackjack-drawdeck">
-            <img src="images/blackjack/cardBack.png" />
+        <div>
+            @{
+                int cardCount = dealer.Deck.Count + 1;
+            }
+            @while (cardCount > 0)
+            {
+                <div class="blackjack-drawdeck">
+                    <img src="images/blackjack/cardBack.png" />
+                </div>
+                cardCount -= 13;
+            }
         </div>
     </div>
     <div class="col-4">
