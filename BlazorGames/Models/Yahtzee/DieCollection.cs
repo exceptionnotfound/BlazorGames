@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BlazorGames.Models.Yahtzee
@@ -10,19 +11,11 @@ namespace BlazorGames.Models.Yahtzee
     {
         public List<Die> Dice { get; set; } = new List<Die>();
 
+
+
         public void Add(int value)
         {
             Dice.Add(new Die(value));
-        }
-
-        public void Roll()
-        {
-            Random rand = new Random();
-            foreach (var die in Dice)
-            {
-                if (!die.IsHeld)
-                    die.Value = rand.Next(1, 7);
-            }
         }
 
         public void ReleaseHold()

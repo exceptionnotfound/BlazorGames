@@ -3,6 +3,7 @@
 @using BlazorGames.Models.Yahtzee;
 @using BlazorGames.Models.Yahtzee.Enums;
 @using BlazorGames.Models.Common;
+@using BlazorGames.Pages.YahtzeePartials; 
 @inject IJSRuntime _jsRuntime;
 
 <PageTitle Title="Yahtzee" />
@@ -48,9 +49,24 @@
         RollsRemaining = 3;
     }
 
-    public void RollDice()
+    public async Task RollDice()
     {
-        Dice.Roll();
+        Random rand = new Random();
+
+        var unheldDice = Dice.Dice.Where(x => x.IsHeld == false);
+
+        foreach (var die in unheldDice)
+        {
+            die.State = DieState.Rolling;
+        }
+
+        foreach (var die in unheldDice)
+        {
+            await Task.Delay(200);
+            die.State = DieState.Stopped;
+            die.Value = rand.Next(1, 7);
+            StateHasChanged();
+        }
         RollsRemaining--;
     }
 
@@ -211,22 +227,7 @@
             {
                 var x = i;
                 var die = Dice.Dice[x];
-                <div class="row">
-                    <div class="col">
-                        @if (IsStartOfTurn)
-                        {
-                            <i class="fas fa-5x fa-dice-@die.GetClassName()"></i>
-                        }
-                        else if (Dice.Dice[x].IsHeld)
-                        {
-                            <i class="fas fa-5x fa-dice-@die.GetClassName() text-primary" @onclick="@(() => die.Hold())"></i>
-                        }
-                        else
-                        {
-                            <i class="fas fa-5x fa-dice-@die.GetClassName()" @onclick="@(() => die.Hold())"></i>
-                        }
-                    </div>
-                </div>
+                <DieDisplay Die="die" IsStartOfTurn="IsStartOfTurn"/>
             }
             <div class="row">
                 <div class="col">

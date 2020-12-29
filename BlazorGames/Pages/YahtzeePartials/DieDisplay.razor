@@ -1,0 +1,34 @@
+﻿@using BlazorGames.Models.Yahtzee; 
+@using BlazorGames.Models.Yahtzee.Enums;
+
+@code {
+    [Parameter]
+    public Die Die { get; set; }
+
+    [Parameter]
+    public bool IsStartOfTurn { get; set; }
+}
+
+<div class="row">
+    <div class="col">
+        @if (Die.State == DieState.Rolling)
+        {
+            <i class="fas fa-5x fa-dice"></i>
+        }
+        else
+        {
+            @if (IsStartOfTurn)
+            {
+                <i class="fas fa-5x fa-dice-@Die.GetClassName()"></i>
+            }
+            else if (Die.IsHeld)
+            {
+                <i class="fas fa-5x fa-dice-@Die.GetClassName() text-primary" @onclick="@(() => Die.Hold())"></i>
+            }
+            else
+            {
+                <i class="fas fa-5x fa-dice-@Die.GetClassName()" @onclick="@(() => Die.Hold())"></i>
+            }
+        }
+    </div>
+</div>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlazorGames.Models.Yahtzee.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace BlazorGames.Models.Yahtzee
         public int Value { get; set; } = 1;
 
         public bool IsHeld { get; set; }
+
+        public DieState State { get; set; } = DieState.Stopped;
 
         public Die(int value)
         {
