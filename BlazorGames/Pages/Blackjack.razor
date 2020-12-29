@@ -7,7 +7,7 @@
 <PageTitle Title="Blackjack" />
 
 @code {
-    Dealer dealer = new Dealer();
+    Dealer dealer = new Dealer(); //Creating a new Dealer also creates a new, shuffled CardDeck
     Player player = new Player();
 
     GameStatus status = GameStatus.NotStarted;
@@ -19,7 +19,15 @@
     bool hasStood = false;
     bool hasInsurance = false;
 
-    public async Task InitializeGame()
+    public async Task StartGame()
+    {
+        player = new Player();
+        dealer = new Dealer();
+        status = GameStatus.NotStarted;
+        await InitializeHand();
+    }
+
+    public async Task InitializeHand()
     {
         if (dealer.Deck.Count <= 13)
         {
@@ -64,16 +72,8 @@
         //If either the player or the dealer has a natural blackjack, the hand is over.
         if (player.HasNaturalBlackjack())
         {
-            ProcessBets();
+            EndHand();
         }
-    }
-
-    public async Task StartGame()
-    {
-        player = new Player();
-        dealer = new Dealer();
-        status = GameStatus.NotStarted;
-        await InitializeGame();
     }
 
     public async Task NewHand()
@@ -98,7 +98,7 @@
         }
 
         //Start the game!
-        await InitializeGame();
+        await InitializeHand();
     }
 
     public async Task ForceDelay(int millis)
@@ -121,7 +121,7 @@
         await player.AddCard(dealer.Deal());
         if(player.IsBusted)
         {
-            ProcessBets();
+            EndHand();
         }
     }
 
@@ -133,26 +133,10 @@
         {
             await DealerMove();
         }
-        ProcessBets();
+        EndHand();
     }
 
-    public async Task DoubleDown()
-    {
-        hasStood = true;
-        //The player may only do this if their shown score is 9, 10, or 11.
-        //If this happens, the player doubles their bet.
-        pot *= 2;
-
-        await ForceDelay(300);
-
-        //The player then gets one additional card
-        await player.AddCard(dealer.Deal());
-
-        //At this point, the player is forced to stand, and we continue as normal.
-        await Stand();
-    }
-
-    public void ProcessBets()
+    public void EndHand()
     {
         status = GameStatus.HandOver;
         if (player.HasNaturalBlackjack() && dealer.Score != 21)
@@ -184,6 +168,22 @@
         hasStood = false;
     }
 
+    public async Task DoubleDown()
+    {
+        hasStood = true;
+        //The player may only do this if their shown score is 9, 10, or 11.
+        //If this happens, the player doubles their bet.
+        pot *= 2;
+
+        await ForceDelay(300);
+
+        //The player then gets one additional card
+        await player.AddCard(dealer.Deal());
+
+        //At this point, the player is forced to stand, and we continue as normal.
+        await Stand();
+    }
+
     //If the dealer has an Ace showing, the player may choose to make an insurance bet.
     //If the player chooses to make an insurance bet, they place a separate bet of 1/2 the original bet
     //The dealer then looks at the hidden card.
@@ -205,7 +205,7 @@
                 change += insurance * 2;
                 status = GameStatus.HandOver;
                 StateHasChanged();
-                ProcessBets();
+                EndHand();
             }
             else
             {
@@ -254,7 +254,12 @@
                 <button class="btn btn-primary" @onclick="(() => Bet(50))">Bet $50</button>
             }
         }
-        @if (status == GameStatus.Dealing || status == GameStatus.InProgress)
+
+        @if(status == GameStatus.Dealing)
+        {
+            <span class="display-3 text-info">Dealing...</span>
+        }
+        @if (status == GameStatus.InProgress)
         {
             <span class="display-3 text-primary">$@pot</span>
         }
