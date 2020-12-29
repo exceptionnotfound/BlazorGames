@@ -5,7 +5,7 @@
     public GameStatus Status { get; set; }
 
     [Parameter]
-    public decimal Pot { get; set; }
+    public decimal Bet { get; set; }
 }
 
 @if (Status == GameStatus.Dealing)
@@ -14,7 +14,7 @@
 }
 @if (Status == GameStatus.InProgress)
 {
-    <span class="display-3 text-primary">$@Pot</span>
+    <span class="display-3 text-primary">$@Bet</span>
 }
 @if (Status == GameStatus.Shuffling)
 {

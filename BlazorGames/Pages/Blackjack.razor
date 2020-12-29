@@ -12,10 +12,6 @@
 
     GameStatus status = GameStatus.NotStarted;
 
-    decimal pot = 0M;
-    decimal change = 0M;
-    decimal insurance = 0M;
-
     public async Task InitializeHand()
     {
         if (dealer.Deck.Count <= 13)
@@ -32,7 +28,7 @@
     {
         if (player.Funds >= amount)
         {
-            pot += amount;
+            player.Bet += amount;
             await Deal();
         }
     }
@@ -49,7 +45,7 @@
         await dealer.AddCard(dealerCard);
         StateHasChanged();
 
-        //Deal another card to each player; these will both be visible.
+        //Deal another card to each player and the dealer; these will all be visible.
         await dealer.DealToPlayer(player);
         StateHasChanged();
 
@@ -58,7 +54,7 @@
 
         status = GameStatus.InProgress;
 
-        //If either the player or the dealer has a natural blackjack, the hand is over.
+        //If the player has a natural blackjack, the hand is over.
         if (player.HasNaturalBlackjack())
         {
             EndHand();
@@ -68,16 +64,15 @@
     public async Task NewHand()
     {
         //Payout the player's bets
-        player.Funds += change;
-        change = 0M;
+        player.Collect();
 
         //Clear the hands
         player.ClearHand();
         dealer.ClearHand();
+        player.InsuranceBet = 0M;
 
         //Reset the game area
         status = GameStatus.NotStarted;
-        player.HasInsurance = false;
 
         //Easter egg!
         if(player.Funds > 1000)
@@ -131,17 +126,17 @@
         if (player.HasNaturalBlackjack() && dealer.Score != 21)
         {
             //Player gets their bet back, plus 1.5 * the bet
-            change += pot * 1.5M;
+            player.Change += player.Bet * 1.5M;
         }
         else if (!player.IsBusted && dealer.IsBusted)
         {
             //If the player is not busted but the dealer is, the player gets the amount of their bet back, plus the bet again.
-            change += pot;
+            player.Change += player.Bet;
         }
         else if (!dealer.IsBusted && !player.IsBusted && player.Score > dealer.Score)
         {
             //This is a "normal" win condition; the player has more than the dealer and neither are busted.
-            change += pot;
+            player.Change += player.Bet;
         }
         else if (!dealer.IsBusted && !player.IsBusted && player.Score == dealer.Score)
         {
@@ -149,11 +144,11 @@
         }
         else //In all other situations, the player loses their bet.
         {
-            change += pot * -1;
+            player.Change += player.Bet * -1;
         }
 
-        //No matter what, the pot gets reset
-        pot = 0;
+        //No matter what, the player's bet gets reset
+        player.Bet = 0;
         player.HasStood = false;
     }
 
@@ -162,7 +157,7 @@
         player.HasStood = true;
         //The player may only do this if their shown score is 9, 10, or 11.
         //If this happens, the player doubles their bet.
-        pot *= 2;
+        player.Bet *= 2;
 
         await ForceDelay(300);
 
@@ -181,24 +176,23 @@
     public async void Insurance()
     {
         status = GameStatus.Insurance;
-        player.HasInsurance = true;
 
         if(dealer.HasAceShowing)
         {
-            insurance = pot / 2;
+            player.InsuranceBet = player.Bet / 2;
             //Dealer looks at hidden card. If it is a ten card, the player gets paid 2-to-1 on the insurance bet
 
             if(dealer.Score == 21)
             {
                 dealer.Reveal();
-                change += insurance * 2;
+                player.Change += player.InsuranceBet * 2;
                 status = GameStatus.HandOver;
                 StateHasChanged();
                 EndHand();
             }
             else
             {
-                change -= insurance;
+                player.Change -= player.InsuranceBet;
             }
         }
 
@@ -221,7 +215,7 @@
 </div>
 <div class="row">
     <div class="col-4">
-        <FundsDisplay Funds="player.Funds" Change="change"/>
+        <FundsDisplay Funds="player.Funds" Change="player.Change"/>
     </div>
     <div class="col-4">
         @if (status == GameStatus.Betting)
@@ -251,7 +245,7 @@
         @if(status == GameStatus.Dealing || status == GameStatus.Shuffling
           || status == GameStatus.InProgress || status == GameStatus.EscortedOut)
         {
-            <MessageDisplay Status="status" Pot="pot"/>
+            <MessageDisplay Status="status" Bet="player.Bet"/>
         }
     </div>
 </div>
@@ -269,7 +263,7 @@
             @if (player.Score >= 9
                && player.Score <= 11
                && player.Cards.Count == 2
-               && player.Funds >= pot * 2)
+               && player.Funds >= player.Bet * 2)
             {
                 <br />
                 <button class="btn btn-warning" @onclick="(() => DoubleDown())">Double Down</button>
@@ -277,7 +271,7 @@
             @if (dealer.HasAceShowing && !player.HasInsurance)
             {
                 <br />
-                <button class="btn btn-warning" @onclick="(() => Insurance())">Insurance ($@(pot / 2))</button>
+                <button class="btn btn-warning" @onclick="(() => Insurance())">Insurance ($@(player.Bet / 2))</button>
             }
         }
         @if (status == GameStatus.HandOver)

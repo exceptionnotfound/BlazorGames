@@ -10,8 +10,20 @@ namespace BlazorGames.Models.Blackjack
     {
         public decimal Funds { get; set; } = 200M;
 
+        public decimal Bet { get; set; }
+
+        public decimal InsuranceBet { get; set; }
+
+        public decimal Change { get; set; }
+
         public bool HasStood { get; set; }
 
-        public bool HasInsurance { get; set; }
+        public bool HasInsurance => InsuranceBet > 0M;
+
+        public void Collect()
+        {
+            Funds += Change;
+            Change = 0M;
+        }
     }
 }
