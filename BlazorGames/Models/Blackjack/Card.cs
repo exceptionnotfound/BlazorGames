@@ -32,5 +32,16 @@ namespace BlazorGames.Models.Blackjack
             }
             
         }
+
+        public bool IsTenCard
+        {
+            get
+            {
+                return Value == CardValue.Ten
+                       || Value == CardValue.Jack
+                       || Value == CardValue.Queen
+                       || Value == CardValue.King;
+            }
+        }
     }
 }

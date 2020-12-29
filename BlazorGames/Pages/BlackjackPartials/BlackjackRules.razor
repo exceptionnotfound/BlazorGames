@@ -91,6 +91,7 @@
 
 <p>
     In addition to the normal gameplay of Blackjack, there are a few special plays that can be made by the player under certain circumstances.
+    When one of these plays can be made, they will show up as a <button @onclick:preventDefault class="btn btn-warning">yellow button</button>.
 </p>
 
 <h4>Doubling Down</h4>
@@ -111,4 +112,32 @@
 
 <p>
     The dealer does not have the option to double down.
+</p>
+
+<h4>Insurance</h4>
+
+<p>
+    If the dealer has an Ace showing, the player may choose to make an <strong>insurance bet</strong>.
+    In the real world, this bet may be anything up to half of the original bet. 
+    In this simulation, the insurance bet will always be half of the original bet.
+</p>
+
+<p>
+    If a player makes an insurance bet, the dealer looks at his hidden card. 
+    If it is a ten-card, then the dealer pays the player at two-to-one of the insurance bet.
+    So, if the original bet is $50, the insurance bet is $25. If the dealer has a hidden ten-card, the payout to the player is $25 * 2 = $50.
+</p>
+
+<p>
+    After processing the insurance bet, if the dealer has a ten card, they have a blackjack and the hand is over.
+    Regular bets are processed normally.
+</p>
+
+<p>
+    If the dealer does NOT have a ten-card hidden, the player loses their insurance bet and play continues as normal.
+</p>
+
+<p>
+    In this way, the player is protected from the dealer having blackjack; if the dealer has blackjack and the player does not, 
+    the insurance bet covers the loss of the regular bet.
 </p>

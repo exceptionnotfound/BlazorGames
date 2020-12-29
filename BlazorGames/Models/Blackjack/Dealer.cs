@@ -1,0 +1,30 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace BlazorGames.Models.Blackjack
+{
+    public class Dealer : Person
+    {
+        public CardDeck Deck { get; set; } = new CardDeck();
+
+        public Card Deal()
+        {
+            return Deck.Draw();
+        }
+
+        public bool HasAceShowing
+        {
+            get
+            {
+                return Cards.Count == 2 && VisibleScore == 11 && Cards.Any(x => x.IsVisible == false);
+            }
+        }
+
+        public void Reveal()
+        {
+            Cards.ForEach(x => x.IsVisible = true);
+        }
+    }
+}

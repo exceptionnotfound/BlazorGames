@@ -1,32 +1,31 @@
 ﻿@page "/blackjack"
 
-@using BlazorGames.Models.Blackjack
+@using BlazorGames.Models.Blackjack;
+@using BlazorGames.Models.Blackjack.Enums;
 @using BlazorGames.Pages.BlackjackPartials;
 
 <PageTitle Title="Blackjack" />
 
 @code {
-    CardDeck deck = new CardDeck();
-    Player dealer = new Player();
+    Dealer dealer = new Dealer();
     Player player = new Player();
 
     GameStatus status = GameStatus.NotStarted;
 
     decimal pot = 0M;
     decimal change = 0M;
+    decimal insurance = 0M;
 
     bool hasStood = false;
+    bool hasInsurance = false;
 
     public async Task InitializeGame()
     {
-        player.Funds += change;
-        change = 0M;
-
-        if (deck.Count <= 13)
+        if (dealer.Deck.Count <= 13)
         {
             status = GameStatus.Shuffling;
             await ForceDelay(1000);
-            deck = new CardDeck();
+            dealer.Deck = new CardDeck();
         }
 
         status = GameStatus.Betting;
@@ -45,30 +44,26 @@
     {
         status = GameStatus.Dealing;
         //Deal a card to each player. The dealer's card is not visible.
-        await player.AddCard(deck.Draw());
+        await player.AddCard(dealer.Deal());
         StateHasChanged();
 
-        var dealerCard = deck.Draw();
+        var dealerCard = dealer.Deal();
         dealerCard.IsVisible = false;
         await dealer.AddCard(dealerCard);
         StateHasChanged();
 
         //Deal another card to each player; these will both be visible.
-        await player.AddCard(deck.Draw());
+        await player.AddCard(dealer.Deal());
         StateHasChanged();
 
-        await dealer.AddCard(deck.Draw());
+        await dealer.AddCard(dealer.Deal());
         StateHasChanged();
 
         status = GameStatus.InProgress;
 
         //If either the player or the dealer has a natural blackjack, the hand is over.
-        if (player.HasNaturalBlackjack() || dealer.HasNaturalBlackjack())
+        if (player.HasNaturalBlackjack())
         {
-            if (dealer.HasNaturalBlackjack())
-            {
-                dealer.Reveal();
-            }
             ProcessBets();
         }
     }
@@ -76,16 +71,33 @@
     public async Task StartGame()
     {
         player = new Player();
-        dealer = new Player();
+        dealer = new Dealer();
         status = GameStatus.NotStarted;
         await InitializeGame();
     }
 
-    public async Task StartHand()
+    public async Task NewHand()
     {
-        player.Clear();
-        dealer.Clear();
+        //Payout the player's bets
+        player.Funds += change;
+        change = 0M;
+
+        //Clear the hands
+        player.ClearHand();
+        dealer.ClearHand();
+
+        //Reset the game area
         status = GameStatus.NotStarted;
+        hasInsurance = false;
+
+        //Easter egg!
+        if(player.Funds > 1000)
+        {
+            status = GameStatus.EscortedOut;
+            return;
+        }
+
+        //Start the game!
         await InitializeGame();
     }
 
@@ -99,14 +111,14 @@
     {
         if(dealer.Score < 17)
         {
-            await dealer.AddCard(deck.Draw());
+            await dealer.AddCard(dealer.Deal());
             StateHasChanged();
         }
     }
 
     public async Task Hit()
     {
-        await player.AddCard(deck.Draw());
+        await player.AddCard(dealer.Deal());
         if(player.IsBusted)
         {
             ProcessBets();
@@ -134,7 +146,7 @@
         await ForceDelay(300);
 
         //The player then gets one additional card
-        await player.AddCard(deck.Draw());
+        await player.AddCard(dealer.Deal());
 
         //At this point, the player is forced to stand, and we continue as normal.
         await Stand();
@@ -146,17 +158,17 @@
         if (player.HasNaturalBlackjack() && dealer.Score != 21)
         {
             //Player gets their bet back, plus 1.5 * the bet
-            change = pot * 1.5M;
+            change += pot * 1.5M;
         }
         else if (!player.IsBusted && dealer.IsBusted)
         {
             //If the player is not busted but the dealer is, the player gets the amount of their bet back, plus the bet again.
-            change = pot;
+            change += pot;
         }
         else if (!dealer.IsBusted && !player.IsBusted && player.Score > dealer.Score)
         {
             //This is a "normal" win condition; the player has more than the dealer and neither are busted.
-            change = pot;
+            change += pot;
         }
         else if (!dealer.IsBusted && !player.IsBusted && player.Score == dealer.Score)
         {
@@ -164,12 +176,44 @@
         }
         else //In all other situations, the player loses their bet.
         {
-            change = pot * -1;
+            change += pot * -1;
         }
 
         //No matter what, the pot gets reset
         pot = 0;
         hasStood = false;
+    }
+
+    //If the dealer has an Ace showing, the player may choose to make an insurance bet.
+    //If the player chooses to make an insurance bet, they place a separate bet of 1/2 the original bet
+    //The dealer then looks at the hidden card.
+    //If the hidden card is a ten card, the dealer pays back the player at 2-to-1.
+    //Otherwise, the player loses the insurance bet, and play continues as normal
+    public async void Insurance()
+    {
+        status = GameStatus.Insurance;
+        hasInsurance = true;
+
+        if(dealer.HasAceShowing)
+        {
+            insurance = pot / 2;
+            //Dealer looks at hidden card. If it is a ten card, the player gets paid 2-to-1 on the insurance bet
+
+            if(dealer.Score == 21)
+            {
+                dealer.Reveal();
+                change += insurance * 2;
+                status = GameStatus.HandOver;
+                StateHasChanged();
+                ProcessBets();
+            }
+            else
+            {
+                change -= insurance;
+            }
+        }
+
+        status = GameStatus.InProgress;
     }
 }
 
@@ -222,12 +266,18 @@
         {
             <HandResultDisplay Player="player" Dealer="dealer" />
         }
+        @if(status == GameStatus.EscortedOut)
+        {
+            <span class="display-3 text-danger">The House is having you escorted out.</span>
+            <br/>
+            <span>You won the game! Thanks for playing!</span>
+        }
     </div>
 </div>
 
 <div class="row">
     <div class="col-4">
-        @if (status == GameStatus.NotStarted || player.Funds < 5)
+        @if (status == GameStatus.NotStarted || status == GameStatus.EscortedOut || player.Funds < 10)
         {
             <button class="btn btn-secondary" @onclick="(() => StartGame())">Start Game</button>
         }
@@ -235,18 +285,23 @@
         {
             <button class="btn btn-primary" @onclick="(() => Stand())">Stand</button>
             <button class="btn btn-primary" @onclick="(() => Hit())">Hit</button>
-            @if(player.Score >= 9 
-                && player.Score <= 11 
-                && player.Cards.Count == 2
-                && player.Funds >= pot * 2)
+            @if (player.Score >= 9
+               && player.Score <= 11
+               && player.Cards.Count == 2
+               && player.Funds >= pot * 2)
             {
-                <br/>
+                <br />
                 <button class="btn btn-warning" @onclick="(() => DoubleDown())">Double Down</button>
+            }
+            @if (dealer.HasAceShowing && !hasInsurance)
+            {
+                <br />
+                <button class="btn btn-warning" @onclick="(() => Insurance())">Insurance ($@(pot / 2))</button>
             }
         }
         @if (status == GameStatus.HandOver)
         {
-            <button class="btn btn-secondary" @onclick="(() => StartHand())">Keep Going!</button>
+            <button class="btn btn-secondary" @onclick="(() => NewHand())">Keep Going!</button>
         }
     </div>
     <div class="col-4">

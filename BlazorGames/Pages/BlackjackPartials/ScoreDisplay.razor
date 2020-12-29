@@ -1,11 +1,12 @@
 ﻿@using BlazorGames.Models.Blackjack;
+@using BlazorGames.Models.Blackjack.Enums; 
 
 @code {
     [Parameter]
     public GameStatus Status { get; set; }
 
     [Parameter]
-    public Player Player { get; set; }
+    public Person Player { get; set; }
 }
 
 @if (Status == GameStatus.InProgress || Status == GameStatus.Dealing || Status == GameStatus.HandOver)
