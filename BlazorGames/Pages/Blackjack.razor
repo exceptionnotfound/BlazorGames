@@ -2,7 +2,7 @@
 
 @using BlazorGames.Models.Blackjack;
 @using BlazorGames.Models.Blackjack.Enums;
-@using BlazorGames.Pages.BlackjackPartials;
+@using BlazorGames.Pages.Partials;
 
 <PageTitle Title="Blackjack" />
 
@@ -173,7 +173,7 @@
     //The dealer then looks at the hidden card.
     //If the hidden card is a ten card, the dealer pays back the player at 2-to-1.
     //Otherwise, the player loses the insurance bet, and play continues as normal
-    public async void Insurance()
+    public void Insurance()
     {
         status = GameStatus.Insurance;
 
@@ -201,7 +201,7 @@
 }
 
 <div class="row">
-    <div class="col-4">
+    <div class="col-3">
         <div>
             @{
                 int cardCount = dealer.Deck.Count + 1;
@@ -215,18 +215,18 @@
             }
         </div>
     </div>
-    <div class="col-4">
+    <div class="col-3">
         <BlackjackHand Cards="dealer.Cards" />
     </div>
-    <div class="col-4">
-        <ScoreDisplay Status="status" Player="dealer" />
+    <div class="col-3">
+        <BlackjackScore Status="status" Player="dealer" />
     </div>
 </div>
 <div class="row">
-    <div class="col-4">
-        <FundsDisplay Funds="player.Funds" Change="player.Change"/>
+    <div class="col-3">
+        <BlackjackFunds Funds="player.Funds" Change="player.Change"/>
     </div>
-    <div class="col-4">
+    <div class="col-3">
         @if (status == GameStatus.Betting)
         {
             @if (player.Funds < 10)
@@ -249,18 +249,18 @@
 
         @if (status == GameStatus.HandOver)
         {
-            <HandResultDisplay Player="player" Dealer="dealer" />
+            <BlackjackHandResult Player="player" Dealer="dealer" />
         }
         @if(status == GameStatus.Dealing || status == GameStatus.Shuffling
           || status == GameStatus.InProgress || status == GameStatus.EscortedOut)
         {
-            <MessageDisplay Status="status" Bet="player.Bet"/>
+            <BlackjackMessage Status="status" Bet="player.Bet"/>
         }
     </div>
 </div>
 
 <div class="row">
-    <div class="col-4">
+    <div class="col-3">
         @if (status == GameStatus.NotStarted || status == GameStatus.EscortedOut || player.Funds < 10)
         {
             <button class="btn btn-secondary" @onclick="(() => InitializeHand())">Start Game</button>
@@ -288,12 +288,12 @@
             <button class="btn btn-secondary" @onclick="(() => NewHand())">Keep Going!</button>
         }
     </div>
-    <div class="col-4">
+    <div class="col-3">
         <BlackjackHand Cards="player.Cards" />
     </div>
-    <div class="col-4">
-        <ScoreDisplay Status="status" Player="player"/>
+    <div class="col-3">
+        <BlackjackScore Status="status" Player="player"/>
     </div>
 </div>
 
-<BlackjackRules />
+<BlackjackRules/>

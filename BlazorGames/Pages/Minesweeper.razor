@@ -1,6 +1,7 @@
 ﻿@page "/minesweeper"
 @using BlazorGames.Models.Minesweeper
 @using BlazorGames.Models.Minesweeper.Enums
+@using BlazorGames.Pages.Partials; 
 @inject IJSRuntime _jsRuntime
 @inject NavigationManager _navManager
 <!-- Sprites, CSS, and layout modified from http://minesweeperonline.com/ -->
@@ -133,4 +134,4 @@
 
 <hr />
 
-<BlazorGames.Pages.MinesweeperHowToMake/>
+<MinesweeperHowToMake/>

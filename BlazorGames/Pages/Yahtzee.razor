@@ -3,8 +3,7 @@
 @using BlazorGames.Models.Yahtzee;
 @using BlazorGames.Models.Yahtzee.Enums;
 @using BlazorGames.Models.Common;
-@using BlazorGames.Pages.YahtzeePartials; 
-@inject IJSRuntime _jsRuntime;
+@using BlazorGames.Pages.Partials; 
 
 <PageTitle Title="Yahtzee" />
 
@@ -213,11 +212,6 @@
 
         return "";
     }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await _jsRuntime.InvokeVoidAsync("Prism.highlightAll");
-    }
 }
 
 <div class="container">
@@ -227,7 +221,7 @@
             {
                 var x = i;
                 var die = Dice.Dice[x];
-                <DieDisplay Die="die" IsStartOfTurn="IsStartOfTurn"/>
+                <YahtzeeDie Die="die" IsStartOfTurn="IsStartOfTurn"/>
             }
             <div class="row">
                 <div class="col">
@@ -310,7 +304,8 @@
         </div>
     </div>
 </div>
-<BlazorGames.Pages.YahtzeeRules />
+
+<YahtzeeRules/>
 
 <hr />
 

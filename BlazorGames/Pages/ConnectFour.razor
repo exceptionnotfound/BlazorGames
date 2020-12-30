@@ -1,15 +1,10 @@
 ﻿@page "/connectfour"
 @using BlazorGames.Models.ConnectFour;
 @using BlazorGames.Models.ConnectFour.Enums;
-@inject IJSRuntime _jsRuntime;
+@using BlazorGames.Pages.Partials; 
 
 @code {
     GameBoard board = new GameBoard();
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await _jsRuntime.InvokeVoidAsync("Prism.highlightAll");
-    }
 }
 
 <PageTitle Title="ConnectFour"/>
@@ -51,4 +46,4 @@ else
 
 <hr />
 
-<BlazorGames.Pages.ConnectFourHowToMake/>
+<ConnectFourHowToMake/>
