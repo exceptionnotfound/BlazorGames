@@ -30,7 +30,7 @@ namespace BlazorGames.Models.Blackjack
                     {
                         Suit = suit,
                         Value = value,
-                        CssClass = "card" + suit.GetDisplayName() + value.GetDisplayName()
+                        ImageName = "card" + suit.GetDisplayName() + value.GetDisplayName()
                     };
 
                     cards.Add(newCard);

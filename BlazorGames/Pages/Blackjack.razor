@@ -122,7 +122,7 @@
 
     public void EndHand()
     {
-        status = GameStatus.HandOver;
+        status = GameStatus.Payout;
         if (player.HasNaturalBlackjack() && dealer.Score != 21)
         {
             //Player gets their bet back, plus 1.5 * the bet
@@ -186,7 +186,7 @@
             {
                 dealer.Reveal();
                 player.Change += player.InsuranceBet * 2;
-                status = GameStatus.HandOver;
+                status = GameStatus.Payout;
                 StateHasChanged();
                 EndHand();
             }
@@ -247,7 +247,7 @@
             }
         }
 
-        @if (status == GameStatus.HandOver)
+        @if (status == GameStatus.Payout)
         {
             <BlackjackHandResult Player="player" Dealer="dealer" />
         }
@@ -283,7 +283,7 @@
                 <button class="btn btn-warning" @onclick="(() => Insurance())">Insurance ($@(player.Bet / 2))</button>
             }
         }
-        @if (status == GameStatus.HandOver)
+        @if (status == GameStatus.Payout)
         {
             <button class="btn btn-secondary" @onclick="(() => NewHand())">Keep Going!</button>
         }

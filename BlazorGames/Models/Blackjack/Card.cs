@@ -10,7 +10,7 @@ namespace BlazorGames.Models.Blackjack
     {
         public CardSuit Suit { get; set; }
         public CardValue Value { get; set; }
-        public string CssClass { get; set; }
+        public string ImageName { get; set; }
         public bool IsVisible { get; set; } = true;
 
         public int Score
