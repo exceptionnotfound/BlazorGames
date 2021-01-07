@@ -8,7 +8,7 @@
     public Person Dealer { get; set; }
 }
 
-@if (Player.HasNaturalBlackjack()
+@if (Player.HasNaturalBlackjack
      && (Player.Score > Dealer.Score || Dealer.IsBusted))
 {
     <h1 class="display-3 text-success">Blackjack!</h1>

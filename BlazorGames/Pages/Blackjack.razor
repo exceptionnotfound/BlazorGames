@@ -55,7 +55,7 @@
         status = GameStatus.InProgress;
 
         //If the player has a natural blackjack, the hand is over.
-        if (player.HasNaturalBlackjack())
+        if (player.HasNaturalBlackjack)
         {
             EndHand();
         }
@@ -123,7 +123,7 @@
     public void EndHand()
     {
         status = GameStatus.Payout;
-        if (player.HasNaturalBlackjack() && dealer.Score != 21)
+        if (player.HasNaturalBlackjack && dealer.Score != 21)
         {
             //Player gets their bet back, plus 1.5 * the bet
             player.Change += player.Bet * 1.5M;

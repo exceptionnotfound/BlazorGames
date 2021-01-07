@@ -26,6 +26,7 @@ namespace BlazorGames.Models.Blackjack
             {
                 foreach (CardValue value in (CardValue[])Enum.GetValues(typeof(CardValue)))
                 {
+                    //For each suit and value, create and insert a new Card object.
                     Card newCard = new Card()
                     {
                         Suit = suit,

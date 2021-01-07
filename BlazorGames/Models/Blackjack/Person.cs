@@ -6,24 +6,24 @@ using System.Threading.Tasks;
 
 namespace BlazorGames.Models.Blackjack
 {
-    public class Person
+public class Person
+{
+    public List<Card> Cards { get; set; } = new List<Card>();
+
+    public string ScoreDisplay
     {
-        public List<Card> Cards { get; set; } = new List<Card>();
-
-        public string ScoreDisplay
+        get
         {
-            get
-            {
-                if (HasNaturalBlackjack() && Cards.All(x => x.IsVisible))
-                    return "Blackjack!";
+            if (HasNaturalBlackjack && Cards.All(x => x.IsVisible))
+                return "Blackjack!";
 
-                var score = VisibleScore;
+            var score = VisibleScore;
 
-                if (score > 21)
-                    return "Busted!";
-                else return score.ToString();
-            }
+            if (score > 21)
+                return "Busted!";
+            else return score.ToString();
         }
+    }
 
         public async Task AddCard(Card card)
         {
@@ -31,21 +31,21 @@ namespace BlazorGames.Models.Blackjack
             await Task.Delay(300);
         }
 
-        public int Score
+    public int Score
+    {
+        get
         {
-            get
-            {
-                return ScoreCalculation();
-            }
+            return ScoreCalculation();
         }
+    }
 
-        public int VisibleScore
+    public int VisibleScore
+    {
+        get
         {
-            get
-            {
-                return ScoreCalculation(true);
-            }
+            return ScoreCalculation(true);
         }
+    }
 
         private int ScoreCalculation(bool onlyVisible = false)
         {
@@ -89,17 +89,10 @@ namespace BlazorGames.Models.Blackjack
             Cards = new List<Card>();
         }
 
-        public bool HasNaturalBlackjack()
-        {
-            if (Cards.Count == 2
-                && Score == 21
-                && Cards.Any(x => x.Value == CardValue.Ace)
-                && Cards.Any(x => x.IsTenCard))
-            {
-                return true;
-            }
-
-            return false;
-        }
+        public bool HasNaturalBlackjack =>
+            Cards.Count == 2
+            && Score == 21
+            && Cards.Any(x => x.Value == CardValue.Ace)
+            && Cards.Any(x => x.IsTenCard);
     }
 }
