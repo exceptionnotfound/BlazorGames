@@ -6,24 +6,28 @@ using System.Threading.Tasks;
 
 namespace BlazorGames.Models.Blackjack
 {
-public class Person
-{
-    public List<Card> Cards { get; set; } = new List<Card>();
-
-    public string ScoreDisplay
+    public class Person
     {
-        get
+        public List<Card> Cards { get; set; } = new List<Card>();
+
+        public string ScoreDisplay
         {
-            if (HasNaturalBlackjack && Cards.All(x => x.IsVisible))
-                return "Blackjack!";
+            get
+            {
+                if (HasNaturalBlackjack && Cards.All(x => x.IsVisible))
+                    return "Blackjack!";
 
-            var score = VisibleScore;
+                //We use Visible Score because this display
+                //should only show the Dealer's visible score,
+                //and the Player's visible score and true score
+                //will always be the same value.
+                var score = VisibleScore;
 
-            if (score > 21)
-                return "Busted!";
-            else return score.ToString();
+                if (score > 21)
+                    return "Busted!";
+                else return score.ToString();
+            }
         }
-    }
 
         public async Task AddCard(Card card)
         {
@@ -31,21 +35,21 @@ public class Person
             await Task.Delay(300);
         }
 
-    public int Score
-    {
-        get
+        public int Score
         {
-            return ScoreCalculation();
+            get
+            {
+                return ScoreCalculation();
+            }
         }
-    }
 
-    public int VisibleScore
-    {
-        get
+        public int VisibleScore
         {
-            return ScoreCalculation(true);
+            get
+            {
+                return ScoreCalculation(true);
+            }
         }
-    }
 
         private int ScoreCalculation(bool onlyVisible = false)
         {
@@ -86,7 +90,7 @@ public class Person
 
         public void ClearHand()
         {
-            Cards = new List<Card>();
+            Cards.Clear();
         }
 
         public bool HasNaturalBlackjack =>
@@ -94,5 +98,5 @@ public class Person
             && Score == 21
             && Cards.Any(x => x.Value == CardValue.Ace)
             && Cards.Any(x => x.IsTenCard);
-    }
+        }
 }
