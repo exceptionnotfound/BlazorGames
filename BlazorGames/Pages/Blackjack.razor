@@ -10,18 +10,18 @@
     Dealer dealer = new Dealer(); //Creating a new Dealer also creates a new, shuffled CardDeck
     Player player = new Player();
 
-    GameStatus status = GameStatus.NotStarted;
+    GameState status = GameState.NotStarted;
 
     public async Task InitializeHand()
     {
         if (dealer.Deck.Count < 13)
         {
-            status = GameStatus.Shuffling;
+            status = GameState.Shuffling;
             dealer.Deck = new CardDeck();
             await ForceDelay(1000);
         }
 
-        status = GameStatus.Betting;
+        status = GameState.Betting;
     }
 
     public async Task Bet(decimal amount)
@@ -35,7 +35,7 @@
 
     public async Task Deal()
     {
-        status = GameStatus.Dealing;
+        status = GameState.Dealing;
         //Deal a card to each player. The dealer's card is not visible.
         await dealer.DealToPlayer(player);
         StateHasChanged();
@@ -52,7 +52,7 @@
         await dealer.DealToSelf();
         StateHasChanged();
 
-        status = GameStatus.InProgress;
+        status = GameState.InProgress;
 
         //If the player has a natural blackjack, the hand is over.
         if (player.HasNaturalBlackjack)
@@ -72,12 +72,12 @@
         player.InsuranceBet = 0M;
 
         //Reset the game area
-        status = GameStatus.NotStarted;
+        status = GameState.NotStarted;
 
         //Easter egg!
         if(player.Funds > 1000)
         {
-            status = GameStatus.EscortedOut;
+            status = GameState.EscortedOut;
             return;
         }
 
@@ -122,7 +122,7 @@
 
     public void EndHand()
     {
-        status = GameStatus.Payout;
+        status = GameState.Payout;
         if (player.HasNaturalBlackjack && dealer.Score != 21)
         {
             //Player gets their bet back, plus 1.5 * the bet
@@ -175,7 +175,7 @@
     //Otherwise, the player loses the insurance bet, and play continues as normal
     public void Insurance()
     {
-        status = GameStatus.Insurance;
+        status = GameState.Insurance;
 
         if(dealer.HasAceShowing)
         {
@@ -186,7 +186,7 @@
             {
                 dealer.Reveal();
                 player.Change += player.InsuranceBet * 2;
-                status = GameStatus.Payout;
+                status = GameState.Payout;
                 StateHasChanged();
                 EndHand();
             }
@@ -196,7 +196,7 @@
             }
         }
 
-        status = GameStatus.InProgress;
+        status = GameState.InProgress;
     }
 }
 
@@ -227,7 +227,7 @@
         <BlackjackFunds Funds="player.Funds" Change="player.Change"/>
     </div>
     <div class="col-3">
-        @if (status == GameStatus.Betting)
+        @if (status == GameState.Betting)
         {
             @if (player.Funds < 10)
             {
@@ -247,12 +247,12 @@
             }
         }
 
-        @if (status == GameStatus.Payout)
+        @if (status == GameState.Payout)
         {
             <BlackjackHandResult Player="player" Dealer="dealer" />
         }
-        @if(status == GameStatus.Dealing || status == GameStatus.Shuffling
-          || status == GameStatus.InProgress || status == GameStatus.EscortedOut)
+        @if(status == GameState.Dealing || status == GameState.Shuffling
+         || status == GameState.InProgress || status == GameState.EscortedOut)
         {
             <BlackjackMessage Status="status" Bet="player.Bet"/>
         }
@@ -261,11 +261,11 @@
 
 <div class="row">
     <div class="col-3">
-        @if (status == GameStatus.NotStarted || status == GameStatus.EscortedOut || player.Funds < 10)
+        @if (status == GameState.NotStarted || status == GameState.EscortedOut || player.Funds < 10)
         {
             <button class="btn btn-secondary" @onclick="(() => InitializeHand())">Start Game</button>
         }
-        @if (!player.IsBusted && status == GameStatus.InProgress && !player.HasStood)
+        @if (!player.IsBusted && status == GameState.InProgress && !player.HasStood)
         {
             <button class="btn btn-primary" @onclick="(() => Stand())">Stand</button>
             <button class="btn btn-primary" @onclick="(() => Hit())">Hit</button>
@@ -283,7 +283,7 @@
                 <button class="btn btn-warning" @onclick="(() => Insurance())">Insurance ($@(player.Bet / 2))</button>
             }
         }
-        @if (status == GameStatus.Payout)
+        @if (status == GameState.Payout)
         {
             <button class="btn btn-secondary" @onclick="(() => NewHand())">Keep Going!</button>
         }

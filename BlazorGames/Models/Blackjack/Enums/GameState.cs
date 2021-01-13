@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BlazorGames.Models.Blackjack.Enums
 {
-    public enum GameStatus
+    public enum GameState
     {
         NotStarted, //Before first hand
         Betting, //During the betting phase

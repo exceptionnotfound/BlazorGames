@@ -3,13 +3,13 @@
 
 @code {
     [Parameter]
-    public GameStatus Status { get; set; }
+    public GameState Status { get; set; }
 
     [Parameter]
     public Person Player { get; set; }
 }
 
-@if (Status == GameStatus.InProgress || Status == GameStatus.Dealing || Status == GameStatus.Payout)
+@if (Status == GameState.InProgress || Status == GameState.Dealing || Status == GameState.Payout)
 {
     <h1 class="display-3 text-info">@Player.ScoreDisplay</h1>
 }
