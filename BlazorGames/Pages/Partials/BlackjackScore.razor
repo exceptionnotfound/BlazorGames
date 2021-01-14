@@ -9,7 +9,7 @@
     public Person Player { get; set; }
 }
 
-@if (Status == GameState.InProgress || Status == GameState.Dealing || Status == GameState.Payout)
+@if (Status == GameState.InProgress || Status == GameState.Dealing || Status == GameState.Insurance || Status == GameState.Payout)
 {
     <h1 class="display-3 text-info">@Player.ScoreDisplay</h1>
 }
