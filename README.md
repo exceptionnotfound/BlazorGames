@@ -13,5 +13,9 @@ This project is used in many blog posts on my site, including:
 * [Conway's Game of Life (With Emojis!) in C# and Blazor WebAssembly](https://exceptionnotfound.net/conways-game-of-life-with-emojis-in-csharp-and-blazor-webassembly/)
 * [Yahtzee in Blazor WebAssembly Part 1: The C# Model](https://exceptionnotfound.net/yahtzee-in-blazor-webassembly-part-1-the-csharp-model/)
 * [Yahtzee in Blazor WebAssembly Part 2: The Blazor Component](https://exceptionnotfound.net/yahtzee-in-blazor-webassembly-part-2-the-blazor-component/)
+* [Blackjack in Blazor Part 1: Rules and Modeling the Game](https://exceptionnotfound.net/blackjack-in-blazor-part-1-rules-and-modeling-the-game/)
+* Blackjack in Blazor Part 2: The C# Classes
+* Blackjack in Blazor Part 3: Game State and Blazor Components
+* Blackjack in Blazor Part 4: Putting it All Together
 
 More to come! Pull requests are welcome on this project.
