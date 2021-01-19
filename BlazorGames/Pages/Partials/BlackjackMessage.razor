@@ -2,25 +2,25 @@
 
 @code {
     [Parameter]
-    public GameState Status { get; set; }
+    public GameState State { get; set; }
 
     [Parameter]
     public decimal Bet { get; set; }
 }
 
-@if (Status == GameState.Dealing)
+@if (State == GameState.Dealing)
 {
     <span class="display-3 text-info">Dealing...</span>
 }
-@if (Status == GameState.InProgress)
+@if (State == GameState.InProgress)
 {
     <span class="display-3 text-primary">$@Bet</span>
 }
-@if (Status == GameState.Shuffling)
+@if (State == GameState.Shuffling)
 {
     <span class="display-3 text-info">Shuffling...</span>
 }
-@if (Status == GameState.EscortedOut)
+@if (State == GameState.EscortedOut)
 {
     <span class="display-3 text-danger">The House is having you escorted out.</span>
     <br />

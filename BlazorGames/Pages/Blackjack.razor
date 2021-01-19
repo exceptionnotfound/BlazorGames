@@ -10,18 +10,18 @@
     Dealer dealer = new Dealer(); //Creating a new Dealer also creates a new, shuffled CardDeck
     Player player = new Player();
 
-    GameState status = GameState.NotStarted;
+    GameState state = GameState.NotStarted;
 
     public async Task InitializeHand()
     {
         if (dealer.Deck.Count < 13)
         {
-            status = GameState.Shuffling;
+            state = GameState.Shuffling;
             dealer.Deck = new CardDeck();
-            await ForceDelay(1000);
+            await Delay(1000);
         }
 
-        status = GameState.Betting;
+        state = GameState.Betting;
     }
 
     public async Task Bet(decimal amount)
@@ -35,7 +35,7 @@
 
     public async Task Deal()
     {
-        status = GameState.Dealing;
+        state = GameState.Dealing;
         //Deal a card to each player. The dealer's card is not visible.
         await dealer.DealToPlayer(player);
         StateHasChanged();
@@ -52,7 +52,7 @@
         await dealer.DealToSelf();
         StateHasChanged();
 
-        status = GameState.InProgress;
+        state = GameState.InProgress;
 
         //If the player has a natural blackjack, the hand is over.
         if (player.HasNaturalBlackjack)
@@ -69,34 +69,34 @@
         //Clear the hands
         player.ClearHand();
         dealer.ClearHand();
-        player.InsuranceBet = 0M;
 
         //Reset the game area
-        status = GameState.NotStarted;
+        state = GameState.NotStarted;
 
         //Easter egg!
         if(player.Funds > 1000)
         {
-            status = GameState.EscortedOut;
+            state = GameState.EscortedOut;
             return;
         }
 
-        //Start the game!
+        //Begin a new hand!
         await InitializeHand();
     }
 
-    public async Task ForceDelay(int millis)
+    public async Task Delay(int millis)
     {
         await Task.Delay(millis);
         StateHasChanged();
     }
 
-    public async Task DealerMove()
+    public async Task DealerTurn()
     {
         if(dealer.Score < 17)
         {
             await dealer.DealToSelf();
             StateHasChanged();
+            await DealerTurn();
         }
     }
 
@@ -113,16 +113,15 @@
     {
         player.HasStood = true;
         dealer.Reveal();
-        while(dealer.Score < 17)
-        {
-            await DealerMove();
-        }
+
+        await DealerTurn();
+
         EndHand();
     }
 
     public void EndHand()
     {
-        status = GameState.Payout;
+        state = GameState.Payout;
         if (player.HasNaturalBlackjack && dealer.Score != 21)
         {
             //Player gets their bet back, plus 1.5 * the bet
@@ -159,12 +158,12 @@
         //If this happens, the player doubles their bet.
         player.Bet *= 2;
 
-        await ForceDelay(300);
+        await Delay(300);
 
         //The player then gets one additional card
         await player.AddCard(dealer.Deal());
 
-        //At this point, the player is forced to stand, and we continue as normal.
+        //At this point, the player is forced to stand.
         await Stand();
     }
 
@@ -175,28 +174,35 @@
     //Otherwise, the player loses the insurance bet, and play continues as normal
     public void Insurance()
     {
-        status = GameState.Insurance;
+        state = GameState.Insurance;
 
         if(dealer.HasAceShowing)
         {
+            //Insurance bet is half the original bet
             player.InsuranceBet = player.Bet / 2;
-            //Dealer looks at hidden card. If it is a ten card, the player gets paid 2-to-1 on the insurance bet
 
-            if(dealer.Score == 21)
+            if(dealer.Score == 21) //If the dealer has Blackjack
             {
+                //Reveal the hidden card
                 dealer.Reveal();
+
+                //Pay the player twice the insurance bet
                 player.Change += player.InsuranceBet * 2;
-                status = GameState.Payout;
+
+                //Go straight to the Payout state
+                state = GameState.Payout;
                 StateHasChanged();
                 EndHand();
             }
             else
             {
+                //Player loses their insurance bet
                 player.Change -= player.InsuranceBet;
             }
         }
 
-        status = GameState.InProgress;
+        //Unless the hand is over, play continues normally.
+        state = GameState.InProgress;
     }
 }
 
@@ -219,7 +225,7 @@
         <BlackjackHand Cards="dealer.Cards" />
     </div>
     <div class="col-3">
-        <BlackjackScore Status="status" Player="dealer" />
+        <BlackjackScore State="state" Player="dealer" />
     </div>
 </div>
 <div class="row">
@@ -227,7 +233,7 @@
         <BlackjackFunds Funds="player.Funds" Change="player.Change"/>
     </div>
     <div class="col-3">
-        @if (status == GameState.Betting)
+        @if (state == GameState.Betting)
         {
             @if (player.Funds < 10)
             {
@@ -247,25 +253,25 @@
             }
         }
 
-        @if (status == GameState.Payout)
+        @if (state == GameState.Payout)
         {
             <BlackjackHandResult Player="player" Dealer="dealer" />
         }
-        @if(status == GameState.Dealing || status == GameState.Shuffling
-         || status == GameState.InProgress || status == GameState.EscortedOut)
+        @if(state == GameState.Dealing || state == GameState.Shuffling
+         || state == GameState.InProgress || state == GameState.EscortedOut)
         {
-            <BlackjackMessage Status="status" Bet="player.Bet"/>
+            <BlackjackMessage State="state" Bet="player.Bet"/>
         }
     </div>
 </div>
 
 <div class="row">
     <div class="col-3">
-        @if (status == GameState.NotStarted || status == GameState.EscortedOut || player.Funds < 10)
+        @if (state == GameState.NotStarted || state == GameState.EscortedOut || player.Funds < 10)
         {
             <button class="btn btn-secondary" @onclick="(() => InitializeHand())">Start Game</button>
         }
-        @if (!player.IsBusted && status == GameState.InProgress && !player.HasStood)
+        @if (!player.IsBusted && state == GameState.InProgress && !player.HasStood)
         {
             <button class="btn btn-primary" @onclick="(() => Stand())">Stand</button>
             <button class="btn btn-primary" @onclick="(() => Hit())">Hit</button>
@@ -283,7 +289,7 @@
                 <button class="btn btn-warning" @onclick="(() => Insurance())">Insurance ($@(player.Bet / 2))</button>
             }
         }
-        @if (status == GameState.Payout)
+        @if (state == GameState.Payout)
         {
             <button class="btn btn-secondary" @onclick="(() => NewHand())">Keep Going!</button>
         }
@@ -292,7 +298,7 @@
         <BlackjackHand Cards="player.Cards" />
     </div>
     <div class="col-3">
-        <BlackjackScore Status="status" Player="player"/>
+        <BlackjackScore State="state" Player="player"/>
     </div>
 </div>
 

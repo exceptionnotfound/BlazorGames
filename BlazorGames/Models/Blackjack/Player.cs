@@ -24,6 +24,7 @@ namespace BlazorGames.Models.Blackjack
         {
             Funds += Change;
             Change = 0M;
+            InsuranceBet = 0M;
         }
     }
 }
