@@ -241,7 +241,19 @@ Let's make this classic childhood game using Blazor, C#, and ASP.NET Core!
 </code></pre>
 
 <p>
-    The method to do this for a single given space looks like this:
+    The WinningPlay class will be used to store the winner if we find a tic-tac-toe:
+</p>
+
+<pre class="language-csharp"><code class="language-csharp">public class WinningPlay
+{
+    public List&lt;string&gt; WinningMoves { get; set; }
+    public EvaluationDirection WinningDirection { get; set; }
+    public PieceStyle WinningStyle { get; set; }
+}
+</code></pre>
+
+<p>
+    The method to search for tic-tac-toes for a single given space looks like this:
 </p>
 
 <pre class="language-csharp"><code class="language-csharp">public class GameBoard
