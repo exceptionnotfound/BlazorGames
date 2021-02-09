@@ -11,11 +11,11 @@ namespace BlazorGames.Models.Tetris.Tetrominos
         {
             Random rand = new Random(DateTime.Now.Millisecond);
 
-            var style = (TetrominoStyle)rand.Next(1, 4);
+            var style = (TetrominoStyle)rand.Next(1, 5);
 
             while(style == currentStyle)
             {
-                style = (TetrominoStyle)rand.Next(1, 4);
+                style = (TetrominoStyle)rand.Next(1, 5);
             }
 
             switch(style)
@@ -28,6 +28,9 @@ namespace BlazorGames.Models.Tetris.Tetrominos
 
                 case TetrominoStyle.TShaped:
                     return new TShaped();
+
+                case TetrominoStyle.LeftZigZag:
+                    return new LeftZigZag();
 
                 default:
                     return new Block();

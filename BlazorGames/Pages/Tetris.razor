@@ -16,8 +16,7 @@
     Tetromino nextPiece = new Tetromino();
     string key;
 
-    int delay = 10;
-    int delayMultiplier = 100;
+    int standardDelay = 1000;
 
     public async Task RunGame()
     {
@@ -32,8 +31,6 @@
 
         while(!board.Coordinates.HasRow(21))
         {
-            delayMultiplier = 100;
-
             StateHasChanged();
 
             await RunCurrentPiece();
@@ -50,14 +47,11 @@
 
     public async Task RunCurrentPiece()
     {
-        while (currentPiece.CanMoveDown(board.Coordinates))
+        while (currentPiece.CanMoveDown(board))
         {
-            currentPiece.MoveDown(board.Coordinates);
+            currentPiece.MoveDown(board);
             StateHasChanged();
-            for (int i = 1; i <= delayMultiplier; i++)
-            {
-                await Task.Delay(delay);
-            }
+            await Task.Delay(standardDelay);
         }
     }
 
@@ -71,22 +65,27 @@
         }
     }
 
-    protected void KeyDown(KeyboardEventArgs e)
+    protected async Task KeyDown(KeyboardEventArgs e)
     {
         key = "Key Pressed: " + e.Key;
         if (board.State == GameState.Playing)
         {
             if (e.Key == "ArrowRight")
             {
-                currentPiece.MoveRight(board.Width);
+                currentPiece.MoveRight(board);
             }
             if (e.Key == "ArrowLeft")
             {
-                currentPiece.MoveLeft();
+                currentPiece.MoveLeft(board);
             }
             if(e.Key == "ArrowDown")
             {
-                delayMultiplier = 1;
+                while(currentPiece.CanMoveDown(board))
+                {
+                    currentPiece.MoveDown(board);
+                }
+                StateHasChanged();
+                await Task.Delay(10);
             }
             if(e.Key == "ArrowUp")
             {

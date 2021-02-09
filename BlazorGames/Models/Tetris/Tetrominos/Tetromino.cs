@@ -60,26 +60,26 @@ namespace BlazorGames.Models.Tetris.Tetrominos
             }
         }
 
-        public void MoveRight(int maxSize)
+        public void MoveRight(Board board)
         {
-            if (!CoveredSpaces.HasColumn(maxSize))
+            if (CanMoveRight(board))
             {
                 CenterPieceColumn++;
             }
         }
 
-        public void MoveDown(CoordinateCollection occupiedSpaces)
+        public void MoveDown(Board board)
         {
-            if (CanMoveDown(occupiedSpaces))
+            if (CanMoveDown(board))
                 CenterPieceRow--;
         }
 
-        public bool CanMoveDown(CoordinateCollection occupiedSpaces)
+        public bool CanMoveDown(Board board)
         {
             //For each of the covered spaces, get the space immediately below
             foreach (var coord in CoveredSpaces.GetLowest())
             {
-                if (occupiedSpaces.Contains(coord.Row - 1, coord.Column))
+                if (board.Coordinates.Contains(coord.Row - 1, coord.Column))
                     return false;
             }
 
@@ -89,12 +89,42 @@ namespace BlazorGames.Models.Tetris.Tetrominos
             return true;
         }
 
-        public void MoveLeft()
+        public bool CanMoveRight(Board board)
         {
-            if (!CoveredSpaces.HasColumn(1))
+            //For each of the covered spaces, get the space immediately to the right
+            foreach (var coord in CoveredSpaces.GetRightmost())
+            {
+                if (board.Coordinates.Contains(coord.Row, coord.Column + 1))
+                    return false;
+            }
+
+            if (CoveredSpaces.HasColumn(10))
+                return false;
+
+            return true;
+        }
+
+        public void MoveLeft(Board board)
+        {
+            if (CanMoveLeft(board))
             {
                 CenterPieceColumn--;
             }
+        }
+
+        public bool CanMoveLeft(Board board)
+        {
+            //For each of the covered spaces, get the space immediately to the left
+            foreach (var coord in CoveredSpaces.GetLeftmost())
+            {
+                if (board.Coordinates.Contains(coord.Row, coord.Column - 1))
+                    return false;
+            }
+
+            if (CoveredSpaces.HasColumn(1))
+                return false;
+
+            return true;
         }
     }
 }

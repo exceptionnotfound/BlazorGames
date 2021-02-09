@@ -9,6 +9,7 @@ namespace BlazorGames.Models.Tetris
     {
         NotStarted,
         Playing,
+        Dropping,
         GameOver
     }
 }

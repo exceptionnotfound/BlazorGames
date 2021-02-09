@@ -379,21 +379,21 @@
 
 .tetris-container {
     display:table;
-    width:300px;
+    width:240px;
 }
 
 .tetris-row {
     display:table-row;
-    height:30px;
-    width:300px;
+    height:24px;
+    width:240px;
 }
 
 .tetris-cell {
     display:table-cell;
-    background-color:black;
-    width:30px;
-    height:30px;
-    border:solid 1px gray;
+    background-color:#000000;
+    width:24px;
+    height:24px;
+    border:solid 1px #242323;
 }
 
 .tetris-piece {
@@ -404,13 +404,29 @@
 }
 
 .tetris-red-piece {
-    background-color:red;
+    background-image: url(../images/tetris/tetromino-red.png);
 }
 
-.tetris-blue-piece {
-    background-color:blue;
+.tetris-lightblue-piece {
+    background-image: url(../images/tetris/tetromino-lightblue.png);
 }
 
 .tetris-purple-piece {
-    background-color: purple;
+    background-image: url(../images/tetris/tetromino-purple.png);
+}
+
+.tetris-yellow-piece {
+    background-image: url(../images/tetris/tetromino-yellow.png);
+}
+
+.tetris-green-piece {
+    background-image: url(../images/tetris/tetromino-green.png);
+}
+
+.tetris-orange-piece {
+    background-image: url(../images/tetris/tetromino-orange.png);
+}
+
+.tetris-darkblue-piece {
+    background-image: url(../images/tetris/tetromino-darkblue.png);
 }

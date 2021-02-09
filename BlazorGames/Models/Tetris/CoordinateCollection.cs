@@ -51,6 +51,34 @@ namespace BlazorGames.Models.Tetris
             return coords;
         }
 
+        public List<Coordinate> GetRightmost()
+        {
+            List<Coordinate> coords = new List<Coordinate>();
+            foreach (var coord in _coordinates)
+            {
+                if (!Contains(coord.Row, coord.Column + 1))
+                {
+                    coords.Add(coord);
+                }
+            }
+
+            return coords;
+        }
+
+        public List<Coordinate> GetLeftmost()
+        {
+            List<Coordinate> coords = new List<Coordinate>();
+            foreach (var coord in _coordinates)
+            {
+                if (!Contains(coord.Row, coord.Column - 1))
+                {
+                    coords.Add(coord);
+                }
+            }
+
+            return coords;
+        }
+
         public bool HasRow(int row)
         {
             return _coordinates.Any(c => c.Row == row);

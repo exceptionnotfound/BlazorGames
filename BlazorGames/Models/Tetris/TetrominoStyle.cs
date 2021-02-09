@@ -9,6 +9,7 @@ namespace BlazorGames.Models.Tetris
     {
         Straight = 1,
         Block = 2,
-        TShaped = 3
+        TShaped = 3,
+        LeftZigZag = 4
     }
 }

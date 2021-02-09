@@ -11,7 +11,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
         {
             get
             {
-                return "tetris-blue-piece";
+                return "tetris-lightblue-piece";
             }
         }
 
