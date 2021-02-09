@@ -1,0 +1,42 @@
+﻿@using BlazorGames.Models.Tetris;
+@using BlazorGames.Models.Tetris.Tetrominos; 
+
+@code {
+    [Parameter]
+    public int Row { get; set; }
+
+    [Parameter]
+    public int Column { get; set; }
+
+    [Parameter]
+    public Tetromino Tetromino { get; set; }
+
+    [Parameter]
+    public GameState State { get; set; }
+
+    [Parameter]
+    public CoordinateCollection OccupiedSpaces { get; set; }
+
+}
+
+@{ 
+
+    string extraCSS = "";
+    CoordinateCollection coveredSpaces = new CoordinateCollection();
+    if (State == GameState.Playing || State == GameState.GameOver)
+    {
+        coveredSpaces = Tetromino.CoveredSpaces;
+        if (coveredSpaces.Contains(Row, Column))
+        {
+            extraCSS = "tetris-piece " + Tetromino.CssClass;
+        }
+
+        if (OccupiedSpaces.Contains(Row, Column))
+        {
+            extraCSS = "tetris-piece " + OccupiedSpaces.GetCssClass(Row, Column);
+        }
+    }
+}
+<div id="@(Row + "-" + Column)" class="tetris-cell @extraCSS">
+
+</div>

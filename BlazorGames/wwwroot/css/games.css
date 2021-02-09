@@ -376,3 +376,41 @@
 .blackjack-card:not(:first-child) {
     margin-left: -100px;
 }
+
+.tetris-container {
+    display:table;
+    width:300px;
+}
+
+.tetris-row {
+    display:table-row;
+    height:30px;
+    width:300px;
+}
+
+.tetris-cell {
+    display:table-cell;
+    background-color:black;
+    width:30px;
+    height:30px;
+    border:solid 1px gray;
+}
+
+.tetris-piece {
+    border-top:solid 1px white;
+    border-right:solid 1px gray;
+    border-left:solid 1px gray;
+    border-bottom:solid 1px black;
+}
+
+.tetris-red-piece {
+    background-color:red;
+}
+
+.tetris-blue-piece {
+    background-color:blue;
+}
+
+.tetris-purple-piece {
+    background-color: purple;
+}
