@@ -479,18 +479,24 @@
 
 @keyframes fadeOut {
     0% { background-color: white }
-
     50% { background-color: gray }
-    100% {background-color: black}
+    100% { background-color: black }
 }
 
 @-webkit-keyframes fadeOut {
-    0% {background-color: white}
+    0% { background-color: white }
+    50% { background-color: gray }
+    100% { background-color: black }
+}
+
+@-moz-keyframes fadeOut {
+    0% { background-color: white }
     50% { background-color: gray }
     100% { background-color: black }
 }
 
 .tetris-clear-row {
+    border: solid 1px gray;
     animation-name: fadeOut;
     animation-duration: 1s;
     -webkit-animation-name: fadeOut;

@@ -114,5 +114,19 @@ namespace BlazorGames.Models.Tetris
         {
             _coordinates.Where(x => x.Row == row).ToList().ForEach(x => x.CssClass = cssClass);
         }
+
+        public void RemoveCssClass(string cssClass)
+        {
+            _coordinates.Where(x => x.CssClass == cssClass).ToList().ForEach(x => x.CssClass = "");
+        }
+
+        public void RemoveRows(params int[] rows)
+        {
+            var selectedCoords = _coordinates.Where(x => rows.Contains(x.Row)).ToList();
+            foreach(var coord in selectedCoords)
+            {
+                _coordinates.Remove(coord);
+            }
+        }
     }
 }

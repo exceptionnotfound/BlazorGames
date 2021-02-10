@@ -42,8 +42,6 @@
 
             await RunCurrentPiece();
 
-
-
             currentPiece = generator.CreateFromStyle(nextStyle);
 
             nextStyle = secondNextStyle;
@@ -74,13 +72,33 @@
 
     public async Task ClearCompleteRows()
     {
+        List<int> rowsComplete = new List<int>();
+        bool hasCompleteRows = false;
         for (int i = 1; i <= board.Height; i++)
         {
             if (board.Coordinates.GetAllInRow(i).Count == board.Width)
             {
                 board.Coordinates.SetCssClass(i, "tetris-clear-row");
-                StateHasChanged();
-                await Task.Delay(1500);
+                hasCompleteRows = true;
+                rowsComplete.Add(i);
+            }
+        }
+
+        if(hasCompleteRows)
+        {
+            StateHasChanged();
+            await Task.Delay(1000);
+        }
+
+        board.Coordinates.RemoveRows(rowsComplete.ToArray());
+
+        var allCoords = board.Coordinates.GetAll();
+
+        foreach(var coord in allCoords)
+        {
+            foreach(var row in rowsComplete.Where(x=>x <= coord.Row))
+            {
+                coord.Row--;
             }
         }
     }
