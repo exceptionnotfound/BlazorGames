@@ -120,12 +120,22 @@ namespace BlazorGames.Models.Tetris
             _coordinates.Where(x => x.CssClass == cssClass).ToList().ForEach(x => x.CssClass = "");
         }
 
-        public void RemoveRows(params int[] rows)
+        public void CollapseRows(List<int> rows)
         {
-            var selectedCoords = _coordinates.Where(x => rows.Contains(x.Row)).ToList();
-            foreach(var coord in selectedCoords)
+            var selectedCoords = _coordinates.Where(x => rows.Contains(x.Row));
+
+            List<Coordinate> toRemove = new List<Coordinate>();
+            foreach (var coord in selectedCoords)
             {
-                _coordinates.Remove(coord);
+                toRemove.Add(coord);
+            }
+
+            _coordinates.RemoveAll(x => toRemove.Contains(x));
+
+            foreach (var coord in _coordinates)
+            {
+                int numberOfLessRows = rows.Where(x => x <= coord.Row).Count();
+                coord.Row -= numberOfLessRows;
             }
         }
     }
