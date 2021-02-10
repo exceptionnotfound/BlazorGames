@@ -1,0 +1,48 @@
+﻿@using BlazorGames.Models.Tetris;
+@using BlazorGames.Models.Tetris.Tetrominos;
+
+@code {
+    [Parameter]
+    public TetrominoStyle Style { get; set; }
+}
+
+@{ 
+    string imgURL = "../images/tetris/";
+    switch(Style)
+    {
+        case TetrominoStyle.Block:
+            imgURL += "tetromino-block.png";
+            break;
+
+        case TetrominoStyle.Straight:
+            imgURL += "tetromino-straight.png";
+            break;
+
+        case TetrominoStyle.TShaped:
+            imgURL += "tetromino-tshaped.png";
+            break;
+
+        case TetrominoStyle.LeftZigZag:
+            imgURL += "tetromino-leftzigzag.png";
+            break;
+
+        case TetrominoStyle.RightZigZag:
+            imgURL += "tetromino-rightzigzag.png";
+            break;
+
+        case TetrominoStyle.LShaped:
+            imgURL += "tetromino-lshaped.png";
+            break;
+
+        case TetrominoStyle.ReverseLShaped:
+            imgURL += "tetromino-reverselshaped.png";
+            break;
+    }
+}
+
+
+<div class="row tetris-display-row">
+    <div class="col">
+        <img src="@imgURL"/>
+    </div>
+</div>

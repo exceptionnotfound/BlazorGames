@@ -7,18 +7,21 @@ namespace BlazorGames.Models.Tetris.Tetrominos
 {
     public class TetrominoGenerator
     {
-        public Tetromino Next(TetrominoStyle? currentStyle)
+        public TetrominoStyle Next(params TetrominoStyle[] unusableStyles)
         {
             Random rand = new Random(DateTime.Now.Millisecond);
 
-            var style = (TetrominoStyle)rand.Next(1, 5);
+            var style = (TetrominoStyle)rand.Next(1, 8);
 
-            while(style == currentStyle)
-            {
-                style = (TetrominoStyle)rand.Next(1, 5);
-            }
+            while (unusableStyles.Contains(style))
+                style = (TetrominoStyle)rand.Next(1, 8);
 
-            switch(style)
+            return style;
+        }
+
+        public Tetromino CreateFromStyle(TetrominoStyle style)
+        {
+            switch (style)
             {
                 case TetrominoStyle.Block:
                     return new Block();
@@ -31,6 +34,15 @@ namespace BlazorGames.Models.Tetris.Tetrominos
 
                 case TetrominoStyle.LeftZigZag:
                     return new LeftZigZag();
+
+                case TetrominoStyle.RightZigZag:
+                    return new RightZigZag();
+
+                case TetrominoStyle.LShaped:
+                    return new LShaped();
+
+                case TetrominoStyle.ReverseLShaped:
+                    return new ReverseLShaped();
 
                 default:
                     return new Block();

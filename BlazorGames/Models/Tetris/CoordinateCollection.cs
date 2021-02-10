@@ -14,6 +14,11 @@ namespace BlazorGames.Models.Tetris
             return _coordinates;
         }
 
+        public List<Coordinate> GetAllInRow(int row)
+        {
+            return _coordinates.Where(x => x.Row == row).ToList();
+        }
+
         public void Add(int row, int column)
         {
             _coordinates.Add(new Coordinate(row, column));
@@ -103,6 +108,11 @@ namespace BlazorGames.Models.Tetris
                 return matching.CssClass;
 
             return "";
+        }
+
+        public void SetCssClass(int row, string cssClass)
+        {
+            _coordinates.Where(x => x.Row == row).ToList().ForEach(x => x.CssClass = cssClass);
         }
     }
 }

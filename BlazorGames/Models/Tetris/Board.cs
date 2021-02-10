@@ -12,5 +12,7 @@ namespace BlazorGames.Models.Tetris
         public CoordinateCollection Coordinates { get; set; } = new CoordinateCollection();
 
         public GameState State { get; set; } = GameState.NotStarted;
+
+        
     }
 }

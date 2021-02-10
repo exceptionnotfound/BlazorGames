@@ -13,15 +13,22 @@
     TetrominoGenerator generator = new TetrominoGenerator();
 
     Tetromino currentPiece = new Tetromino();
-    Tetromino nextPiece = new Tetromino();
-    string key;
+    TetrominoStyle nextStyle;
+    TetrominoStyle secondNextStyle;
+    TetrominoStyle thirdNextStyle;
 
     int standardDelay = 1000;
 
     public async Task RunGame()
     {
-        currentPiece = generator.Next(null);
-        nextPiece = generator.Next(currentPiece.Style);
+        var currentPieceStyle = generator.Next();
+        currentPiece = generator.CreateFromStyle(currentPieceStyle);
+
+        nextStyle = generator.Next(currentPiece.Style);
+
+        secondNextStyle = generator.Next(currentPiece.Style, nextStyle);
+
+        thirdNextStyle = generator.Next(currentPiece.Style, nextStyle, secondNextStyle);
 
         board.State = GameState.Playing;
 
@@ -35,11 +42,15 @@
 
             await RunCurrentPiece();
 
-            board.Coordinates.AddGroup(currentPiece.CoveredSpaces.GetAll(), currentPiece.CssClass);
 
-            currentPiece = nextPiece;
 
-            nextPiece = generator.Next(currentPiece.Style);
+            currentPiece = generator.CreateFromStyle(nextStyle);
+
+            nextStyle = secondNextStyle;
+
+            secondNextStyle = thirdNextStyle;
+
+            thirdNextStyle = generator.Next(currentPiece.Style, nextStyle, secondNextStyle);
         }
 
         board.State = GameState.GameOver;
@@ -52,6 +63,25 @@
             currentPiece.MoveDown(board);
             StateHasChanged();
             await Task.Delay(standardDelay);
+        }
+
+        board.Coordinates.AddGroup(currentPiece.CoveredSpaces.GetAll(), currentPiece.CssClass);
+
+        await ClearCompleteRows();
+
+        StateHasChanged();
+    }
+
+    public async Task ClearCompleteRows()
+    {
+        for (int i = 1; i <= board.Height; i++)
+        {
+            if (board.Coordinates.GetAllInRow(i).Count == board.Width)
+            {
+                board.Coordinates.SetCssClass(i, "tetris-clear-row");
+                StateHasChanged();
+                await Task.Delay(1500);
+            }
         }
     }
 
@@ -67,7 +97,6 @@
 
     protected async Task KeyDown(KeyboardEventArgs e)
     {
-        key = "Key Pressed: " + e.Key;
         if (board.State == GameState.Playing)
         {
             if (e.Key == "ArrowRight")
@@ -83,9 +112,9 @@
                 while(currentPiece.CanMoveDown(board))
                 {
                     currentPiece.MoveDown(board);
+                    await Task.Delay(10);
                 }
                 StateHasChanged();
-                await Task.Delay(10);
             }
             if(e.Key == "ArrowUp")
             {
@@ -110,16 +139,35 @@
             <span>Thanks for playing!</span>
         }
     </div>
+    
 </div>
 
-<div class="tetris-container" tabindex="0" @onkeydown="KeyDown" @ref="myDiv">
-    @for (int i = board.Height; i >= 1; i--)
-    {
-        <div class="tetris-row">
-            @for (int j = 1; j <= board.Width; j++)
+<div class="row">
+    <div class="col">
+        <div class="tetris-container" tabindex="0" @onkeydown="KeyDown" @ref="myDiv">
+            @for (int i = board.Height; i >= 1; i--)
             {
-                <TetrisCell Row="i" Column="j" Tetromino="currentPiece" State="board.State" OccupiedSpaces="board.Coordinates" />
+                <div class="tetris-row">
+                    @for (int j = 1; j <= board.Width; j++)
+                    {
+                        <TetrisCell Row="i" Column="j" Tetromino="currentPiece" State="board.State" OccupiedSpaces="board.Coordinates" />
+                    }
+                </div>
             }
+        </div>
+    </div>
+    @if (board.State == GameState.Playing || board.State == GameState.Dropping)
+    {
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <h2>Upcoming Pieces</h2>
+                </div>
+            </div>
+            <TetrisTetrominoDisplay Style="nextStyle" />
+            <TetrisTetrominoDisplay Style="secondNextStyle" />
+            <TetrisTetrominoDisplay Style="thirdNextStyle" />
         </div>
     }
 </div>
+
