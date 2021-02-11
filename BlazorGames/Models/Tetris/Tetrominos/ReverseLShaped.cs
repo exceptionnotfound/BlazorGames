@@ -7,6 +7,8 @@ namespace BlazorGames.Models.Tetris.Tetrominos
 {
     public class ReverseLShaped : Tetromino
     {
+        public ReverseLShaped(Board board) : base(board) { }
+
         public override string CssClass
         {
             get

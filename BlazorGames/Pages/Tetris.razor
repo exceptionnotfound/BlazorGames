@@ -12,17 +12,19 @@
 
     TetrominoGenerator generator = new TetrominoGenerator();
 
-    Tetromino currentPiece = new Tetromino();
+    Tetromino currentPiece;
     TetrominoStyle nextStyle;
     TetrominoStyle secondNextStyle;
     TetrominoStyle thirdNextStyle;
 
     int standardDelay = 1000;
+    int level = 1;
+    int score = 0;
 
     public async Task RunGame()
     {
         var currentPieceStyle = generator.Next();
-        currentPiece = generator.CreateFromStyle(currentPieceStyle);
+        currentPiece = generator.CreateFromStyle(currentPieceStyle, board);
 
         nextStyle = generator.Next(currentPiece.Style);
 
@@ -42,7 +44,7 @@
 
             await RunCurrentPiece();
 
-            currentPiece = generator.CreateFromStyle(nextStyle);
+            currentPiece = generator.CreateFromStyle(nextStyle, board);
 
             nextStyle = secondNextStyle;
 
@@ -57,13 +59,18 @@
     public async Task RunCurrentPiece()
     {
         await Task.Delay(standardDelay);
-        while (currentPiece.CanMoveDown(board))
+        while (currentPiece.CanMoveDown())
         {
-            currentPiece.MoveDown(board);
+            currentPiece.MoveDown();
             StateHasChanged();
             await Task.Delay(standardDelay);
         }
 
+        await SolidifyPiece();
+    }
+
+    public async Task SolidifyPiece()
+    {
         board.Coordinates.AddGroup(currentPiece.CoveredSpaces.GetAll(), currentPiece.CssClass);
 
         await ClearCompleteRows();
@@ -71,8 +78,16 @@
         StateHasChanged();
     }
 
+    public void LevelChange()
+    {
+        level = (score / 5000);
+        standardDelay = standardDelay - ((level - 1) * 100);
+    }
+
     public async Task ClearCompleteRows()
     {
+        board.State = GameState.ClearingRows;
+
         List<int> rowsComplete = new List<int>();
         bool hasCompleteRows = false;
         for (int i = 1; i <= board.Height; i++)
@@ -92,6 +107,27 @@
         }
 
         board.Coordinates.CollapseRows(rowsComplete);
+
+        switch(rowsComplete.Count)
+        {
+            case 1:
+                score += 40 * level;
+                break;
+
+            case 2:
+                score += 100 * level;
+                break;
+
+            case 3:
+                score += 300 * level;
+                break;
+
+            case 4:
+                score += 1200 * level;
+                break;
+        }
+
+        board.State = GameState.Playing;
     }
 
     protected ElementReference myDiv;  // set by the @ref attribute
@@ -110,19 +146,16 @@
         {
             if (e.Key == "ArrowRight")
             {
-                currentPiece.MoveRight(board);
+                currentPiece.MoveRight();
             }
             if (e.Key == "ArrowLeft")
             {
-                currentPiece.MoveLeft(board);
+                currentPiece.MoveLeft();
             }
             if(e.Key == "ArrowDown")
             {
-                while(currentPiece.CanMoveDown(board))
-                {
-                    currentPiece.MoveDown(board);
-                    await Task.Delay(10);
-                }
+                int addlScore = currentPiece.Drop();
+                score += addlScore;
                 StateHasChanged();
             }
             if(e.Key == "ArrowUp")
@@ -148,7 +181,6 @@
             <span>Thanks for playing!</span>
         }
     </div>
-    
 </div>
 
 <div class="row">
@@ -168,6 +200,11 @@
     @if (board.State == GameState.Playing || board.State == GameState.Dropping)
     {
         <div class="col">
+            <div class="row">
+                <div class="col">
+                    <h2>Score: @score</h2>
+                </div>
+            </div>
             <div class="row">
                 <div class="col">
                     <h2>Upcoming Pieces</h2>

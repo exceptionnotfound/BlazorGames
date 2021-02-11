@@ -7,6 +7,8 @@ namespace BlazorGames.Models.Tetris.Tetrominos
 {
     public class LeftZigZag : Tetromino
     {
+        public LeftZigZag(Board board) : base(board) { }
+
         public override string CssClass
         {
             get

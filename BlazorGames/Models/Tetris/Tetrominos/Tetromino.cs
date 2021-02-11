@@ -7,6 +7,8 @@ namespace BlazorGames.Models.Tetris.Tetrominos
 {
     public class Tetromino
     {
+        public Board Board { get; set; }
+
         public TetrominoStyle Style { get; set; }
 
         public TetrominoOrientation Orientation { get; set; } = TetrominoOrientation.LeftRight;
@@ -18,6 +20,11 @@ namespace BlazorGames.Models.Tetris.Tetrominos
         public virtual string CssClass { get; }
 
         public virtual CoordinateCollection CoveredSpaces { get; }
+
+        public Tetromino(Board board)
+        {
+            Board = board;
+        }
 
         public void Rotate() 
         { 
@@ -60,26 +67,38 @@ namespace BlazorGames.Models.Tetris.Tetrominos
             }
         }
 
-        public void MoveRight(Board board)
+        public void MoveRight()
         {
-            if (CanMoveRight(board))
+            if (CanMoveRight())
             {
                 CenterPieceColumn++;
             }
         }
 
-        public void MoveDown(Board board)
+        public int Drop()
         {
-            if (CanMoveDown(board))
+            int scoreCounter = 0;
+            while(CanMoveDown())
+            {
+                MoveDown();
+                scoreCounter++;
+            }
+
+            return scoreCounter;
+        }
+
+        public void MoveDown()
+        {
+            if (CanMoveDown())
                 CenterPieceRow--;
         }
 
-        public bool CanMoveDown(Board board)
+        public bool CanMoveDown()
         {
             //For each of the covered spaces, get the space immediately below
             foreach (var coord in CoveredSpaces.GetLowest())
             {
-                if (board.Coordinates.Contains(coord.Row - 1, coord.Column))
+                if (Board.Coordinates.Contains(coord.Row - 1, coord.Column))
                     return false;
             }
 
@@ -89,12 +108,12 @@ namespace BlazorGames.Models.Tetris.Tetrominos
             return true;
         }
 
-        public bool CanMoveRight(Board board)
+        public bool CanMoveRight()
         {
             //For each of the covered spaces, get the space immediately to the right
             foreach (var coord in CoveredSpaces.GetRightmost())
             {
-                if (board.Coordinates.Contains(coord.Row, coord.Column + 1))
+                if (Board.Coordinates.Contains(coord.Row, coord.Column + 1))
                     return false;
             }
 
@@ -104,20 +123,20 @@ namespace BlazorGames.Models.Tetris.Tetrominos
             return true;
         }
 
-        public void MoveLeft(Board board)
+        public void MoveLeft()
         {
-            if (CanMoveLeft(board))
+            if (CanMoveLeft())
             {
                 CenterPieceColumn--;
             }
         }
 
-        public bool CanMoveLeft(Board board)
+        public bool CanMoveLeft()
         {
             //For each of the covered spaces, get the space immediately to the left
             foreach (var coord in CoveredSpaces.GetLeftmost())
             {
-                if (board.Coordinates.Contains(coord.Row, coord.Column - 1))
+                if (Board.Coordinates.Contains(coord.Row, coord.Column - 1))
                     return false;
             }
 

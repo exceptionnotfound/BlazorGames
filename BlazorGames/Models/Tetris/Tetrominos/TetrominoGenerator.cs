@@ -19,33 +19,33 @@ namespace BlazorGames.Models.Tetris.Tetrominos
             return style;
         }
 
-        public Tetromino CreateFromStyle(TetrominoStyle style)
+        public Tetromino CreateFromStyle(TetrominoStyle style, Board board)
         {
             switch (style)
             {
                 case TetrominoStyle.Block:
-                    return new Block();
+                    return new Block(board);
 
                 case TetrominoStyle.Straight:
-                    return new Straight();
+                    return new Straight(board);
 
                 case TetrominoStyle.TShaped:
-                    return new TShaped();
+                    return new TShaped(board);
 
                 case TetrominoStyle.LeftZigZag:
-                    return new LeftZigZag();
+                    return new LeftZigZag(board);
 
                 case TetrominoStyle.RightZigZag:
-                    return new RightZigZag();
+                    return new RightZigZag(board);
 
                 case TetrominoStyle.LShaped:
-                    return new LShaped();
+                    return new LShaped(board);
 
                 case TetrominoStyle.ReverseLShaped:
-                    return new ReverseLShaped();
+                    return new ReverseLShaped(board);
 
                 default:
-                    return new Block();
+                    return new Block(board);
             }
         }
     }

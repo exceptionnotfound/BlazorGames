@@ -10,6 +10,7 @@ namespace BlazorGames.Models.Tetris
         NotStarted,
         Playing,
         Dropping,
+        ClearingRows,
         GameOver
     }
 }

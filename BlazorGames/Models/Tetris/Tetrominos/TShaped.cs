@@ -7,6 +7,8 @@ namespace BlazorGames.Models.Tetris.Tetrominos
 {
     public class TShaped : Tetromino
     {
+        public TShaped(Board board) : base(board) { }
+
         public override string CssClass
         {
             get
