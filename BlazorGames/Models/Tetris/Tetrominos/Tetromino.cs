@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlazorGames.Models.Tetris.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,9 +14,9 @@ namespace BlazorGames.Models.Tetris.Tetrominos
 
         public TetrominoOrientation Orientation { get; set; } = TetrominoOrientation.LeftRight;
 
-        public int CenterPieceRow { get; set; } = 20;
+        public int CenterPieceRow { get; set; }
 
-        public int CenterPieceColumn { get; set; } = 5;
+        public int CenterPieceColumn { get; set; }
 
         public virtual string CssClass { get; }
 
@@ -24,6 +25,8 @@ namespace BlazorGames.Models.Tetris.Tetrominos
         public Tetromino(Board board)
         {
             Board = board;
+            CenterPieceRow = board.Height;
+            CenterPieceColumn = board.Width / 2;
         }
 
         public void Rotate() 
@@ -90,7 +93,9 @@ namespace BlazorGames.Models.Tetris.Tetrominos
         public void MoveDown()
         {
             if (CanMoveDown())
+            {
                 CenterPieceRow--;
+            }
         }
 
         public bool CanMoveDown()
@@ -102,6 +107,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
                     return false;
             }
 
+            //If any of the covered spaces are currently in the lowest row, the piece cannot move down.
             if (CoveredSpaces.HasRow(1))
                 return false;
 
@@ -117,6 +123,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
                     return false;
             }
 
+            //If any of the covered spaces are currently in the rightmost column, the piece cannot move right.
             if (CoveredSpaces.HasColumn(10))
                 return false;
 
@@ -140,6 +147,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
                     return false;
             }
 
+            //If any of the covered spaces are currently in the leftmost column, the piece cannot move left.
             if (CoveredSpaces.HasColumn(1))
                 return false;
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlazorGames.Models.Tetris.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,32 +22,17 @@ namespace BlazorGames.Models.Tetris.Tetrominos
 
         public Tetromino CreateFromStyle(TetrominoStyle style, Board board)
         {
-            switch (style)
+            return style switch
             {
-                case TetrominoStyle.Block:
-                    return new Block(board);
-
-                case TetrominoStyle.Straight:
-                    return new Straight(board);
-
-                case TetrominoStyle.TShaped:
-                    return new TShaped(board);
-
-                case TetrominoStyle.LeftZigZag:
-                    return new LeftZigZag(board);
-
-                case TetrominoStyle.RightZigZag:
-                    return new RightZigZag(board);
-
-                case TetrominoStyle.LShaped:
-                    return new LShaped(board);
-
-                case TetrominoStyle.ReverseLShaped:
-                    return new ReverseLShaped(board);
-
-                default:
-                    return new Block(board);
-            }
+                TetrominoStyle.Block => new Block(board),
+                TetrominoStyle.Straight => new Straight(board),
+                TetrominoStyle.TShaped => new TShaped(board),
+                TetrominoStyle.LeftZigZag => new LeftZigZag(board),
+                TetrominoStyle.RightZigZag => new RightZigZag(board),
+                TetrominoStyle.LShaped => new LShaped(board),
+                TetrominoStyle.ReverseLShaped => new ReverseLShaped(board),
+                _ => new Block(board),
+            };
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿@using BlazorGames.Models.Tetris;
 @using BlazorGames.Models.Tetris.Tetrominos; 
+@using BlazorGames.Models.Tetris.Enums;
 
 @code {
     [Parameter]
@@ -12,28 +13,23 @@
     public Tetromino Tetromino { get; set; }
 
     [Parameter]
-    public GameState State { get; set; }
-
-    [Parameter]
-    public CoordinateCollection OccupiedSpaces { get; set; }
-
+    public Board Board { get; set; }
 }
 
 @{ 
-
     string extraCSS = "";
-    CoordinateCollection coveredSpaces = new CoordinateCollection();
-    if (State == GameState.Playing || State == GameState.GameOver)
+    if (Board.State == GameState.Playing 
+        || Board.State == GameState.ClearingRows
+        || Board.State == GameState.GameOver)
     {
-        coveredSpaces = Tetromino.CoveredSpaces;
-        if (coveredSpaces.Contains(Row, Column))
+        if (Tetromino.CoveredSpaces.Contains(Row, Column))
         {
             extraCSS = "tetris-piece " + Tetromino.CssClass;
         }
 
-        if (OccupiedSpaces.Contains(Row, Column))
+        if (Board.Coordinates.Contains(Row, Column))
         {
-            extraCSS = "tetris-piece " + OccupiedSpaces.GetCssClass(Row, Column);
+            extraCSS = "tetris-piece " + Board.Coordinates.GetCssClass(Row, Column);
         }
     }
 }

@@ -2,8 +2,8 @@
 @using BlazorGames.Models.Tetris;
 @using BlazorGames.Models.Tetris.Tetrominos; 
 @using BlazorGames.Pages.Partials;
+@using BlazorGames.Models.Tetris.Enums;
 @inject IJSRuntime _jsRuntime;
-
 
 <h3>Tetris</h3>
 
@@ -18,70 +18,111 @@
     TetrominoStyle thirdNextStyle;
 
     int standardDelay = 1000;
+    bool skipDelay = false;
     int level = 1;
     int score = 0;
 
+    protected ElementReference gameBoardDiv;  // set by the @ref attribute
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await _jsRuntime.InvokeVoidAsync("SetFocusToElement", gameBoardDiv);
+        }
+    }
+
     public async Task RunGame()
     {
+        //Generate the first piece to be dropped
         var currentPieceStyle = generator.Next();
         currentPiece = generator.CreateFromStyle(currentPieceStyle, board);
 
+        //Generate the styles of the next three pieces that will be dropped
         nextStyle = generator.Next(currentPiece.Style);
-
         secondNextStyle = generator.Next(currentPiece.Style, nextStyle);
-
         thirdNextStyle = generator.Next(currentPiece.Style, nextStyle, secondNextStyle);
 
+        //Start playing the game
         board.State = GameState.Playing;
 
-        await _jsRuntime.InvokeVoidAsync("SetFocusToElement", myDiv);
+        //Focus the browser on the board div
+        await _jsRuntime.InvokeVoidAsync("SetFocusToElement", gameBoardDiv);
 
-        StateHasChanged();
-
+        //Where there is no piece with a row of 21 or greater
         while(!board.Coordinates.HasRow(21))
         {
             StateHasChanged();
 
             await RunCurrentPiece();
 
+            //Create the next piece to be dropped from the already-determined nextStyle,
+            //and move the styles "up" in line
             currentPiece = generator.CreateFromStyle(nextStyle, board);
-
             nextStyle = secondNextStyle;
-
             secondNextStyle = thirdNextStyle;
-
             thirdNextStyle = generator.Next(currentPiece.Style, nextStyle, secondNextStyle);
         }
 
+        //Once there is a piece with a row of 21 or greater, the game is over.
         board.State = GameState.GameOver;
+    }
+
+    public async Task Delay()
+    {
+        int totalDelay = 0;
+        while (currentPiece.CanMoveDown() && totalDelay < standardDelay)
+        {
+            totalDelay += 50;
+            await Task.Delay(50);
+        }
     }
 
     public async Task RunCurrentPiece()
     {
-        await Task.Delay(standardDelay);
         while (currentPiece.CanMoveDown())
         {
+            await Delay();
+
             currentPiece.MoveDown();
+
+            if(!currentPiece.CanMoveDown() && !skipDelay)
+                await Task.Delay(500);
+
             StateHasChanged();
-            await Task.Delay(standardDelay);
         }
 
-        await SolidifyPiece();
-    }
+        await Task.Delay(50);
 
-    public async Task SolidifyPiece()
-    {
-        board.Coordinates.AddGroup(currentPiece.CoveredSpaces.GetAll(), currentPiece.CssClass);
+        board.Coordinates.AddMany(currentPiece.CoveredSpaces.GetAll(), currentPiece.CssClass);
 
         await ClearCompleteRows();
+
+        LevelChange();
 
         StateHasChanged();
     }
 
     public void LevelChange()
     {
-        level = (score / 5000);
-        standardDelay = standardDelay - ((level - 1) * 100);
+        //The user goes up a level for every 4000 points they score.
+        int counter = 1;
+        int scoreCopy = score;
+        while(scoreCopy > 4000)
+        {
+            counter++;
+            scoreCopy -= 4000;
+        }
+
+        int newLevel = counter;
+        if(newLevel != level) //If the user has gone up a level
+        {
+            //Reduce the drop delay by 100 milliseconds.
+            standardDelay = standardDelay - ((newLevel - 1) * 100);
+
+            //Set the new level
+            level = newLevel;
+        }
     }
 
     public async Task ClearCompleteRows()
@@ -89,55 +130,43 @@
         board.State = GameState.ClearingRows;
 
         List<int> rowsComplete = new List<int>();
-        bool hasCompleteRows = false;
         for (int i = 1; i <= board.Height; i++)
         {
             if (board.Coordinates.GetAllInRow(i).Count == board.Width)
             {
                 board.Coordinates.SetCssClass(i, "tetris-clear-row");
-                hasCompleteRows = true;
                 rowsComplete.Add(i);
             }
         }
 
-        if(hasCompleteRows)
+        if(rowsComplete.Any())
         {
             StateHasChanged();
-            await Task.Delay(1200);
+
+            board.Coordinates.CollapseRows(rowsComplete);
+
+            switch (rowsComplete.Count)
+            {
+                case 1:
+                    score += 40 * level;
+                    break;
+
+                case 2:
+                    score += 100 * level;
+                    break;
+
+                case 3:
+                    score += 300 * level;
+                    break;
+
+                case 4:
+                    score += 1200 * level;
+                    break;
+            }
+
+            await Task.Delay(1000);
         }
-
-        board.Coordinates.CollapseRows(rowsComplete);
-
-        switch(rowsComplete.Count)
-        {
-            case 1:
-                score += 40 * level;
-                break;
-
-            case 2:
-                score += 100 * level;
-                break;
-
-            case 3:
-                score += 300 * level;
-                break;
-
-            case 4:
-                score += 1200 * level;
-                break;
-        }
-
         board.State = GameState.Playing;
-    }
-
-    protected ElementReference myDiv;  // set by the @ref attribute
-
-    protected async override Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await _jsRuntime.InvokeVoidAsync("SetFocusToElement", myDiv);
-        }
     }
 
     protected async Task KeyDown(KeyboardEventArgs e)
@@ -156,6 +185,7 @@
             {
                 int addlScore = currentPiece.Drop();
                 score += addlScore;
+                skipDelay = true;
                 StateHasChanged();
             }
             if(e.Key == "ArrowUp")
@@ -172,10 +202,6 @@
         {
             <button @onclick="(() => RunGame())" class="btn btn-primary">Start!</button>
         }
-        @if(board.State == GameState.Playing)
-        {
-            @currentPiece.CssClass
-        }
         @if(board.State == GameState.GameOver)
         {
             <span>Thanks for playing!</span>
@@ -185,24 +211,31 @@
 
 <div class="row">
     <div class="col">
-        <div class="tetris-container" tabindex="0" @onkeydown="KeyDown" @ref="myDiv">
+        <div class="tetris-container" tabindex="0" @onkeydown="KeyDown" @ref="gameBoardDiv">
             @for (int i = board.Height; i >= 1; i--)
             {
                 <div class="tetris-row">
                     @for (int j = 1; j <= board.Width; j++)
                     {
-                        <TetrisCell Row="i" Column="j" Tetromino="currentPiece" State="board.State" OccupiedSpaces="board.Coordinates" />
+                        <TetrisCell Row="i" Column="j" Tetromino="currentPiece" Board="board" />
                     }
                 </div>
             }
         </div>
     </div>
-    @if (board.State == GameState.Playing || board.State == GameState.Dropping)
+    @if (board.State == GameState.Playing 
+         || board.State == GameState.ClearingRows
+         || board.State == GameState.GameOver)
     {
         <div class="col">
             <div class="row">
                 <div class="col">
                     <h2>Score: @score</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h2>Level: @level</h2>
                 </div>
             </div>
             <div class="row">

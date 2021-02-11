@@ -403,31 +403,31 @@
     border-bottom:solid 1px black;
 }
 
-.tetris-red-piece {
+.tetris-red-cell {
     background-image: url(../images/tetris/tetromino-red.png);
 }
 
-.tetris-lightblue-piece {
+.tetris-lightblue-cell {
     background-image: url(../images/tetris/tetromino-lightblue.png);
 }
 
-.tetris-purple-piece {
+.tetris-purple-cell {
     background-image: url(../images/tetris/tetromino-purple.png);
 }
 
-.tetris-yellow-piece {
+.tetris-yellow-cell {
     background-image: url(../images/tetris/tetromino-yellow.png);
 }
 
-.tetris-green-piece {
+.tetris-green-cell {
     background-image: url(../images/tetris/tetromino-green.png);
 }
 
-.tetris-orange-piece {
+.tetris-orange-cell {
     background-image: url(../images/tetris/tetromino-orange.png);
 }
 
-.tetris-darkblue-piece {
+.tetris-darkblue-cell {
     background-image: url(../images/tetris/tetromino-darkblue.png);
 }
 

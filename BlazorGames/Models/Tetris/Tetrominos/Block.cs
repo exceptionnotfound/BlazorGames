@@ -13,7 +13,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
         {
             get
             {
-                return "tetris-yellow-piece";
+                return "tetris-yellow-cell";
             }
         }
 

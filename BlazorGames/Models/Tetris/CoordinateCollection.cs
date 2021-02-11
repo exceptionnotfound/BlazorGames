@@ -24,7 +24,7 @@ namespace BlazorGames.Models.Tetris
             _coordinates.Add(new Coordinate(row, column));
         }
 
-        public void AddGroup(List<Coordinate> coords, string cssClass)
+        public void AddMany(List<Coordinate> coords, string cssClass)
         {
             foreach(var coord in coords)
             {
@@ -89,17 +89,6 @@ namespace BlazorGames.Models.Tetris
             return _coordinates.Any(c => c.Row == row);
         }
 
-        public override string ToString()
-        {
-            string values = "";
-            var coords = _coordinates.OrderBy(x => x.Row).ThenBy(x => x.Column);
-            foreach(var coord in coords)
-            {
-                values += "(" + coord.Row + ", " + coord.Column + ")";
-            }
-            return values;
-        }
-
         public string GetCssClass(int row, int column)
         {
             var matching = _coordinates.FirstOrDefault(x => x.Row == row && x.Column == column);
@@ -113,11 +102,6 @@ namespace BlazorGames.Models.Tetris
         public void SetCssClass(int row, string cssClass)
         {
             _coordinates.Where(x => x.Row == row).ToList().ForEach(x => x.CssClass = cssClass);
-        }
-
-        public void RemoveCssClass(string cssClass)
-        {
-            _coordinates.Where(x => x.CssClass == cssClass).ToList().ForEach(x => x.CssClass = "");
         }
 
         public void CollapseRows(List<int> rows)
