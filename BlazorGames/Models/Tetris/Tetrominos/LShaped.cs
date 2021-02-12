@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 
 namespace BlazorGames.Models.Tetris.Tetrominos
 {
+    /// <summary>
+    /// An "L-shaped" tetromino
+    ///     X    X      X X X    X X
+    /// X X X    X      X          X
+    ///          X X               X
+    /// </summary>
     public class LShaped : Tetromino
     {
-        public LShaped(Board board) : base(board) { }
+        public LShaped(Grid board) : base(board) { }
 
-        public override string CssClass
-        {
-            get
-            {
-                return "tetris-orange-cell";
-            }
-        }
+        public override TetrominoStyle Style => TetrominoStyle.LShaped; 
+
+        public override string CssClass => "tetris-orange-cell";
 
         public override CoordinateCollection CoveredSpaces
         {

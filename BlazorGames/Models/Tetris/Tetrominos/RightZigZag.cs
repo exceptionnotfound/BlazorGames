@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 
 namespace BlazorGames.Models.Tetris.Tetrominos
 {
+    /// <summary>
+    /// A right-zig-zag tetromino
+    ///   X X    X
+    /// X X      X X
+    ///            X
+    /// </summary>
     public class RightZigZag : Tetromino
     {
-        public RightZigZag(Board board) : base(board) { }
+        public RightZigZag(Grid board) : base(board) { }
 
-        public override string CssClass
-        {
-            get
-            {
-                return "tetris-green-cell";
-            }
-        }
+        public override TetrominoStyle Style => TetrominoStyle.RightZigZag;
+
+        public override string CssClass => "tetris-green-cell";
 
         public override CoordinateCollection CoveredSpaces
         {

@@ -6,17 +6,20 @@ using System.Threading.Tasks;
 
 namespace BlazorGames.Models.Tetris.Tetrominos
 {
+    /// <summary>
+    /// A straight-line tetromino
+    /// X X X X    X
+    ///            X
+    ///            X
+    ///            X
+    /// </summary>
     public class Straight : Tetromino
     {
-        public Straight(Board board) : base(board) { }
+        public Straight(Grid board) : base(board) { }
 
-        public override string CssClass
-        {
-            get
-            {
-                return "tetris-lightblue-cell";
-            }
-        }
+        public override TetrominoStyle Style => TetrominoStyle.Straight;
+
+        public override string CssClass => "tetris-lightblue-cell";
 
         public override CoordinateCollection CoveredSpaces
         {

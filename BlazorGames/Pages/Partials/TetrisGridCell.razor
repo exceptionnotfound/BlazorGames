@@ -13,26 +13,24 @@
     public Tetromino Tetromino { get; set; }
 
     [Parameter]
-    public Board Board { get; set; }
+    public Grid Grid { get; set; }
 }
 
 @{ 
     string extraCSS = "";
-    if (Board.State == GameState.Playing 
-        || Board.State == GameState.ClearingRows
-        || Board.State == GameState.GameOver)
+    if (Grid.State == GameState.Playing 
+        || Grid.State == GameState.ClearingRows
+        || Grid.State == GameState.GameOver)
     {
         if (Tetromino.CoveredSpaces.Contains(Row, Column))
         {
             extraCSS = "tetris-piece " + Tetromino.CssClass;
         }
 
-        if (Board.Coordinates.Contains(Row, Column))
+        if (Grid.Coordinates.Contains(Row, Column))
         {
-            extraCSS = "tetris-piece " + Board.Coordinates.GetCssClass(Row, Column);
+            extraCSS = "tetris-piece " + Grid.Coordinates.GetCssClass(Row, Column);
         }
     }
 }
-<div id="@(Row + "-" + Column)" class="tetris-cell @extraCSS">
-
-</div>
+<div id="@(Row + "-" + Column)" class="tetris-cell @extraCSS"></div>

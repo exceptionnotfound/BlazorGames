@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 
 namespace BlazorGames.Models.Tetris.Tetrominos
 {
+    /// <summary>
+    /// A reverse-L-shaped tetromino, also called a J-shaped tetromino
+    /// X        X X    X X X      X
+    /// X X X    X          X      X
+    ///          X               X X
+    /// </summary>
     public class ReverseLShaped : Tetromino
     {
-        public ReverseLShaped(Board board) : base(board) { }
+        public ReverseLShaped(Grid board) : base(board) { }
 
-        public override string CssClass
-        {
-            get
-            {
-                return "tetris-darkblue-cell";
-            }
-        }
+        public override TetrominoStyle Style => TetrominoStyle.ReverseLShaped;
+
+        public override string CssClass => "tetris-darkblue-cell";
 
         public override CoordinateCollection CoveredSpaces
         {

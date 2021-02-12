@@ -5,20 +5,29 @@
 @using BlazorGames.Models.Tetris.Enums;
 @inject IJSRuntime _jsRuntime;
 
-<h3>Tetris</h3>
-
 @code {
-    Board board = new Board();
+    Grid grid = new Grid();
 
+    //Creates new tetrominos as the game needs them
     TetrominoGenerator generator = new TetrominoGenerator();
 
-    Tetromino currentPiece;
+    //Represents the currently-falling tetromino
+    Tetromino currentTetromino;
+
+    //Represents the next three tetromino styles.
+    //The actual tetrominos will be created only when they become the current tetromino.
     TetrominoStyle nextStyle;
     TetrominoStyle secondNextStyle;
     TetrominoStyle thirdNextStyle;
 
+    //The standard delay is how long the game waits before dropping the current piece by one row.
     int standardDelay = 1000;
+
+    //This flag is set if the player "hard drops" a tetromino all the way to the bottom
     bool skipDelay = false;
+
+    //The level increases for each 4000 points scored. Every time the level increases,
+    //the standard delay gets shorter.
     int level = 1;
     int score = 0;
 
@@ -36,21 +45,21 @@
     {
         //Generate the first piece to be dropped
         var currentPieceStyle = generator.Next();
-        currentPiece = generator.CreateFromStyle(currentPieceStyle, board);
+        currentTetromino = generator.CreateFromStyle(currentPieceStyle, grid);
 
         //Generate the styles of the next three pieces that will be dropped
-        nextStyle = generator.Next(currentPiece.Style);
-        secondNextStyle = generator.Next(currentPiece.Style, nextStyle);
-        thirdNextStyle = generator.Next(currentPiece.Style, nextStyle, secondNextStyle);
+        nextStyle = generator.Next(currentTetromino.Style);
+        secondNextStyle = generator.Next(currentTetromino.Style, nextStyle);
+        thirdNextStyle = generator.Next(currentTetromino.Style, nextStyle, secondNextStyle);
 
         //Start playing the game
-        board.State = GameState.Playing;
+        grid.State = GameState.Playing;
 
         //Focus the browser on the board div
         await _jsRuntime.InvokeVoidAsync("SetFocusToElement", gameBoardDiv);
 
         //Where there is no piece with a row of 21 or greater
-        while(!board.Coordinates.HasRow(21))
+        while(!grid.Coordinates.HasRow(21))
         {
             StateHasChanged();
 
@@ -58,14 +67,14 @@
 
             //Create the next piece to be dropped from the already-determined nextStyle,
             //and move the styles "up" in line
-            currentPiece = generator.CreateFromStyle(nextStyle, board);
+            currentTetromino = generator.CreateFromStyle(nextStyle, grid);
             nextStyle = secondNextStyle;
             secondNextStyle = thirdNextStyle;
-            thirdNextStyle = generator.Next(currentPiece.Style, nextStyle, secondNextStyle);
+            thirdNextStyle = generator.Next(currentTetromino.Style, nextStyle, secondNextStyle);
         }
 
         //Once there is a piece with a row of 21 or greater, the game is over.
-        board.State = GameState.GameOver;
+        grid.State = GameState.GameOver;
     }
 
     public async Task Delay(int millis)
@@ -81,19 +90,26 @@
 
     public async Task RunCurrentPiece()
     {
-        while (currentPiece.CanMoveDown())
+        //While the piece can still move down
+        while (currentTetromino.CanMoveDown())
         {
+            //Wait for the standard delay
             await Delay(standardDelay);
 
-            currentPiece.MoveDown();
+            //Move the piece
+            currentTetromino.MoveDown();
 
+            //Update the display
             StateHasChanged();
 
-            if (!currentPiece.CanMoveDown() && currentPiece.CanMove())
+            //If the piece can no longer move down BUT can still move in other directions,
+            //delay for an additional half-second to let the user move if they want.
+            if (!currentTetromino.CanMoveDown() && currentTetromino.CanMove())
                 await Delay(500);
         }
 
-        board.Coordinates.AddMany(currentPiece.CoveredSpaces.GetAll(), currentPiece.CssClass);
+        //"Solidify" the current piece by adding its covered squares to the board's coordinates
+        grid.Coordinates.AddMany(currentTetromino.CoveredSpaces.GetAll(), currentTetromino.CssClass);
 
         await ClearCompleteRows();
 
@@ -126,24 +142,32 @@
 
     public async Task ClearCompleteRows()
     {
-        board.State = GameState.ClearingRows;
+        grid.State = GameState.ClearingRows;
 
+        //For each row
         List<int> rowsComplete = new List<int>();
-        for (int i = 1; i <= board.Height; i++)
+        for (int i = 1; i <= grid.Height; i++)
         {
-            if (board.Coordinates.GetAllInRow(i).Count == board.Width)
+            //If every position in that row is filled...
+            if (grid.Coordinates.GetAllInRow(i).Count == grid.Width)
             {
-                board.Coordinates.SetCssClass(i, "tetris-clear-row");
+                //Add the "complete" animation CSS class
+                grid.Coordinates.SetCssClass(i, "tetris-clear-row");
+
+                //Mark that row as complete
                 rowsComplete.Add(i);
             }
         }
 
+        //If there are any complete rows
         if(rowsComplete.Any())
         {
             StateHasChanged();
 
-            board.Coordinates.CollapseRows(rowsComplete);
+            //Collapse the "higher" coordinates down to fill in the completed rows.
+            grid.Coordinates.CollapseRows(rowsComplete);
 
+            //Calculate the score for the completed row(s)
             switch (rowsComplete.Count)
             {
                 case 1:
@@ -165,43 +189,46 @@
 
             await Task.Delay(1000);
         }
-        board.State = GameState.Playing;
+        grid.State = GameState.Playing;
     }
 
-    protected async Task KeyDown(KeyboardEventArgs e)
+    protected void KeyDown(KeyboardEventArgs e)
     {
-        if (board.State == GameState.Playing)
+        if (grid.State == GameState.Playing)
         {
             if (e.Key == "ArrowRight")
             {
-                currentPiece.MoveRight();
+                currentTetromino.MoveRight();
             }
             if (e.Key == "ArrowLeft")
             {
-                currentPiece.MoveLeft();
+                currentTetromino.MoveLeft();
             }
             if(e.Key == "ArrowDown")
             {
-                int addlScore = currentPiece.Drop();
+                int addlScore = currentTetromino.Drop();
                 score += addlScore;
                 skipDelay = true;
                 StateHasChanged();
             }
             if(e.Key == "ArrowUp")
             {
-                currentPiece.Rotate();
+                currentTetromino.Rotate();
             }
             StateHasChanged();
         }
     }
 }
+
+<PageTitle Title="Tetris" />
+
 <div class="row">
     <div class="col">
-        @if (board.State == GameState.NotStarted)
+        @if (grid.State == GameState.NotStarted)
         {
             <button @onclick="(() => RunGame())" class="btn btn-primary">Start!</button>
         }
-        @if(board.State == GameState.GameOver)
+        @if(grid.State == GameState.GameOver)
         {
             <span>Thanks for playing!</span>
         }
@@ -211,20 +238,20 @@
 <div class="row">
     <div class="col">
         <div class="tetris-container" tabindex="0" @onkeydown="KeyDown" @ref="gameBoardDiv">
-            @for (int i = board.Height; i >= 1; i--)
+            @for (int i = grid.Height; i >= 1; i--)
             {
                 <div class="tetris-row">
-                    @for (int j = 1; j <= board.Width; j++)
+                    @for (int j = 1; j <= grid.Width; j++)
                     {
-                        <TetrisCell Row="i" Column="j" Tetromino="currentPiece" Board="board" />
+                        <TetrisGridCell Row="i" Column="j" Tetromino="currentTetromino" Grid="grid" />
                     }
                 </div>
             }
         </div>
     </div>
-    @if (board.State == GameState.Playing 
-         || board.State == GameState.ClearingRows
-         || board.State == GameState.GameOver)
+    @if (grid.State == GameState.Playing 
+         || grid.State == GameState.ClearingRows
+         || grid.State == GameState.GameOver)
     {
         <div class="col">
             <div class="row">

@@ -1,21 +1,23 @@
-﻿using System;
+﻿using BlazorGames.Models.Tetris.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlazorGames.Models.Tetris.Tetrominos
 {
+    /// <summary>
+    /// A square or "block" tetromino. Block tetrominos do not rotate.
+    /// X X
+    /// X X
+    /// </summary>
     public class Block : Tetromino
     {
-        public Block(Board board) : base(board) { }
+        public Block(Grid board) : base(board) { }
 
-        public override string CssClass
-        {
-            get
-            {
-                return "tetris-yellow-cell";
-            }
-        }
+        public override TetrominoStyle Style => TetrominoStyle.Block;
+
+        public override string CssClass => "tetris-yellow-cell";
 
         public override CoordinateCollection CoveredSpaces
         {

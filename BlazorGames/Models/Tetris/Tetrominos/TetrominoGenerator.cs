@@ -20,7 +20,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
             return style;
         }
 
-        public Tetromino CreateFromStyle(TetrominoStyle style, Board board)
+        public Tetromino CreateFromStyle(TetrominoStyle style, Grid board)
         {
             return style switch
             {
