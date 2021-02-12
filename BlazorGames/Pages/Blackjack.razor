@@ -74,7 +74,7 @@
         state = GameState.NotStarted;
 
         //Easter egg!
-        if(player.Funds > 1000)
+        if (player.Funds > 1000)
         {
             state = GameState.EscortedOut;
             return;
@@ -92,7 +92,7 @@
 
     public async Task DealerTurn()
     {
-        if(dealer.Score < 17)
+        if (dealer.Score < 17)
         {
             await dealer.DealToSelf();
             StateHasChanged();
@@ -103,7 +103,7 @@
     public async Task Hit()
     {
         await dealer.DealToPlayer(player);
-        if(player.IsBusted)
+        if (player.IsBusted)
         {
             EndHand();
         }
@@ -176,12 +176,12 @@
     {
         state = GameState.Insurance;
 
-        if(dealer.HasAceShowing)
+        if (dealer.HasAceShowing)
         {
             //Insurance bet is half the original bet
             player.InsuranceBet = player.Bet / 2;
 
-            if(dealer.Score == 21) //If the dealer has Blackjack
+            if (dealer.Score == 21) //If the dealer has Blackjack
             {
                 //Reveal the hidden card
                 dealer.Reveal();
@@ -230,7 +230,7 @@
 </div>
 <div class="row">
     <div class="col-3">
-        <BlackjackFunds Funds="player.Funds" Change="player.Change"/>
+        <BlackjackFunds Funds="player.Funds" Change="player.Change" />
     </div>
     <div class="col-3">
         @if (state == GameState.Betting)
@@ -257,10 +257,10 @@
         {
             <BlackjackHandResult Player="player" Dealer="dealer" />
         }
-        @if(state == GameState.Dealing || state == GameState.Shuffling
-         || state == GameState.InProgress || state == GameState.EscortedOut)
+        @if (state == GameState.Dealing || state == GameState.Shuffling
+        || state == GameState.InProgress || state == GameState.EscortedOut)
         {
-            <BlackjackMessage State="state" Bet="player.Bet"/>
+            <BlackjackMessage State="state" Bet="player.Bet" />
         }
     </div>
 </div>
@@ -276,9 +276,9 @@
             <button class="btn btn-primary" @onclick="(() => Stand())">Stand</button>
             <button class="btn btn-primary" @onclick="(() => Hit())">Hit</button>
             @if (player.Score >= 9
-               && player.Score <= 11
-               && player.Cards.Count == 2
-               && player.Funds >= player.Bet * 2)
+              && player.Score <= 11
+              && player.Cards.Count == 2
+              && player.Funds >= player.Bet * 2)
             {
                 <br />
                 <button class="btn btn-warning" @onclick="(() => DoubleDown())">Double Down</button>
@@ -298,8 +298,23 @@
         <BlackjackHand Cards="player.Cards" />
     </div>
     <div class="col-3">
-        <BlackjackScore State="state" Player="player"/>
+        <BlackjackScore State="state" Player="player" />
     </div>
 </div>
 
-<BlackjackRules/>
+<BlackjackRules />
+
+<hr />
+
+<h2>How To Make Blackjack in Blazor WebAssembly</h2>
+
+<p>
+    Check out the blog posts below!
+</p>
+
+<ul>
+    <li><a href="https://exceptionnotfound.net/blackjack-in-blazor-part-1-rules-and-modeling-the-game/">Part 1: Rules and Modeling the Game</a></li>
+    <li><a href="https://exceptionnotfound.net/blackjack-in-blazor-part-2-the-csharp-classes/">Part 2: The C# Classes</a></li>
+    <li><a href="https://exceptionnotfound.net/blackjack-in-blazor-part-3-game-state-and-blazor-components/">Part 3: Game State and Blazor Components</a></li>
+    <li><a href="https://exceptionnotfound.net/blackjack-in-blazor-part-4-putting-it-all-together/">Part 4: Putting it All Togeteher</a></li>
+</ul>
