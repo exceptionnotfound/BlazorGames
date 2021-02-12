@@ -68,31 +68,30 @@
         board.State = GameState.GameOver;
     }
 
-    public async Task Delay()
+    public async Task Delay(int millis)
     {
         int totalDelay = 0;
-        while (currentPiece.CanMoveDown() && totalDelay < standardDelay)
+        while (totalDelay < millis && !skipDelay)
         {
             totalDelay += 50;
             await Task.Delay(50);
         }
+        skipDelay = false;
     }
 
     public async Task RunCurrentPiece()
     {
         while (currentPiece.CanMoveDown())
         {
-            await Delay();
+            await Delay(standardDelay);
 
             currentPiece.MoveDown();
 
-            if(!currentPiece.CanMoveDown() && !skipDelay)
-                await Task.Delay(500);
-
             StateHasChanged();
-        }
 
-        await Task.Delay(50);
+            if (!currentPiece.CanMoveDown() && currentPiece.CanMove())
+                await Delay(500);
+        }
 
         board.Coordinates.AddMany(currentPiece.CoveredSpaces.GetAll(), currentPiece.CssClass);
 

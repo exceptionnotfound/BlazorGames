@@ -98,6 +98,11 @@ namespace BlazorGames.Models.Tetris.Tetrominos
             }
         }
 
+        public bool CanMove()
+        {
+            return CanMoveDown() || CanMoveLeft() || CanMoveRight();
+        }
+
         public bool CanMoveDown()
         {
             //For each of the covered spaces, get the space immediately below
