@@ -43,6 +43,8 @@
 
     public async Task RunGame()
     {
+        await _jsRuntime.InvokeAsync<string>("PlayAudio", "theme");
+
         //Generate the first piece to be dropped
         var currentPieceStyle = generator.Next();
         currentTetromino = generator.CreateFromStyle(currentPieceStyle, grid);
@@ -222,6 +224,8 @@
 
 <PageTitle Title="Tetris" />
 
+<audio id="theme" src="../sounds/tetris-theme.ogg" preload="auto" loop="loop" crossorigin="anonymous" />
+
 <div class="row">
     <div class="col">
         @if (grid.State == GameState.NotStarted)
@@ -275,4 +279,3 @@
         </div>
     }
 </div>
-
