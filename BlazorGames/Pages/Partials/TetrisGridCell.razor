@@ -18,9 +18,7 @@
 
 @{ 
     string extraCSS = "";
-    if (Grid.State == GameState.Playing 
-        || Grid.State == GameState.ClearingRows
-        || Grid.State == GameState.GameOver)
+    if (Grid.IsStarted)
     {
         if (Tetromino.CoveredSpaces.Contains(Row, Column))
         {

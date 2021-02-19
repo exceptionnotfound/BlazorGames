@@ -8,7 +8,10 @@ namespace BlazorGames.Models.Tetris.Tetrominos
 {
     public class Tetromino
     {
-        public Grid Board { get; set; }
+        /// <summary>
+        /// Represents the grid on which this tetromino can move.
+        /// </summary>
+        public Grid Grid { get; set; }
 
         /// <summary>
         /// The current orientation of this tetromino. Tetrominos rotate about their center.
@@ -41,11 +44,11 @@ namespace BlazorGames.Models.Tetris.Tetrominos
         /// </summary>
         public virtual CoordinateCollection CoveredSpaces { get; }
 
-        public Tetromino(Grid board)
+        public Tetromino(Grid grid)
         {
-            Board = board;
-            CenterPieceRow = board.Height;
-            CenterPieceColumn = board.Width / 2;
+            Grid = grid;
+            CenterPieceRow = grid.Height;
+            CenterPieceColumn = grid.Width / 2;
         }
 
         /// <summary>
@@ -108,7 +111,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
         /// <summary>
         /// Make the tetromino drop all the way to its lowest possible point.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The score gained from dropping the piece</returns>
         public int Drop()
         {
             int scoreCounter = 0;
@@ -150,7 +153,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
             //For each of the covered spaces, get the space immediately below
             foreach (var coord in CoveredSpaces.GetLowest())
             {
-                if (Board.Coordinates.Contains(coord.Row - 1, coord.Column))
+                if (Grid.Coordinates.Contains(coord.Row - 1, coord.Column))
                     return false;
             }
 
@@ -170,7 +173,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
             //For each of the covered spaces, get the space immediately to the right
             foreach (var coord in CoveredSpaces.GetRightmost())
             {
-                if (Board.Coordinates.Contains(coord.Row, coord.Column + 1))
+                if (Grid.Coordinates.Contains(coord.Row, coord.Column + 1))
                     return false;
             }
 
@@ -201,7 +204,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
             //For each of the covered spaces, get the space immediately to the left
             foreach (var coord in CoveredSpaces.GetLeftmost())
             {
-                if (Board.Coordinates.Contains(coord.Row, coord.Column - 1))
+                if (Grid.Coordinates.Contains(coord.Row, coord.Column - 1))
                     return false;
             }
 

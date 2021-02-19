@@ -46,6 +46,7 @@
 
     public async Task RunGame()
     {
+        //Start playing the theme music
         await _jsRuntime.InvokeAsync<string>("PlayAudio", "theme");
 
         //Generate the first piece to be dropped
@@ -68,7 +69,14 @@
         {
             StateHasChanged();
 
+            //Run the current piece until it can't move anymore
             await RunCurrentPiece();
+
+            //If any rows are filled, remove them from the board
+            await ClearCompleteRows();
+
+            //If the score is high enough, move the user to a new level
+            LevelChange();
 
             //Create the next piece to be dropped from the already-determined nextStyle,
             //and move the styles "up" in line
@@ -95,6 +103,7 @@
         await _jsRuntime.InvokeVoidAsync("SetFocusToElement", gameBoardDiv);
     }
 
+    //Delays the game up to the passed-in amount of milliseconds in 50 millisecond intervals
     public async Task Delay(int millis)
     {
         int totalDelay = 0;
@@ -128,12 +137,6 @@
 
         //"Solidify" the current piece by adding its covered squares to the board's coordinates
         grid.Coordinates.AddMany(currentTetromino.CoveredSpaces.GetAll(), currentTetromino.CssClass);
-
-        await ClearCompleteRows();
-
-        LevelChange();
-
-        StateHasChanged();
     }
 
     public void LevelChange()
@@ -210,7 +213,7 @@
         grid.State = GameState.Playing;
     }
 
-    protected void KeyDown(KeyboardEventArgs e)
+    protected async Task KeyDown(KeyboardEventArgs e)
     {
         if (grid.State == GameState.Playing)
         {
@@ -222,7 +225,7 @@
             {
                 currentTetromino.MoveLeft();
             }
-            if(e.Key == "ArrowDown")
+            if(e.Key == "ArrowDown" || e.Key == " ")
             {
                 int addlScore = currentTetromino.Drop();
                 score += addlScore;
@@ -232,6 +235,10 @@
             if(e.Key == "ArrowUp")
             {
                 currentTetromino.Rotate();
+            }
+            if(e.Key == "m")
+            {
+                await ToggleAudio();
             }
             StateHasChanged();
         }
@@ -276,9 +283,7 @@
             }
         </div>
     </div>
-    @if (grid.State == GameState.Playing 
-         || grid.State == GameState.ClearingRows
-         || grid.State == GameState.GameOver)
+    @if (grid.IsStarted)
     {
         <div class="col">
             <div class="row">
@@ -299,6 +304,15 @@
             <TetrisTetrominoDisplay Style="nextStyle" />
             <TetrisTetrominoDisplay Style="secondNextStyle" />
             <TetrisTetrominoDisplay Style="thirdNextStyle" />
+            <div class="row">
+                <div class="col">
+                    <h3>Controls</h3>
+                    <span>&#8592;</span> / <span>&#8594;</span> Move Tetromino<br />
+                    <span>&#8593;</span>: Rotate Tetromino<br />
+                    <span>&#8595;</span> / <span>Space</span>: Drop Tetromino<br/>
+                    <span>M</span>: Toggle Audio
+                </div>
+            </div>
         </div>
     }
 </div>

@@ -14,7 +14,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
     /// </summary>
     public class ReverseLShaped : Tetromino
     {
-        public ReverseLShaped(Grid board) : base(board) { }
+        public ReverseLShaped(Grid grid) : base(grid) { }
 
         public override TetrominoStyle Style => TetrominoStyle.ReverseLShaped;
 

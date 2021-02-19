@@ -14,7 +14,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
     /// </summary>
     public class RightZigZag : Tetromino
     {
-        public RightZigZag(Grid board) : base(board) { }
+        public RightZigZag(Grid grid) : base(grid) { }
 
         public override TetrominoStyle Style => TetrominoStyle.RightZigZag;
 

@@ -15,7 +15,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
     /// </summary>
     public class Straight : Tetromino
     {
-        public Straight(Grid board) : base(board) { }
+        public Straight(Grid grid) : base(grid) { }
 
         public override TetrominoStyle Style => TetrominoStyle.Straight;
 

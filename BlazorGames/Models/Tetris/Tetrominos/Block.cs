@@ -13,7 +13,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
     /// </summary>
     public class Block : Tetromino
     {
-        public Block(Grid board) : base(board) { }
+        public Block(Grid grid) : base(grid) { }
 
         public override TetrominoStyle Style => TetrominoStyle.Block;
 

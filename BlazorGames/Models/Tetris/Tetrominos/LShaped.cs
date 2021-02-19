@@ -14,7 +14,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
     /// </summary>
     public class LShaped : Tetromino
     {
-        public LShaped(Grid board) : base(board) { }
+        public LShaped(Grid grid) : base(grid) { }
 
         public override TetrominoStyle Style => TetrominoStyle.LShaped; 
 
