@@ -274,10 +274,6 @@
                 Play Music
             </label>
         }
-        @if (grid.State == GameState.GameOver)
-        {
-            <span>Thanks for playing!</span>
-        }
     </div>
 </div>
 
@@ -296,6 +292,11 @@
         </div>
     </div>
     <div class="col">
+        @if(grid.State == GameState.GameOver)
+        {
+            <h1>Game Over!</h1>
+            <p>Thanks for playing!</p>
+        }
         @if (grid.IsStarted)
         {
             <div class="row">
