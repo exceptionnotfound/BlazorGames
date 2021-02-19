@@ -247,7 +247,7 @@
 
 <PageTitle Title="Tetris" />
 
-<audio id="theme" src="../sounds/tetris-theme.ogg" preload="auto" loop="loop" crossorigin="anonymous" />
+<audio id="theme" src="../sounds/tetris-theme.ogg" preload="auto" loop="loop"/>
 
 <div class="row">
     <div class="col">
@@ -257,9 +257,9 @@
         }
         @if (grid.State != GameState.NotStarted)
         {
-            <label for="muteAudio">
-                <input id="muteAudio" type="checkbox" @onchange="ToggleAudio" />
-                Mute Audio
+            <label for="playAudio">
+                <input id="playAudio" type="checkbox" @bind="playAudio" disabled/>
+                Play Music
             </label>
         }
         @if (grid.State == GameState.GameOver)
