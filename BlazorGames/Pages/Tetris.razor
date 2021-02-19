@@ -99,7 +99,8 @@
         grid.State = GameState.GameOver;
 
         //If the current high score is larger than the old high score, update the cookie
-        await _jsRuntime.InvokeAsync<object>("WriteCookie", "tetrisHighScore", score, 14);
+        if(score > previousHighScore)
+            await _jsRuntime.InvokeAsync<object>("WriteCookie", "tetrisHighScore", score, 14);
     }
 
     public async Task ToggleAudio()
