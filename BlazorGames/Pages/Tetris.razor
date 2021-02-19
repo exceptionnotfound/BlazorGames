@@ -30,11 +30,20 @@
     //the standard delay gets shorter.
     int level = 1;
     int score = 0;
+    int previousHighScore = 0;
+    string previousScoreCookieValue = "Nothing";
 
     //This flag changes based on whether or not the user checks the "mute audio" checkbox.
     bool playAudio = true;
 
     protected ElementReference gameBoardDiv;  // set by the @ref attribute
+
+    protected override async Task OnInitializedAsync()
+    {
+        //Get the previous high score cookie if one exists
+        previousScoreCookieValue = await _jsRuntime.InvokeAsync<string>("ReadCookie", "tetrisHighScore");
+        bool hasHighScore = int.TryParse(previousScoreCookieValue, out previousHighScore);
+    }
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
@@ -88,6 +97,9 @@
 
         //Once there is a piece with a row of 21 or greater, the game is over.
         grid.State = GameState.GameOver;
+
+        //If the current high score is larger than the old high score, update the cookie
+        await _jsRuntime.InvokeAsync<object>("WriteCookie", "tetrisHighScore", score, 14);
     }
 
     public async Task ToggleAudio()
@@ -283,19 +295,9 @@
             }
         </div>
     </div>
-    @if (grid.IsStarted)
-    {
-        <div class="col">
-            <div class="row">
-                <div class="col">
-                    <h2>Score: @score</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <h2>Level: @level</h2>
-                </div>
-            </div>
+    <div class="col">
+        @if (grid.IsStarted)
+        {
             <div class="row">
                 <div class="col">
                     <h2>Upcoming Pieces</h2>
@@ -309,10 +311,23 @@
                     <h3>Controls</h3>
                     <span>&#8592;</span> / <span>&#8594;</span> Move Tetromino<br />
                     <span>&#8593;</span>: Rotate Tetromino<br />
-                    <span>&#8595;</span> / <span>Space</span>: Drop Tetromino<br/>
+                    <span>&#8595;</span> / <span>Space</span>: Drop Tetromino<br />
                     <span>M</span>: Toggle Audio
                 </div>
             </div>
+        }
+    </div>
+    <div class="col">
+        <div class="row">
+            <div class="col">
+                <h2>Score: @score</h2>
+                <span>Previous High Score: @previousHighScore</span>
+            </div>
         </div>
-    }
+        <div class="row">
+            <div class="col">
+                <h2>Level: @level</h2>
+            </div>
+        </div>
+    </div>
 </div>
