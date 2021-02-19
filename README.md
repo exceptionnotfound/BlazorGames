@@ -15,7 +15,7 @@ This project is used in many blog posts on my site, including:
 * [Yahtzee in Blazor WebAssembly Part 2: The Blazor Component](https://exceptionnotfound.net/yahtzee-in-blazor-webassembly-part-2-the-blazor-component/)
 * [Blackjack in Blazor Part 1: Rules and Modeling the Game](https://exceptionnotfound.net/blackjack-in-blazor-part-1-rules-and-modeling-the-game/)
 * [Blackjack in Blazor Part 2: The C# Classes](https://exceptionnotfound.net/blackjack-in-blazor-part-2-the-csharp-classes/)
-* Blackjack in Blazor Part 3: Game State and Blazor Components
-* Blackjack in Blazor Part 4: Putting it All Together
+* [Blackjack in Blazor Part 3: Game State and Blazor Components](https://exceptionnotfound.net/blackjack-in-blazor-part-3-game-state-and-blazor-components/)
+* [Blackjack in Blazor Part 4: Putting it All Together](https://exceptionnotfound.net/blackjack-in-blazor-part-4-putting-it-all-together/)
 
 More to come! Pull requests are welcome on this project.
