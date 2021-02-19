@@ -31,6 +31,9 @@
     int level = 1;
     int score = 0;
 
+    //This flag changes based on whether or not the user checks the "mute audio" checkbox.
+    bool playAudio = true;
+
     protected ElementReference gameBoardDiv;  // set by the @ref attribute
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
@@ -77,6 +80,19 @@
 
         //Once there is a piece with a row of 21 or greater, the game is over.
         grid.State = GameState.GameOver;
+    }
+
+    public async Task ToggleAudio()
+    {
+        playAudio = !playAudio;
+
+        if(playAudio)
+            await _jsRuntime.InvokeAsync<string>("PlayAudio", "theme");
+        else
+            await _jsRuntime.InvokeAsync<string>("PauseAudio", "theme");
+
+        //Focus the browser on the board div
+        await _jsRuntime.InvokeVoidAsync("SetFocusToElement", gameBoardDiv);
     }
 
     public async Task Delay(int millis)
@@ -232,7 +248,14 @@
         {
             <button @onclick="(() => RunGame())" class="btn btn-primary">Start!</button>
         }
-        @if(grid.State == GameState.GameOver)
+        @if (grid.State != GameState.NotStarted)
+        {
+            <label for="muteAudio">
+                <input id="muteAudio" type="checkbox" @onchange="ToggleAudio" />
+                Mute Audio
+            </label>
+        }
+        @if (grid.State == GameState.GameOver)
         {
             <span>Thanks for playing!</span>
         }
