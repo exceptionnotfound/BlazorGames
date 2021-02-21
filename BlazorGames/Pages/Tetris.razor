@@ -1,6 +1,6 @@
 ﻿@page "/tetris"
 @using BlazorGames.Models.Tetris;
-@using BlazorGames.Models.Tetris.Tetrominos; 
+@using BlazorGames.Models.Tetris.Tetrominos;
 @using BlazorGames.Pages.Partials;
 @using BlazorGames.Models.Tetris.Enums;
 @inject IJSRuntime _jsRuntime;
@@ -38,6 +38,8 @@
 
     protected ElementReference gameBoardDiv;  // set by the @ref attribute
 
+    private List<GameState> InGameGameStates = new List<GameState>() { GameState.Playing, GameState.ClearingRows };
+
     protected override async Task OnInitializedAsync()
     {
         //Get the previous high score cookie if one exists
@@ -51,6 +53,24 @@
         {
             await _jsRuntime.InvokeVoidAsync("SetFocusToElement", gameBoardDiv);
         }
+    }
+
+    public void NewGame()
+    {
+        Task.WaitAll();
+
+        grid.State = GameState.GameOver;
+
+        grid = new Grid();
+
+        generator = new TetrominoGenerator();
+
+        currentTetromino = null;
+
+        level = 1;
+        score = 0;
+
+        playAudio = true;
     }
 
     public async Task RunGame()
@@ -260,7 +280,7 @@
 
 <PageTitle Title="Tetris" />
 
-<audio id="theme" src="../sounds/tetris-theme.ogg" preload="auto" loop="loop"/>
+<audio id="theme" src="../sounds/tetris-theme.ogg" preload="auto" loop="loop" />
 
 <div class="row">
     <div class="col">
@@ -268,10 +288,14 @@
         {
             <button @onclick="(() => RunGame())" class="btn btn-primary">Start!</button>
         }
-        @if (grid.State != GameState.NotStarted)
+        @if (grid.State == GameState.GameOver)
+        {
+            <button @onclick="(() => NewGame())" class="btn btn-primary">New Game!</button>
+        }
+        @if (InGameGameStates.Contains(grid.State))
         {
             <label for="playAudio">
-                <input id="playAudio" type="checkbox" @bind="playAudio" disabled/>
+                <input id="playAudio" type="checkbox" @bind="playAudio" disabled />
                 Play Music
             </label>
         }
