@@ -67,14 +67,13 @@
 
         level = 1;
         score = 0;
-
-        playAudio = true;
     }
 
     public async Task RunGame()
     {
         //Start playing the theme music
-        await _jsRuntime.InvokeAsync<string>("PlayAudio", "theme");
+        if(playAudio)
+            await _jsRuntime.InvokeAsync<string>("PlayAudio", "theme");
 
         //Generate the first piece to be dropped
         var currentPieceStyle = generator.Next();
