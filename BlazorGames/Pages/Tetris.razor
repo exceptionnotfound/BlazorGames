@@ -94,7 +94,7 @@
         await _jsRuntime.InvokeVoidAsync("SetFocusToElement", gameBoardDiv);
 
         //Where there is no piece with a row of 21 or greater
-        while(!grid.Coordinates.HasRow(21))
+        while(!grid.Cells.HasRow(21))
         {
             StateHasChanged();
 
@@ -168,8 +168,8 @@
                 await Delay(500);
         }
 
-        //"Solidify" the current piece by adding its covered squares to the board's coordinates
-        grid.Coordinates.AddMany(currentTetromino.CoveredSpaces.GetAll(), currentTetromino.CssClass);
+        //"Solidify" the current piece by adding its covered squares to the board's cells
+        grid.Cells.AddMany(currentTetromino.CoveredCells.GetAll(), currentTetromino.CssClass);
     }
 
     public void LevelChange()
@@ -203,10 +203,10 @@
         for (int i = 1; i <= grid.Height; i++)
         {
             //If every position in that row is filled...
-            if (grid.Coordinates.GetAllInRow(i).Count == grid.Width)
+            if (grid.Cells.GetAllInRow(i).Count == grid.Width)
             {
                 //Add the "complete" animation CSS class
-                grid.Coordinates.SetCssClass(i, "tetris-clear-row");
+                grid.Cells.SetCssClass(i, "tetris-clear-row");
 
                 //Mark that row as complete
                 rowsComplete.Add(i);
@@ -218,8 +218,8 @@
         {
             StateHasChanged();
 
-            //Collapse the "higher" coordinates down to fill in the completed rows.
-            grid.Coordinates.CollapseRows(rowsComplete);
+            //Collapse the "higher" cells down to fill in the completed rows.
+            grid.Cells.CollapseRows(rowsComplete);
 
             //Calculate the score for the completed row(s)
             switch (rowsComplete.Count)

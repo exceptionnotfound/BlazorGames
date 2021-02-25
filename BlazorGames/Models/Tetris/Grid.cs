@@ -10,7 +10,7 @@ namespace BlazorGames.Models.Tetris
     {
         public int Width { get; } = 10;
         public int Height { get; } = 20;
-        public CoordinateCollection Coordinates { get; set; } = new CoordinateCollection();
+        public CellCollection Cells { get; set; } = new CellCollection();
 
         public GameState State { get; set; } = GameState.NotStarted;
 

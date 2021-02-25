@@ -19,16 +19,16 @@ namespace BlazorGames.Models.Tetris.Tetrominos
 
         public override string CssClass => "tetris-yellow-cell";
 
-        public override CoordinateCollection CoveredSpaces
+        public override CellCollection CoveredCells
         {
             get
             {
-                CoordinateCollection coordinates = new CoordinateCollection();
-                coordinates.Add(CenterPieceRow, CenterPieceColumn);
-                coordinates.Add(CenterPieceRow - 1, CenterPieceColumn);
-                coordinates.Add(CenterPieceRow, CenterPieceColumn + 1);
-                coordinates.Add(CenterPieceRow - 1, CenterPieceColumn + 1);
-                return coordinates;
+                CellCollection cells = new CellCollection();
+                cells.Add(CenterPieceRow, CenterPieceColumn);
+                cells.Add(CenterPieceRow - 1, CenterPieceColumn);
+                cells.Add(CenterPieceRow, CenterPieceColumn + 1);
+                cells.Add(CenterPieceRow - 1, CenterPieceColumn + 1);
+                return cells;
             }
         }
     }

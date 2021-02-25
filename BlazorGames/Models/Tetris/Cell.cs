@@ -5,19 +5,19 @@ using System.Threading.Tasks;
 
 namespace BlazorGames.Models.Tetris
 {
-    public class Coordinate
+    public class Cell
     {
         public int Row { get; set; }
         public int Column { get; set; }
         public string CssClass { get; set; }
 
-        public Coordinate(int row, int column)
+        public Cell(int row, int column)
         {
             Row = row;
             Column = column;
         }
 
-        public Coordinate(int row, int column, string css)
+        public Cell(int row, int column, string css)
         {
             Row = row;
             Column = column;

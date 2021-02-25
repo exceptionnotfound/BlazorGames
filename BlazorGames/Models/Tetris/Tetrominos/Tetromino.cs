@@ -42,7 +42,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
         /// A collection of all spaces currently occupied by this tetromino.
         /// This collection is calculated by each style.
         /// </summary>
-        public virtual CoordinateCollection CoveredSpaces { get; }
+        public virtual CellCollection CoveredCells { get; }
 
         public Tetromino(Grid grid)
         {
@@ -75,7 +75,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
                     break;
             }
 
-            var coveredSpaces = CoveredSpaces;
+            var coveredSpaces = CoveredCells;
 
             //If the new rotation of the tetromino means it would be outside the
             //play area, shift the center space so as to keep the entire tetromino visible.
@@ -151,14 +151,14 @@ namespace BlazorGames.Models.Tetris.Tetrominos
         public bool CanMoveDown()
         {
             //For each of the covered spaces, get the space immediately below
-            foreach (var coord in CoveredSpaces.GetLowest())
+            foreach (var coord in CoveredCells.GetLowest())
             {
-                if (Grid.Coordinates.Contains(coord.Row - 1, coord.Column))
+                if (Grid.Cells.Contains(coord.Row - 1, coord.Column))
                     return false;
             }
 
             //If any of the covered spaces are currently in the lowest row, the piece cannot move down.
-            if (CoveredSpaces.HasRow(1))
+            if (CoveredCells.HasRow(1))
                 return false;
 
             return true;
@@ -171,14 +171,14 @@ namespace BlazorGames.Models.Tetris.Tetrominos
         public bool CanMoveRight()
         {
             //For each of the covered spaces, get the space immediately to the right
-            foreach (var coord in CoveredSpaces.GetRightmost())
+            foreach (var cell in CoveredCells.GetRightmost())
             {
-                if (Grid.Coordinates.Contains(coord.Row, coord.Column + 1))
+                if (Grid.Cells.Contains(cell.Row, cell.Column + 1))
                     return false;
             }
 
             //If any of the covered spaces are currently in the rightmost column, the piece cannot move right.
-            if (CoveredSpaces.HasColumn(10))
+            if (CoveredCells.HasColumn(10))
                 return false;
 
             return true;
@@ -202,14 +202,14 @@ namespace BlazorGames.Models.Tetris.Tetrominos
         public bool CanMoveLeft()
         {
             //For each of the covered spaces, get the space immediately to the left
-            foreach (var coord in CoveredSpaces.GetLeftmost())
+            foreach (var cell in CoveredCells.GetLeftmost())
             {
-                if (Grid.Coordinates.Contains(coord.Row, coord.Column - 1))
+                if (Grid.Cells.Contains(cell.Row, cell.Column - 1))
                     return false;
             }
 
             //If any of the covered spaces are currently in the leftmost column, the piece cannot move left.
-            if (CoveredSpaces.HasColumn(1))
+            if (CoveredCells.HasColumn(1))
                 return false;
 
             return true;

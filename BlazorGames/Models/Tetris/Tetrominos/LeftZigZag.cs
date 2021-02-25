@@ -20,40 +20,40 @@ namespace BlazorGames.Models.Tetris.Tetrominos
 
         public override string CssClass => "tetris-red-cell";
 
-        public override CoordinateCollection CoveredSpaces
+        public override CellCollection CoveredCells
         {
             get
             {
-                CoordinateCollection coordinates = new CoordinateCollection();
-                coordinates.Add(CenterPieceRow, CenterPieceColumn);
+                CellCollection cells = new CellCollection();
+                cells.Add(CenterPieceRow, CenterPieceColumn);
                 
                 switch(Orientation)
                 {
                     case TetrominoOrientation.LeftRight:
-                        coordinates.Add(CenterPieceRow + 1, CenterPieceColumn);
-                        coordinates.Add(CenterPieceRow + 1, CenterPieceColumn - 1);
-                        coordinates.Add(CenterPieceRow, CenterPieceColumn + 1);
+                        cells.Add(CenterPieceRow + 1, CenterPieceColumn);
+                        cells.Add(CenterPieceRow + 1, CenterPieceColumn - 1);
+                        cells.Add(CenterPieceRow, CenterPieceColumn + 1);
                         break;
 
                     case TetrominoOrientation.DownUp:
-                        coordinates.Add(CenterPieceRow - 1, CenterPieceColumn);
-                        coordinates.Add(CenterPieceRow, CenterPieceColumn + 1);
-                        coordinates.Add(CenterPieceRow + 1, CenterPieceColumn + 1);
+                        cells.Add(CenterPieceRow - 1, CenterPieceColumn);
+                        cells.Add(CenterPieceRow, CenterPieceColumn + 1);
+                        cells.Add(CenterPieceRow + 1, CenterPieceColumn + 1);
                         break;
 
                     case TetrominoOrientation.RightLeft:
-                        coordinates.Add(CenterPieceRow, CenterPieceColumn - 1);
-                        coordinates.Add(CenterPieceRow - 1, CenterPieceColumn);
-                        coordinates.Add(CenterPieceRow - 1, CenterPieceColumn + 1);
+                        cells.Add(CenterPieceRow, CenterPieceColumn - 1);
+                        cells.Add(CenterPieceRow - 1, CenterPieceColumn);
+                        cells.Add(CenterPieceRow - 1, CenterPieceColumn + 1);
                         break;
 
                     case TetrominoOrientation.UpDown:
-                        coordinates.Add(CenterPieceRow + 1, CenterPieceColumn);
-                        coordinates.Add(CenterPieceRow, CenterPieceColumn - 1);
-                        coordinates.Add(CenterPieceRow - 1, CenterPieceColumn - 1);
+                        cells.Add(CenterPieceRow + 1, CenterPieceColumn);
+                        cells.Add(CenterPieceRow, CenterPieceColumn - 1);
+                        cells.Add(CenterPieceRow - 1, CenterPieceColumn - 1);
                         break;
                 }
-                return coordinates;
+                return cells;
             }
         }
     }

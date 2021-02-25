@@ -21,39 +21,39 @@ namespace BlazorGames.Models.Tetris.Tetrominos
 
         public override string CssClass => "tetris-lightblue-cell";
 
-        public override CoordinateCollection CoveredSpaces
+        public override CellCollection CoveredCells
         {
             get
             {
-                CoordinateCollection coordinates = new CoordinateCollection();
-                coordinates.Add(CenterPieceRow, CenterPieceColumn);
+                CellCollection cells = new CellCollection();
+                cells.Add(CenterPieceRow, CenterPieceColumn);
 
                 if (Orientation == TetrominoOrientation.UpDown)
                 {
-                    coordinates.Add(CenterPieceRow - 1, CenterPieceColumn);
-                    coordinates.Add(CenterPieceRow - 2, CenterPieceColumn);
-                    coordinates.Add(CenterPieceRow + 1, CenterPieceColumn);
+                    cells.Add(CenterPieceRow - 1, CenterPieceColumn);
+                    cells.Add(CenterPieceRow - 2, CenterPieceColumn);
+                    cells.Add(CenterPieceRow + 1, CenterPieceColumn);
                 }
                 else if (Orientation == TetrominoOrientation.LeftRight)
                 {
-                    coordinates.Add(CenterPieceRow, CenterPieceColumn - 1);
-                    coordinates.Add(CenterPieceRow, CenterPieceColumn - 2);
-                    coordinates.Add(CenterPieceRow, CenterPieceColumn + 1);
+                    cells.Add(CenterPieceRow, CenterPieceColumn - 1);
+                    cells.Add(CenterPieceRow, CenterPieceColumn - 2);
+                    cells.Add(CenterPieceRow, CenterPieceColumn + 1);
                 }
                 else if (Orientation == TetrominoOrientation.DownUp)
                 {
-                    coordinates.Add(CenterPieceRow - 1, CenterPieceColumn);
-                    coordinates.Add(CenterPieceRow + 1, CenterPieceColumn);
-                    coordinates.Add(CenterPieceRow + 2, CenterPieceColumn);
+                    cells.Add(CenterPieceRow - 1, CenterPieceColumn);
+                    cells.Add(CenterPieceRow + 1, CenterPieceColumn);
+                    cells.Add(CenterPieceRow + 2, CenterPieceColumn);
                 }
                 else //RightLeft
                 {
-                    coordinates.Add(CenterPieceRow, CenterPieceColumn - 1);
-                    coordinates.Add(CenterPieceRow, CenterPieceColumn + 1);
-                    coordinates.Add(CenterPieceRow, CenterPieceColumn + 2);
+                    cells.Add(CenterPieceRow, CenterPieceColumn - 1);
+                    cells.Add(CenterPieceRow, CenterPieceColumn + 1);
+                    cells.Add(CenterPieceRow, CenterPieceColumn + 2);
                 }
 
-                return coordinates;
+                return cells;
             }
         }
     }

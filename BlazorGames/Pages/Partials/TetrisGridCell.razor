@@ -20,14 +20,14 @@
     string extraCSS = "";
     if (Grid.IsStarted)
     {
-        if (Tetromino.CoveredSpaces.Contains(Row, Column))
+        if (Tetromino.CoveredCells.Contains(Row, Column))
         {
             extraCSS = "tetris-piece " + Tetromino.CssClass;
         }
 
-        if (Grid.Coordinates.Contains(Row, Column))
+        if (Grid.Cells.Contains(Row, Column))
         {
-            extraCSS = "tetris-piece " + Grid.Coordinates.GetCssClass(Row, Column);
+            extraCSS = "tetris-piece " + Grid.Cells.GetCssClass(Row, Column);
         }
     }
 }
