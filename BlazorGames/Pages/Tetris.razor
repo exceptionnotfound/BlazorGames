@@ -38,8 +38,6 @@
 
     protected ElementReference gameBoardDiv;  // set by the @ref attribute
 
-    private List<GameState> InGameGameStates = new List<GameState>() { GameState.Playing, GameState.ClearingRows };
-
     protected override async Task OnInitializedAsync()
     {
         //Get the previous high score cookie if one exists
@@ -292,7 +290,7 @@
         {
             <button @onclick="(() => NewGame())" class="btn btn-primary">New Game!</button>
         }
-        @if (InGameGameStates.Contains(grid.State))
+        @if (grid.IsStarted)
         {
             <label for="playAudio">
                 <input id="playAudio" type="checkbox" @bind="playAudio" disabled />
