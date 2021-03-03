@@ -178,7 +178,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
             }
 
             //If any of the covered spaces are currently in the rightmost column, the piece cannot move right.
-            if (CoveredCells.HasColumn(10))
+            if (CoveredCells.HasColumn(Grid.Width))
                 return false;
 
             return true;

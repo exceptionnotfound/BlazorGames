@@ -28,13 +28,7 @@ namespace BlazorGames.Models.Tetris.Tetrominos
                 CellCollection cells = new CellCollection();
                 cells.Add(CenterPieceRow, CenterPieceColumn);
 
-                if (Orientation == TetrominoOrientation.UpDown)
-                {
-                    cells.Add(CenterPieceRow - 1, CenterPieceColumn);
-                    cells.Add(CenterPieceRow - 2, CenterPieceColumn);
-                    cells.Add(CenterPieceRow + 1, CenterPieceColumn);
-                }
-                else if (Orientation == TetrominoOrientation.LeftRight)
+                if (Orientation == TetrominoOrientation.LeftRight)
                 {
                     cells.Add(CenterPieceRow, CenterPieceColumn - 1);
                     cells.Add(CenterPieceRow, CenterPieceColumn - 2);
@@ -46,11 +40,17 @@ namespace BlazorGames.Models.Tetris.Tetrominos
                     cells.Add(CenterPieceRow + 1, CenterPieceColumn);
                     cells.Add(CenterPieceRow + 2, CenterPieceColumn);
                 }
-                else //RightLeft
+                else if(Orientation == TetrominoOrientation.RightLeft)
                 {
                     cells.Add(CenterPieceRow, CenterPieceColumn - 1);
                     cells.Add(CenterPieceRow, CenterPieceColumn + 1);
                     cells.Add(CenterPieceRow, CenterPieceColumn + 2);
+                }
+                else //UpDown
+                {
+                    cells.Add(CenterPieceRow - 1, CenterPieceColumn);
+                    cells.Add(CenterPieceRow - 2, CenterPieceColumn);
+                    cells.Add(CenterPieceRow + 1, CenterPieceColumn);
                 }
 
                 return cells;
