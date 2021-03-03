@@ -20,7 +20,7 @@
     TetrominoStyle secondNextStyle;
     TetrominoStyle thirdNextStyle;
 
-    //The standard delay is how long the game waits before dropping the current piece by one row.
+    //The standard delay is how long the game waits before dropping the current tetromino by one row.
     int standardDelay = 1000;
 
     //This flag is set if the player "hard drops" a tetromino all the way to the bottom
@@ -72,14 +72,14 @@
     public async Task RunGame()
     {
         //Start playing the theme music
-        if(playAudio)
+        if (playAudio)
             await _jsRuntime.InvokeAsync<string>("PlayAudio", "theme");
 
-        //Generate the first piece to be dropped
-        var currentPieceStyle = generator.Next();
-        currentTetromino = generator.CreateFromStyle(currentPieceStyle, grid);
+        //Generate the first tetromino to be dropped
+        var currentTetrominoStyle = generator.Next();
+        currentTetromino = generator.CreateFromStyle(currentTetrominoStyle, grid);
 
-        //Generate the styles of the next three pieces that will be dropped
+        //Generate the styles of the next three tetrominos that will be dropped
         nextStyle = generator.Next(currentTetromino.Style);
         secondNextStyle = generator.Next(currentTetromino.Style, nextStyle);
         thirdNextStyle = generator.Next(currentTetromino.Style, nextStyle, secondNextStyle);
@@ -90,13 +90,15 @@
         //Focus the browser on the board div
         await _jsRuntime.InvokeVoidAsync("SetFocusToElement", gameBoardDiv);
 
-        //Where there is no piece with a row of 21 or greater
-        while(!grid.Cells.HasRow(21))
+        //Where there is no tetromino with a row of 21 or greater
+        while (!grid.Cells.HasRow(21))
         {
+            currentTetromino = new Block(grid);
+
             StateHasChanged();
 
-            //Run the current piece until it can't move anymore
-            await RunCurrentPiece();
+            //Run the current tetromino until it can't move anymore
+            await RunCurrentTetromino();
 
             //If any rows are filled, remove them from the board
             await ClearCompleteRows();
@@ -104,7 +106,7 @@
             //If the score is high enough, move the user to a new level
             LevelChange();
 
-            //Create the next piece to be dropped from the already-determined nextStyle,
+            //Create the next tetromino to be dropped from the already-determined nextStyle,
             //and move the styles "up" in line
             currentTetromino = generator.CreateFromStyle(nextStyle, grid);
             nextStyle = secondNextStyle;
@@ -112,7 +114,7 @@
             thirdNextStyle = generator.Next(currentTetromino.Style, nextStyle, secondNextStyle);
         }
 
-        //Once there is a piece with a row of 21 or greater, the game is over.
+        //Once there is a tetromino with a row of 21 or greater, the game is over.
         grid.State = GameState.GameOver;
 
         //If the current high score is larger than the old high score, update the cookie
@@ -145,27 +147,29 @@
         skipDelay = false;
     }
 
-    public async Task RunCurrentPiece()
+    public async Task RunCurrentTetromino()
     {
-        //While the piece can still move down
+        currentTetromino = new Block(grid);
+
+        //While the tetromino can still move down
         while (currentTetromino.CanMoveDown())
         {
             //Wait for the standard delay
             await Delay(standardDelay);
 
-            //Move the piece
+            //Move the tetromino down one row
             currentTetromino.MoveDown();
 
             //Update the display
             StateHasChanged();
 
-            //If the piece can no longer move down BUT can still move in other directions,
+            //If the tetromino can no longer move down BUT can still move in other directions,
             //delay for an additional half-second to let the user move if they want.
             if (!currentTetromino.CanMoveDown() && currentTetromino.CanMove())
                 await Delay(500);
         }
 
-        //"Solidify" the current piece by adding its covered squares to the board's cells
+        //"Solidify" the current tetromino by adding its covered squares to the board's cells
         grid.Cells.AddMany(currentTetromino.CoveredCells.GetAll(), currentTetromino.CssClass);
     }
 
@@ -283,11 +287,11 @@
     <div class="col">
         @if (grid.State == GameState.NotStarted)
         {
-            <button @onclick="(() => RunGame())" class="btn btn-primary">Start!</button>
+            <button @onclick="RunGame" class="btn btn-primary">Start!</button>
         }
         @if (grid.State == GameState.GameOver)
         {
-            <button @onclick="(() => NewGame())" class="btn btn-primary">New Game!</button>
+            <button @onclick="NewGame" class="btn btn-primary">New Game!</button>
         }
         @if (grid.IsStarted)
         {
