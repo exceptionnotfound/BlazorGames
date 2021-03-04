@@ -19,7 +19,6 @@ namespace BlazorGames.Models.Tetris
             get
             {
                 return State == GameState.Playing 
-                       || State == GameState.ClearingRows 
                        || State == GameState.GameOver;
             }
         }

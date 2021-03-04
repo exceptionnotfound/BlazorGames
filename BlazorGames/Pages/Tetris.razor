@@ -91,10 +91,8 @@
         await _jsRuntime.InvokeVoidAsync("SetFocusToElement", gameBoardDiv);
 
         //Where there is no tetromino with a row of 21 or greater
-        while (!grid.Cells.HasRow(21))
+        while (!grid.Cells.HasRow(21)) //Game loop
         {
-            currentTetromino = new Block(grid);
-
             StateHasChanged();
 
             //Run the current tetromino until it can't move anymore
@@ -149,8 +147,6 @@
 
     public async Task RunCurrentTetromino()
     {
-        currentTetromino = new Block(grid);
-
         //While the tetromino can still move down
         while (currentTetromino.CanMoveDown())
         {
@@ -197,8 +193,6 @@
 
     public async Task ClearCompleteRows()
     {
-        grid.State = GameState.ClearingRows;
-
         //For each row
         List<int> rowsComplete = new List<int>();
         for (int i = 1; i <= grid.Height; i++)

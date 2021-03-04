@@ -12,7 +12,6 @@ namespace BlazorGames.Models.Tetris.Enums
     {
         NotStarted, 
         Playing, //Game playing normally
-        ClearingRows, //Rows being cleared out
         GameOver
     }
 }
