@@ -71,14 +71,10 @@
         if (playAudio)
             await _jsRuntime.InvokeAsync<string>("PlayAudio", "theme");
 
-        //Generate the first tetromino to be dropped
-        var currentTetrominoStyle = generator.Next();
-        currentTetromino = generator.CreateFromStyle(currentTetrominoStyle, grid);
-
-        //Generate the styles of the next three tetrominos that will be dropped
-        nextStyle = generator.Next(currentTetromino.Style);
-        secondNextStyle = generator.Next(currentTetromino.Style, nextStyle);
-        thirdNextStyle = generator.Next(currentTetromino.Style, nextStyle, secondNextStyle);
+        //Generate the styles of the first three tetrominos that will be dropped
+        nextStyle = generator.Next();
+        secondNextStyle = generator.Next(nextStyle);
+        thirdNextStyle = generator.Next(nextStyle, secondNextStyle);
 
         //Start playing the game
         grid.State = GameState.Playing;
@@ -89,6 +85,13 @@
         //Where there is no tetromino with a row of 21 or greater
         while (!grid.Cells.HasRow(21)) //Game loop
         {
+            //Create the next tetromino to be dropped from the already-determined nextStyle,
+            //and move the styles "up" in line
+            currentTetromino = generator.CreateFromStyle(nextStyle, grid);
+            nextStyle = secondNextStyle;
+            secondNextStyle = thirdNextStyle;
+            thirdNextStyle = generator.Next(currentTetromino.Style, nextStyle, secondNextStyle);
+
             StateHasChanged();
 
             //Run the current tetromino until it can't move anymore
@@ -99,13 +102,6 @@
 
             //If the score is high enough, move the user to a new level
             LevelChange();
-
-            //Create the next tetromino to be dropped from the already-determined nextStyle,
-            //and move the styles "up" in line
-            currentTetromino = generator.CreateFromStyle(nextStyle, grid);
-            nextStyle = secondNextStyle;
-            secondNextStyle = thirdNextStyle;
-            thirdNextStyle = generator.Next(currentTetromino.Style, nextStyle, secondNextStyle);
         }
 
         //Once there is a tetromino with a row of 21 or greater, the game is over.
