@@ -55,10 +55,6 @@
 
     public void NewGame()
     {
-        Task.WaitAll();
-
-        grid.State = GameState.GameOver;
-
         grid = new Grid();
 
         generator = new TetrominoGenerator();
