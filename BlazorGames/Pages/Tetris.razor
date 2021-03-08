@@ -175,8 +175,8 @@
         int newLevel = counter;
         if(newLevel != level) //If the user has gone up a level
         {
-            //Reduce the drop delay by 100 milliseconds.
-            standardDelay = standardDelay - ((newLevel - 1) * 100);
+            //Reduce the drop delay by 100 milliseconds for every level the User has made.
+            standardDelay = 1000 - ((newLevel - 1) * 100);
 
             //Set the new level
             level = newLevel;
