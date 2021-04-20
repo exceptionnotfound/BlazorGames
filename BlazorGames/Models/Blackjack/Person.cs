@@ -1,5 +1,5 @@
-﻿using BlazorGames.Models.Blackjack.Enums;
-using System;
+﻿using Common;
+using Common.Enums;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
