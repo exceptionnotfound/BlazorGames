@@ -1,0 +1,623 @@
+﻿@page "/solitaire"
+
+@using BlazorGames.Models.Solitaire;
+@using BlazorGames.Models.Common.Enums;
+@using BlazorGames.Pages.Partials;
+@using BlazorGames.Pages.Partials.Solitaire;
+
+@code {
+    public Card DraggedCard { get; set; }
+
+    [Parameter] public DiscardPile DiscardPile { get; set; }
+
+    public GameStatus Status { get; set; } = GameStatus.NotStarted;
+
+    public Card FirstDiscard { get; set; }
+    public Card SecondDiscard { get; set; }
+    public Card ThirdDiscard { get; set; }
+
+    CardDeck drawDeck = new CardDeck();
+
+    DiscardPile discardPile = new DiscardPile();
+
+    SuitPile clubsPile = new SuitPile(CardSuit.Clubs);
+    SuitPile diamondsPile = new SuitPile(CardSuit.Diamonds);
+    SuitPile spadesPile = new SuitPile(CardSuit.Spades);
+    SuitPile heartsPile = new SuitPile(CardSuit.Hearts);
+
+    StackPile stackPile1 = new StackPile();
+    StackPile stackPile2 = new StackPile();
+    StackPile stackPile3 = new StackPile();
+    StackPile stackPile4 = new StackPile();
+    StackPile stackPile5 = new StackPile();
+    StackPile stackPile6 = new StackPile();
+    StackPile stackPile7 = new StackPile();
+
+    public void StartGame()
+    {
+        Status = GameStatus.Playing;
+
+        drawDeck = new CardDeck();
+        discardPile = new DiscardPile();
+
+        FirstDiscard = null;
+        SecondDiscard = null;
+        ThirdDiscard = null;
+
+        clubsPile = new SuitPile(CardSuit.Clubs);
+        diamondsPile = new SuitPile(CardSuit.Diamonds);
+        spadesPile = new SuitPile(CardSuit.Spades);
+        heartsPile = new SuitPile(CardSuit.Hearts);
+
+        stackPile1 = new StackPile();
+        stackPile2 = new StackPile();
+        stackPile3 = new StackPile();
+        stackPile4 = new StackPile();
+        stackPile5 = new StackPile();
+        stackPile6 = new StackPile();
+        stackPile7 = new StackPile();
+
+        stackPile1.Add(drawDeck.Draw());
+        stackPile2.Add(drawDeck.DrawHidden());
+        stackPile3.Add(drawDeck.DrawHidden());
+        stackPile4.Add(drawDeck.DrawHidden());
+        stackPile5.Add(drawDeck.DrawHidden());
+        stackPile6.Add(drawDeck.DrawHidden());
+        stackPile7.Add(drawDeck.DrawHidden());
+
+        stackPile2.Add(drawDeck.Draw());
+        stackPile3.Add(drawDeck.DrawHidden());
+        stackPile4.Add(drawDeck.DrawHidden());
+        stackPile5.Add(drawDeck.DrawHidden());
+        stackPile6.Add(drawDeck.DrawHidden());
+        stackPile7.Add(drawDeck.DrawHidden());
+
+        stackPile3.Add(drawDeck.Draw());
+        stackPile4.Add(drawDeck.DrawHidden());
+        stackPile5.Add(drawDeck.DrawHidden());
+        stackPile6.Add(drawDeck.DrawHidden());
+        stackPile7.Add(drawDeck.DrawHidden());
+
+        stackPile4.Add(drawDeck.Draw());
+        stackPile5.Add(drawDeck.DrawHidden());
+        stackPile6.Add(drawDeck.DrawHidden());
+        stackPile7.Add(drawDeck.DrawHidden());
+
+        stackPile5.Add(drawDeck.Draw());
+        stackPile6.Add(drawDeck.DrawHidden());
+        stackPile7.Add(drawDeck.DrawHidden());
+
+        stackPile6.Add(drawDeck.Draw());
+        stackPile7.Add(drawDeck.DrawHidden());
+
+        stackPile7.Add(drawDeck.Draw());
+
+        StateHasChanged();
+    }
+
+    public void Draw()
+    {
+        if(ThirdDiscard != null)
+            discardPile.Add(ThirdDiscard);
+        if(SecondDiscard != null)
+            ThirdDiscard = SecondDiscard;
+        if(FirstDiscard != null)
+            SecondDiscard = FirstDiscard;
+        FirstDiscard = drawDeck.Draw();
+
+        StateHasChanged();
+    }
+
+    public void ResetDrawPile()
+    {
+        discardPile.Add(ThirdDiscard);
+        discardPile.Add(SecondDiscard);
+        discardPile.Add(FirstDiscard);
+        var allCards = discardPile.GetAll();
+        allCards.Reverse();
+        foreach (var card in allCards)
+        {
+            drawDeck.Add(card);
+        }
+        FirstDiscard = null;
+        SecondDiscard = null;
+        ThirdDiscard = null;
+        discardPile = new DiscardPile();
+    }
+
+    public void HandleDragStart(Card draggedCard)
+    {
+        DraggedCard = draggedCard;
+    }
+
+    private void MoveActiveCard(SuitPile suitPile)
+    {
+        MoveActiveCard(DraggedCard, suitPile);
+    }
+
+    private void MoveActiveCard(Card card, SuitPile suitPile)
+    {
+        if (FirstDiscard != null && FirstDiscard.Suit == card.Suit && FirstDiscard.Value == card.Value)
+        {
+            FirstDiscard = null;
+            discardPile.RemoveIfExists(card);
+            MoveUpDiscards();
+        }
+        RemoveIfExistsInAnyStackPile(card);
+
+        suitPile.Add(card);
+
+        StateHasChanged();
+    }
+
+    private void RemoveIfExistsInAnyStackPile(Card card)
+    {
+        stackPile1.RemoveIfExists(card);
+        stackPile2.RemoveIfExists(card);
+        stackPile3.RemoveIfExists(card);
+        stackPile4.RemoveIfExists(card);
+        stackPile5.RemoveIfExists(card);
+        stackPile6.RemoveIfExists(card);
+        stackPile7.RemoveIfExists(card);
+
+        clubsPile.RemoveIfExists(card);
+        diamondsPile.RemoveIfExists(card);
+        spadesPile.RemoveIfExists(card);
+        heartsPile.RemoveIfExists(card);
+
+        if(FirstDiscard != null && FirstDiscard.Suit == card.Suit && FirstDiscard.Value == card.Value)
+        {
+            FirstDiscard = null;
+            MoveUpDiscards();
+        }
+    }
+
+    private void MoveUpDiscards()
+    {
+        FirstDiscard = SecondDiscard;
+        SecondDiscard = ThirdDiscard;
+
+        ThirdDiscard = discardPile.Pop();
+    }
+
+    public void CardDoubleClick(Card card)
+    {
+        SuitPile selectedPile = clubsPile;
+        switch (card.Suit)
+        {
+            case CardSuit.Diamonds:
+                selectedPile = diamondsPile;
+                break;
+
+            case CardSuit.Spades:
+                selectedPile = spadesPile;
+                break;
+
+            case CardSuit.Hearts:
+                selectedPile = heartsPile;
+                break;
+        }
+
+        if (selectedPile.AllowedSuit == card.Suit && selectedPile.AllowedValue == card.Value)
+        {
+            MoveActiveCard(card, selectedPile);
+        }
+    }
+
+    public void RevealCard(Card card, StackPile pile)
+    {
+        var lastPileCard = pile.Last();
+        if(lastPileCard.Suit == card.Suit && lastPileCard.Value == card.Value)
+        {
+            lastPileCard.IsVisible = true;
+        }
+    }
+
+    public void DropCardOntoStack(StackPile targetStack)
+    {
+        var card = targetStack.Last();
+        bool canStack = false;
+        if (card == null) //No cards on the stack, we can only allow kings
+        {
+            canStack = DraggedCard.Value == CardValue.King;
+        }
+        else
+        {
+            bool isOppositeColor = (card.IsBlack && DraggedCard.IsRed)
+                                    || (card.IsRed && DraggedCard.IsBlack);
+
+            bool isOneLessThan = (int)DraggedCard.Value == (((int)card.Value) - 1);
+
+            canStack = isOneLessThan && isOppositeColor;
+        }
+
+        if (canStack)
+        {
+            StackPile sourceStack = null;
+            if (stackPile7.Contains(DraggedCard))
+            {
+                sourceStack = stackPile7;
+            }
+            else if (stackPile6.Contains(DraggedCard))
+            {
+                sourceStack = stackPile6;
+            }
+            else if (stackPile5.Contains(DraggedCard))
+            {
+                sourceStack = stackPile5;
+            }
+            else if (stackPile4.Contains(DraggedCard))
+            {
+                sourceStack = stackPile4;
+            }
+            else if (stackPile3.Contains(DraggedCard))
+            {
+                sourceStack = stackPile3;
+            }
+            else if (stackPile2.Contains(DraggedCard))
+            {
+                sourceStack = stackPile2;
+            }
+            else if (stackPile1.Contains(DraggedCard))
+            {
+                sourceStack = stackPile1;
+            }
+            if(sourceStack != null)
+            {
+                MoveCardStack(targetStack, sourceStack);
+            }
+            if(DraggedCard == FirstDiscard)
+            {
+                RemoveIfExistsInAnyStackPile(DraggedCard);
+                targetStack.Add(DraggedCard);
+            }
+            if(heartsPile.Contains(DraggedCard))
+            {
+                heartsPile.RemoveIfExists(DraggedCard);
+                targetStack.Add(DraggedCard);
+            }
+            if (clubsPile.Contains(DraggedCard))
+            {
+                clubsPile.RemoveIfExists(DraggedCard);
+                targetStack.Add(DraggedCard);
+            }
+            if (diamondsPile.Contains(DraggedCard))
+            {
+                diamondsPile.RemoveIfExists(DraggedCard);
+                targetStack.Add(DraggedCard);
+            }
+            if (spadesPile.Contains(DraggedCard))
+            {
+                spadesPile.RemoveIfExists(DraggedCard);
+                targetStack.Add(DraggedCard);
+            }
+        }
+        StateHasChanged();
+    }
+
+    private void MoveCardStack(StackPile targetStack, StackPile sourceStack)
+    {
+        //Check if any cards exist *after* the dragged card
+        var index = sourceStack.IndexOf(DraggedCard);
+        if (sourceStack.Cards.Count >= index)
+        {
+            List<Card> MoveCards = new List<Card>();
+            //Get all cards after the dragged card
+            while (index < sourceStack.Cards.Count)
+            {
+                MoveCards.Insert(0,sourceStack.Pop());
+            }
+
+            foreach (var card in MoveCards)
+            {
+                targetStack.Add(card);
+            }
+        }
+    }
+
+    public async Task EmptyStackDrop(StackPile stackPile)
+    {
+        DropCardOntoStack(stackPile);
+    }
+}
+
+<PageTitle Title="Solitaire" />
+
+@if (Status == GameStatus.NotStarted)
+{
+    <div class="row">
+        <div class="col-2">
+            <button class="btn-primary" @onclick="StartGame">Start Game</button>
+        </div>
+    </div>
+}
+@if (Status == GameStatus.Playing)
+{
+    <div class="row">
+        <div class="col-2">
+            <div>
+                @{
+                    int cardCount = drawDeck.Count;
+                }
+                @while (cardCount > 0)
+                {
+                    <HiddenCard CssClass="solitaire-drawdeck"
+                                ClickEvent="Draw" />
+                    cardCount -= 13;
+                }
+                @if (drawDeck.Count == 0)
+                {
+                    <div class="solitaire-drawdeck" @onclick="ResetDrawPile">
+                        <img src="images/solitaire/cardBackGrey.png" />
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-2">
+            @if (ThirdDiscard != null)
+            {
+                <NonDraggableCard Card="ThirdDiscard"/>
+            }
+            @if (SecondDiscard != null)
+            {
+                <NonDraggableCard Card="SecondDiscard" />
+            }
+            @if (FirstDiscard != null)
+            {
+                <DraggableCard Card="FirstDiscard" 
+                               CssClass="solitaire-discards"
+                               HandleDragStartEvent="(() => HandleDragStart(FirstDiscard))"
+                               HandleDoubleClickEvent="(() => CardDoubleClick(FirstDiscard))"/>
+            }
+        </div>
+        <div class="col-8">
+            <div class="solitaire-suitpile-container">
+                <div class="row">
+                    <div class="col-2">
+                        <SuitDiscardPile SuitPile="clubsPile"
+                                         DiscardPile="discardPile"
+                                         DraggedCard="DraggedCard"
+                                         MoveActiveCardCallback="(() => MoveActiveCard(clubsPile))"
+                                         DragStartEvent="(() => HandleDragStart(clubsPile.Last()))"/>
+                    </div>
+                    <div class="col-2">
+                        <SuitDiscardPile SuitPile="diamondsPile"
+                                         DiscardPile="discardPile"
+                                         DraggedCard="DraggedCard"
+                                         MoveActiveCardCallback="(() => MoveActiveCard(diamondsPile))"
+                                         DragStartEvent="(() => HandleDragStart(diamondsPile.Last()))"/>
+                    </div>
+                    <div class="col-2">
+                        <SuitDiscardPile SuitPile="spadesPile"
+                                         DiscardPile="discardPile"
+                                         DraggedCard="DraggedCard"
+                                         MoveActiveCardCallback="(() => MoveActiveCard(spadesPile))"
+                                         DragStartEvent="(() => HandleDragStart(spadesPile.Last()))"/>
+                    </div>
+                    <div class="col-2">
+                        <SuitDiscardPile SuitPile="heartsPile"
+                                         DiscardPile="discardPile"
+                                         DraggedCard="DraggedCard"
+                                         MoveActiveCardCallback="(() => MoveActiveCard(heartsPile))"
+                                         DragStartEvent="(() => HandleDragStart(heartsPile.Last()))"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    @if (stackPile1.Any())
+                    {
+                        @foreach (var card in stackPile1.Cards)
+                        {
+                            if (card.IsVisible)
+                            {
+                                <DraggableCard Card="card"
+                                               DraggedCard="DraggedCard"
+                                               CssClass="solitaire-stackpile"
+                                               HandleDragStartEvent="(() => HandleDragStart(card))"
+                                               HandleDoubleClickEvent="(() => CardDoubleClick(card))"
+                                               HandleDropEvent="(() => DropCardOntoStack(stackPile1))"/>
+                            }
+                            else
+                            {
+                                <HiddenCard CssClass="solitaire-stackpile"
+                                            ClickEvent="(() => RevealCard(card, stackPile1))" />
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <EmptyStack Pile="stackPile1"
+                                    DraggedCard="DraggedCard"
+                                    RemoveFromAllStacksEvent="(() => RemoveIfExistsInAnyStackPile(DraggedCard))"
+                                    DropEvent="(() => EmptyStackDrop(stackPile1))"/>
+                    }
+                </div>
+                <div class="col-md-4">
+                    @if (stackPile2.Any())
+                    {
+                        @foreach (var card in stackPile2.Cards)
+                        {
+                            if (card.IsVisible)
+                            {
+                                <DraggableCard Card="card"
+                                               DraggedCard="DraggedCard"
+                                               CssClass="solitaire-stackpile"
+                                               HandleDragStartEvent="(() => HandleDragStart(card))"
+                                               HandleDoubleClickEvent="(() => CardDoubleClick(card))"
+                                               HandleDropEvent="(() => DropCardOntoStack(stackPile2))"/>
+                            }
+                            else
+                            {
+                                <HiddenCard CssClass="solitaire-stackpile"
+                                            ClickEvent="(() => RevealCard(card, stackPile2))" />
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <EmptyStack Pile="stackPile2"
+                                    DraggedCard="DraggedCard"
+                                    RemoveFromAllStacksEvent="(() => RemoveIfExistsInAnyStackPile(DraggedCard))"
+                                    DropEvent="(() => EmptyStackDrop(stackPile2))"/>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-2">
+                    @if (stackPile3.Any())
+                    {
+                        @foreach (var card in stackPile3.Cards)
+                        {
+                            if (card.IsVisible)
+                            {
+                                <DraggableCard Card="card"
+                                               DraggedCard="DraggedCard"
+                                               CssClass="solitaire-stackpile"
+                                               HandleDragStartEvent="(() => HandleDragStart(card))"
+                                               HandleDoubleClickEvent="(() => CardDoubleClick(card))"
+                                               HandleDropEvent="(() => DropCardOntoStack(stackPile3))"/>
+                            }
+                            else
+                            {
+                                <HiddenCard CssClass="solitaire-stackpile"
+                                            ClickEvent="(() => RevealCard(card, stackPile3))" />
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <EmptyStack Pile="stackPile3"
+                                    DraggedCard="DraggedCard"
+                                    RemoveFromAllStacksEvent="(() => RemoveIfExistsInAnyStackPile(DraggedCard))"
+                                    DropEvent="(() => EmptyStackDrop(stackPile3))"/>
+                    }
+                </div>
+                <div class="col-md-2">
+                    @if (stackPile4.Any())
+                    {
+                        @foreach (var card in stackPile4.Cards)
+                        {
+                            if (card.IsVisible)
+                            {
+                                <DraggableCard Card="card"
+                                               DraggedCard="DraggedCard"
+                                               CssClass="solitaire-stackpile"
+                                               HandleDragStartEvent="(() => HandleDragStart(card))"
+                                               HandleDoubleClickEvent="(() => CardDoubleClick(card))"
+                                               HandleDropEvent="(() => DropCardOntoStack(stackPile4))"/>
+                            }
+                            else
+                            {
+                                <HiddenCard CssClass="solitaire-stackpile"
+                                            ClickEvent="(() => RevealCard(card, stackPile4))" />
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <EmptyStack Pile="stackPile4"
+                                    DraggedCard="DraggedCard"
+                                    RemoveFromAllStacksEvent="(() => RemoveIfExistsInAnyStackPile(DraggedCard))"
+                                    DropEvent="(() => EmptyStackDrop(stackPile4))"/>
+                    }
+                </div>
+                <div class="col-md-2">
+                    @if (stackPile5.Any())
+                    {
+                        @foreach (var card in stackPile5.Cards)
+                        {
+                            if (card.IsVisible)
+                            {
+                                <DraggableCard Card="card"
+                                               DraggedCard="DraggedCard"
+                                               CssClass="solitaire-stackpile"
+                                               HandleDragStartEvent="(() => HandleDragStart(card))"
+                                               HandleDoubleClickEvent="(() => CardDoubleClick(card))"
+                                               HandleDropEvent="(() => DropCardOntoStack(stackPile5))"/>
+                            }
+                            else
+                            {
+                                <HiddenCard CssClass="solitaire-stackpile"
+                                            ClickEvent="(() => RevealCard(card, stackPile5))" />
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <EmptyStack Pile="stackPile5"
+                                    DraggedCard="DraggedCard"
+                                    RemoveFromAllStacksEvent="(() => RemoveIfExistsInAnyStackPile(DraggedCard))"
+                                    DropEvent="(() => EmptyStackDrop(stackPile5))"/>
+                    }
+                </div>
+                <div class="col-md-2">
+                    @if (stackPile6.Any())
+                    {
+                        @foreach (var card in stackPile6.Cards)
+                        {
+                            if (card.IsVisible)
+                            {
+                                <DraggableCard Card="card"
+                                               DraggedCard="DraggedCard"
+                                               CssClass="solitaire-stackpile"
+                                               HandleDragStartEvent="(() => HandleDragStart(card))"
+                                               HandleDoubleClickEvent="(() => CardDoubleClick(card))"
+                                               HandleDropEvent="(() => DropCardOntoStack(stackPile6))"/>
+                            }
+                            else
+                            {
+                                <HiddenCard CssClass="solitaire-stackpile"
+                                            ClickEvent="(() => RevealCard(card, stackPile6))" />
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <EmptyStack Pile="stackPile6"
+                                    DraggedCard="DraggedCard"
+                                    RemoveFromAllStacksEvent="(() => RemoveIfExistsInAnyStackPile(DraggedCard))"
+                                    DropEvent="(() => EmptyStackDrop(stackPile6))"/>
+                    }
+                </div>
+                <div class="col-md-2">
+                    @if (stackPile7.Any())
+                    {
+                        @foreach (var card in stackPile7.Cards)
+                        {
+                            if (card.IsVisible)
+                            {
+                                <DraggableCard Card="card"
+                                               DraggedCard="DraggedCard"
+                                               CssClass="solitaire-stackpile"
+                                               HandleDragStartEvent="(() => HandleDragStart(card))"
+                                               HandleDoubleClickEvent="(() => CardDoubleClick(card))"
+                                               HandleDropEvent="(() => DropCardOntoStack(stackPile7))"/>
+                            }
+                            else
+                            {
+                                <HiddenCard CssClass="solitaire-stackpile"
+                                            ClickEvent="(() => RevealCard(card, stackPile7))" />
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <EmptyStack Pile="stackPile7"
+                                    DraggedCard="DraggedCard"
+                                    RemoveFromAllStacksEvent="(() => RemoveIfExistsInAnyStackPile(DraggedCard))"
+                                    DropEvent="(() => EmptyStackDrop(stackPile7))"/>
+                    }
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    </div>
+}

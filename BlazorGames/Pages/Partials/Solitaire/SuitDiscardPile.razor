@@ -1,0 +1,70 @@
+﻿@using BlazorGames.Models.Solitaire;
+@using BlazorGames.Models.Common;
+@using BlazorGames.Models.Common.Enums;
+
+@code {
+    [Parameter]
+    public SuitPile SuitPile { get; set; }
+
+    [Parameter]
+    public DiscardPile DiscardPile { get; set; }
+
+    [Parameter]
+    public Card DraggedCard { get; set; }
+
+    [Parameter]
+    public EventCallback DragStartEvent { get; set; }
+
+    [Parameter]
+    public EventCallback MoveActiveCardCallback { get; set; }
+
+    private string CssClass { get; set; }
+
+    public void HandleDragEnter()
+    {
+        if (DraggedCard.Value == SuitPile.AllowedValue && DraggedCard.Suit == SuitPile.AllowedSuit)
+        {
+            CssClass = "solitaire-can-drop";
+        }
+    }
+
+    public void HandleDragLeave()
+    {
+        CssClass = "";
+    }
+
+    public async Task HandleDrop()
+    {
+        CssClass = "";
+
+        if (DraggedCard.Value == SuitPile.AllowedValue && DraggedCard.Suit == SuitPile.AllowedSuit)
+        {
+            await MoveActiveCardCallback.InvokeAsync(SuitPile);
+        }
+    }
+}
+
+@if (SuitPile.Any())
+{
+    <div @ondragstart="DragStartEvent"
+         @ondragend="StateHasChanged"
+         @ondragenter="HandleDragEnter"
+         @ondragleave="HandleDragLeave"
+         @ondrop="HandleDrop"
+         ondragover="event.preventDefault();">
+        <img class="solitaire-card @CssClass"
+             src="images/common/@(SuitPile.Last().ImageName).png" />
+    </div>
+}
+else
+{
+    <div @ondragstart="DragStartEvent"
+         @ondragend="StateHasChanged"
+         @ondragenter="HandleDragEnter"
+         @ondragleave="HandleDragLeave"
+         @ondrop="HandleDrop"
+         ondragover="event.preventDefault();">
+        <img class="solitaire-card @CssClass"
+             src="images/solitaire/cardDashed@(SuitPile.Suit.GetDisplayName()).png" />
+    </div>
+}

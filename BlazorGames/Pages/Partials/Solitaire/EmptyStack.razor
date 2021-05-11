@@ -1,0 +1,41 @@
+﻿@using BlazorGames.Models.Solitaire;
+@using BlazorGames.Models.Common.Enums;
+
+@code {
+    [Parameter]
+    public StackPile Pile { get; set; }
+
+    [Parameter]
+    public Card DraggedCard { get; set; }
+
+    [Parameter]
+    public EventCallback RemoveFromAllStacksEvent { get; set; }
+
+    [Parameter]
+    public EventCallback DropEvent { get; set; }
+
+    private string CssClass { get; set; }
+
+    public void EmptyStackDragEnter()
+    {
+        if (DraggedCard.Value == CardValue.King)
+        {
+            CssClass = "solitaire-can-drop";
+        }
+    }
+
+    public void EmptyStackDragLeave()
+    {
+        CssClass = "";
+    }
+
+
+}
+
+<img class="@CssClass"
+     src="images/solitaire/cardBackGrey.png"
+     @ondragenter="EmptyStackDragEnter"
+     @ondragleave="EmptyStackDragLeave"
+     @ondrop="DropEvent"
+     ondragover="event.preventDefault();"
+     ondragstart="event.dataTransfer.setData('', event.target.id);" />

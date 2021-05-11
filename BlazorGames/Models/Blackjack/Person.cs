@@ -1,5 +1,4 @@
-﻿using Common;
-using Common.Enums;
+﻿using BlazorGames.Models.Common.Enums;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

@@ -1,11 +1,11 @@
-﻿using BlazorGames.Models.Blackjack.Enums;
-using BlazorGames.Models.Common;
+﻿using BlazorGames.Models.Common;
 using BlazorGames.Models.Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace BlazorGames.Models.Blackjack
+namespace BlazorGames.Models.Solitaire
 {
     public class CardDeck
     {
@@ -17,6 +17,11 @@ namespace BlazorGames.Models.Blackjack
             {
                 return Cards.Count;
             }
+        }
+
+        public void Add(Card card)
+        {
+            Cards.Push(card);
         }
 
         public CardDeck()
@@ -61,14 +66,18 @@ namespace BlazorGames.Models.Blackjack
             }
         }
 
-        public void Add(Card card)
-        {
-            Cards.Push(card);
-        }
-
         public Card Draw()
         {
-            return Cards.Pop();
+            var card = Cards.Pop();
+            card.IsVisible = true;
+            return card;
+        }
+
+        public Card DrawHidden()
+        {
+            var card = Cards.Pop();
+            card.IsVisible = false;
+            return card;
         }
     }
 }

@@ -504,3 +504,36 @@
     -moz-animation-name: fadeOut;
     -moz-animation-duration: 1s;
 }
+
+.solitaire-drawdeck {
+    height: 190px;
+    width: 140px;
+    float: left;
+}
+
+.solitaire-drawdeck:not(:first-child) {
+    margin-left: -130px;
+}
+
+.solitaire-can-drop {
+    border: 2px dashed green;
+}
+
+.solitaire-discards {
+    height: 190px;
+    width: 140px;
+    float: left;
+}
+
+.solitaire-discards:not(:first-child) {
+    margin-left: -110px;
+}
+
+.solitaire-drawdeck {
+    width: 140px;
+    vertical-align:top;
+}
+
+.solitaire-stackpile:not(:first-child) {
+    margin-top: -130px;
+}

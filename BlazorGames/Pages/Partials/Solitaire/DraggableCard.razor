@@ -1,0 +1,54 @@
+﻿@using BlazorGames.Models.Solitaire;
+
+@code {
+    [Parameter]
+    public Card Card { get; set; }
+
+    [Parameter]
+    public Card DraggedCard { get; set; }
+
+    [Parameter]
+    public EventCallback HandleDragStartEvent { get; set; }
+
+    [Parameter]
+    public EventCallback HandleDoubleClickEvent { get; set; }
+
+    [Parameter]
+    public EventCallback HandleDropEvent { get; set; }
+
+    [Parameter]
+    public string CssClass { get; set; }
+
+    public string AdditionalCss { get; set; }
+
+    public void CardDragEnter()
+    {
+        @if (DraggedCard != null)
+        {
+            bool isOppositeColor = (Card.IsBlack && DraggedCard.IsRed)
+                                    || (Card.IsRed && DraggedCard.IsBlack);
+
+            bool isOneLessThan = (int)DraggedCard.Value == (((int)Card.Value) - 1);
+
+            if (isOppositeColor && isOneLessThan)
+            {
+                AdditionalCss = " solitaire-can-drop";
+            }
+        }
+    }
+
+    public void CardDragLeave()
+    {
+        AdditionalCss = "";
+    }
+}
+
+<img class="@CssClass @AdditionalCss"
+     src="images/common/@(Card.ImageName).png"
+     @ondragstart="HandleDragStartEvent"
+     @ondragend="StateHasChanged"
+     @ondblclick="HandleDoubleClickEvent"
+     @ondragenter="CardDragEnter"
+     @ondragleave="CardDragLeave"
+     @ondrop="(async () => { await HandleDropEvent.InvokeAsync(this); CssClass = null; })"
+     ondragover="event.preventDefault();"/>
