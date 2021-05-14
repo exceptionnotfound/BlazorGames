@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace BlazorGames.Models.Solitaire
 {
     public class StackPile : PileBase
-    { 
+    {
         public bool CanStack(Card card)
         {
             var lastCard = Cards.Last();
@@ -22,6 +22,11 @@ namespace BlazorGames.Models.Solitaire
                                     : lastCard.Suit == CardSuit.Spades || lastCard.Suit == CardSuit.Clubs;
 
             return isOneLess && isOppositeColor;
+        }
+
+        public bool HasNoHiddenCards()
+        {
+            return !Cards.Any() || Cards.All(x => x.IsVisible);
         }
     }
 }

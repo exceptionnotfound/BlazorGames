@@ -50,5 +50,5 @@
      @ondblclick="HandleDoubleClickEvent"
      @ondragenter="CardDragEnter"
      @ondragleave="CardDragLeave"
-     @ondrop="(async () => { await HandleDropEvent.InvokeAsync(this); CssClass = null; })"
+     @ondrop="(async () => { await HandleDropEvent.InvokeAsync(this); AdditionalCss = null; })"
      ondragover="event.preventDefault();"/>

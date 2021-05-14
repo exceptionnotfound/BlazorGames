@@ -24,7 +24,6 @@ namespace BlazorGames.Models.Solitaire
             {
                 var topCard = Last();
                 if (topCard == null) return CardValue.Ace;
-                if (topCard.Value == CardValue.King) return CardValue.Ace;
 
                 int currentValue = (int)topCard.Value;
                 return (CardValue)(currentValue + 1);
@@ -34,6 +33,14 @@ namespace BlazorGames.Models.Solitaire
         public SuitPile(CardSuit suit)
         {
             Suit = suit;
+        }
+
+        public bool IsComplete
+        {
+            get
+            {
+                return (int)AllowedValue == 14;
+            }
         }
     }
 }

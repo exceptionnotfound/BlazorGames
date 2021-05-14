@@ -4,6 +4,7 @@
 @using BlazorGames.Models.Common.Enums;
 @using BlazorGames.Pages.Partials;
 @using BlazorGames.Pages.Partials.Solitaire;
+@using System.Threading; 
 
 @code {
     public Card DraggedCard { get; set; }
@@ -33,7 +34,7 @@
     StackPile stackPile6 = new StackPile();
     StackPile stackPile7 = new StackPile();
 
-    public void StartGame()
+    public void NewGame()
     {
         Status = GameStatus.Playing;
 
@@ -198,9 +199,15 @@
                 break;
         }
 
-        if (selectedPile.AllowedSuit == card.Suit && selectedPile.AllowedValue == card.Value)
+
+        CheckMoveCardToSuitPile(card, selectedPile);
+    }
+
+    private void CheckMoveCardToSuitPile(Card card, SuitPile suitPile)
+    {
+        if (suitPile.AllowedSuit == card.Suit && suitPile.AllowedValue == card.Value)
         {
-            MoveActiveCard(card, selectedPile);
+            MoveActiveCard(card, suitPile);
         }
     }
 
@@ -213,7 +220,7 @@
         }
     }
 
-    public void DropCardOntoStack(StackPile targetStack)
+    public async Task DropCardOntoStack(StackPile targetStack)
     {
         var card = targetStack.Last();
         bool canStack = false;
@@ -293,6 +300,7 @@
             }
         }
         StateHasChanged();
+        await AutoComplete();
     }
 
     private void MoveCardStack(StackPile targetStack, StackPile sourceStack)
@@ -317,22 +325,105 @@
 
     public async Task EmptyStackDrop(StackPile stackPile)
     {
-        DropCardOntoStack(stackPile);
+        await DropCardOntoStack(stackPile);
+        await AutoComplete();
+    }
+
+    private async Task AutoComplete()
+    {
+        if(stackPile1.HasNoHiddenCards()
+            && stackPile2.HasNoHiddenCards()
+            && stackPile3.HasNoHiddenCards()
+            && stackPile4.HasNoHiddenCards()
+            && stackPile5.HasNoHiddenCards()
+            && stackPile6.HasNoHiddenCards()
+            && stackPile7.HasNoHiddenCards()
+            && !discardPile.Any()
+            && drawDeck.Count == 0)
+        {
+            while(!clubsPile.IsComplete || !diamondsPile.IsComplete || !spadesPile.IsComplete || !heartsPile.IsComplete)
+            {
+                //Cycle through each stack, get the lowest card in the stack, and attempt to add it to the correct suit pile
+                var card1 = stackPile1.Last();
+                if (card1 != null)
+                {
+                    CheckMoveCardToSuitPile(card1, clubsPile);
+                    CheckMoveCardToSuitPile(card1, diamondsPile);
+                    CheckMoveCardToSuitPile(card1, spadesPile);
+                    CheckMoveCardToSuitPile(card1, heartsPile);
+                }
+
+                var card2 = stackPile2.Last();
+                if (card2 != null)
+                {
+                    CheckMoveCardToSuitPile(card2, clubsPile);
+                    CheckMoveCardToSuitPile(card2, diamondsPile);
+                    CheckMoveCardToSuitPile(card2, spadesPile);
+                    CheckMoveCardToSuitPile(card2, heartsPile);
+                }
+
+                var card3 = stackPile3.Last();
+                if (card3 != null)
+                {
+                    CheckMoveCardToSuitPile(card3, clubsPile);
+                    CheckMoveCardToSuitPile(card3, diamondsPile);
+                    CheckMoveCardToSuitPile(card3, spadesPile);
+                    CheckMoveCardToSuitPile(card3, heartsPile);
+                }
+
+                var card4 = stackPile4.Last();
+                if (card4 != null)
+                {
+                    CheckMoveCardToSuitPile(card4, clubsPile);
+                    CheckMoveCardToSuitPile(card4, diamondsPile);
+                    CheckMoveCardToSuitPile(card4, spadesPile);
+                    CheckMoveCardToSuitPile(card4, heartsPile);
+                }
+
+                var card5 = stackPile5.Last();
+                if (card5 != null)
+                {
+                    CheckMoveCardToSuitPile(card5, clubsPile);
+                    CheckMoveCardToSuitPile(card5, diamondsPile);
+                    CheckMoveCardToSuitPile(card5, spadesPile);
+                    CheckMoveCardToSuitPile(card5, heartsPile);
+                }
+
+                var card6 = stackPile6.Last();
+                if (card6 != null)
+                {
+                    CheckMoveCardToSuitPile(card6, clubsPile);
+                    CheckMoveCardToSuitPile(card6, diamondsPile);
+                    CheckMoveCardToSuitPile(card6, spadesPile);
+                    CheckMoveCardToSuitPile(card6, heartsPile);
+                }
+
+                var card7 = stackPile7.Last();
+                if (card7 != null)
+                {
+                    CheckMoveCardToSuitPile(card7, clubsPile);
+                    CheckMoveCardToSuitPile(card7, diamondsPile);
+                    CheckMoveCardToSuitPile(card7, spadesPile);
+                    CheckMoveCardToSuitPile(card7, heartsPile);
+                }
+
+                StateHasChanged();
+                await Task.Delay(100);
+            }
+        }
     }
 }
 
 <PageTitle Title="Solitaire" />
 
-@if (Status == GameStatus.NotStarted)
-{
-    <div class="row">
-        <div class="col-2">
-            <button class="btn-primary" @onclick="StartGame">Start Game</button>
-        </div>
+<div class="row">
+    <div class="col-2">
+        <button class="btn-primary" @onclick="NewGame">New Game</button>
     </div>
-}
+</div>
 @if (Status == GameStatus.Playing)
 {
+    <hr />
     <div class="row">
         <div class="col-2">
             <div>
