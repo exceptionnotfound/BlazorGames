@@ -7,7 +7,7 @@ namespace BlazorGames.Models.Solitaire
 {
     public class PileBase
     {
-        public List<Card> Cards { get; set; } = new List<Card>();
+        protected List<Card> Cards { get; set; } = new List<Card>();
 
         public void Add(Card card)
         {
@@ -36,25 +36,11 @@ namespace BlazorGames.Models.Solitaire
             return Cards.LastOrDefault();
         }
 
-        public List<Card> GetAll()
-        {
-            return Cards.ToList();
-        }
-
         public void RemoveIfExists(Card card)
         {
             var matchingCard = Cards.FirstOrDefault(x => x.Suit == card.Suit && x.Value == card.Value);
             if(matchingCard != null)
                 Cards.Remove(matchingCard);
-        }
-
-        public int IndexOf(Card card)
-        {
-            var matchingCard = Cards.FirstOrDefault(x => x.Suit == card.Suit && x.Value == card.Value);
-            if (matchingCard != null)
-                return Cards.IndexOf(matchingCard);
-
-            return 0;
         }
 
         public bool Contains(Card card)

@@ -66,18 +66,18 @@ namespace BlazorGames.Models.Solitaire
             }
         }
 
-        public Card Draw()
-        {
-            var card = Cards.Pop();
-            card.IsVisible = true;
-            return card;
-        }
+    public Card Draw()
+    {
+        var card = Cards.Pop();
+        card.IsVisible = true;
+        return card;
+    }
 
-        public Card DrawHidden()
-        {
-            var card = Cards.Pop();
-            card.IsVisible = false;
-            return card;
-        }
+    public Card DrawHidden()
+    {
+        var card = Cards.Pop();
+        card.IsVisible = false;
+        return card;
+    }
     }
 }

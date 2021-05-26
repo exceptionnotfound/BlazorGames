@@ -10,14 +10,6 @@ namespace BlazorGames.Models.Solitaire
     {
         public CardSuit Suit { get; set; }
 
-        public CardSuit AllowedSuit
-        {
-            get
-            {
-                return Suit;
-            }
-        }
-
         public CardValue AllowedValue
         {
             get

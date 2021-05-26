@@ -5,7 +5,11 @@ using System.Threading.Tasks;
 
 namespace BlazorGames.Models.Solitaire
 {
-    public class DiscardPile : PileBase
+public class DiscardPile : PileBase
+{
+    public List<Card> GetAll()
     {
+        return Cards.ToList();
     }
+}
 }

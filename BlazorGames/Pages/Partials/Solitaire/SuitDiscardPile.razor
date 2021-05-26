@@ -22,7 +22,7 @@
 
     public void HandleDragEnter()
     {
-        if (DraggedCard.Value == SuitPile.AllowedValue && DraggedCard.Suit == SuitPile.AllowedSuit)
+        if (DraggedCard.Value == SuitPile.AllowedValue && DraggedCard.Suit == SuitPile.Suit)
         {
             CssClass = "solitaire-can-drop";
         }
@@ -37,7 +37,7 @@
     {
         CssClass = "";
 
-        if (DraggedCard.Value == SuitPile.AllowedValue && DraggedCard.Suit == SuitPile.AllowedSuit)
+        if (DraggedCard.Value == SuitPile.AllowedValue && DraggedCard.Suit == SuitPile.Suit)
         {
             await MoveActiveCardCallback.InvokeAsync(SuitPile);
         }

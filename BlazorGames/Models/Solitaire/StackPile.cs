@@ -10,7 +10,7 @@ namespace BlazorGames.Models.Solitaire
     {
         public bool CanStack(Card card)
         {
-            var lastCard = Cards.Last();
+            var lastCard = Last();
 
             int draggedCardValue = (int)card.Value;
             int stackedCardValue = (int)lastCard.Value;
@@ -24,9 +24,33 @@ namespace BlazorGames.Models.Solitaire
             return isOneLess && isOppositeColor;
         }
 
+        public int IndexOf(Card card)
+        {
+            var matchingCard = Cards.FirstOrDefault(x => x.Suit == card.Suit && x.Value == card.Value);
+            if (matchingCard != null)
+                return Cards.IndexOf(matchingCard);
+
+            return 0;
+        }
+
         public bool HasNoHiddenCards()
         {
-            return !Cards.Any() || Cards.All(x => x.IsVisible);
+            return !Any() || AllAreVisible();
+        }
+
+        public bool AllAreVisible()
+        {
+            return Cards.All(x => x.IsVisible);
+        }
+
+        public int Count()
+        {
+            return Cards.Count();
+        }
+
+        public List<Card> GetAllCards()
+        {
+            return Cards;
         }
     }
 }

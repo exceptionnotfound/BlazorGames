@@ -205,20 +205,20 @@
 
     private void CheckMoveCardToSuitPile(Card card, SuitPile suitPile)
     {
-        if (suitPile.AllowedSuit == card.Suit && suitPile.AllowedValue == card.Value)
+        if (suitPile.Suit == card.Suit && suitPile.AllowedValue == card.Value)
         {
             MoveActiveCard(card, suitPile);
         }
     }
 
-    public void RevealCard(Card card, StackPile pile)
+    public async Task RevealCard(Card card, StackPile pile)
     {
         var lastPileCard = pile.Last();
         if(lastPileCard.Suit == card.Suit && lastPileCard.Value == card.Value)
         {
             lastPileCard.IsVisible = true;
         }
-        AutoComplete();
+        await AutoComplete();
     }
 
     public async Task DropCardOntoStack(StackPile targetStack)
@@ -308,11 +308,11 @@
     {
         //Check if any cards exist *after* the dragged card
         var index = sourceStack.IndexOf(DraggedCard);
-        if (sourceStack.Cards.Count >= index)
+        if (sourceStack.Count() >= index)
         {
             List<Card> MoveCards = new List<Card>();
             //Get all cards after the dragged card
-            while (index < sourceStack.Cards.Count)
+            while (index < sourceStack.Count())
             {
                 MoveCards.Insert(0,sourceStack.Pop());
             }
@@ -340,7 +340,8 @@
             && stackPile6.HasNoHiddenCards()
             && stackPile7.HasNoHiddenCards()
             && !discardPile.Any()
-            && drawDeck.Count == 0)
+            && drawDeck.Count == 0
+            && FirstDiscard == null)
         {
             while(!clubsPile.IsComplete || !diamondsPile.IsComplete || !spadesPile.IsComplete || !heartsPile.IsComplete)
             {
@@ -504,7 +505,7 @@
                 <div class="col-md-4">
                     @if (stackPile1.Any())
                     {
-                        @foreach (var card in stackPile1.Cards)
+                        @foreach (var card in stackPile1.GetAllCards())
                         {
                             if (card.IsVisible)
                             {
@@ -533,7 +534,7 @@
                 <div class="col-md-4">
                     @if (stackPile2.Any())
                     {
-                        @foreach (var card in stackPile2.Cards)
+                        @foreach (var card in stackPile2.GetAllCards())
                         {
                             if (card.IsVisible)
                             {
@@ -566,7 +567,7 @@
                 <div class="col-md-2">
                     @if (stackPile3.Any())
                     {
-                        @foreach (var card in stackPile3.Cards)
+                        @foreach (var card in stackPile3.GetAllCards())
                         {
                             if (card.IsVisible)
                             {
@@ -595,7 +596,7 @@
                 <div class="col-md-2">
                     @if (stackPile4.Any())
                     {
-                        @foreach (var card in stackPile4.Cards)
+                        @foreach (var card in stackPile4.GetAllCards())
                         {
                             if (card.IsVisible)
                             {
@@ -624,7 +625,7 @@
                 <div class="col-md-2">
                     @if (stackPile5.Any())
                     {
-                        @foreach (var card in stackPile5.Cards)
+                        @foreach (var card in stackPile5.GetAllCards())
                         {
                             if (card.IsVisible)
                             {
@@ -653,7 +654,7 @@
                 <div class="col-md-2">
                     @if (stackPile6.Any())
                     {
-                        @foreach (var card in stackPile6.Cards)
+                        @foreach (var card in stackPile6.GetAllCards())
                         {
                             if (card.IsVisible)
                             {
@@ -682,7 +683,7 @@
                 <div class="col-md-2">
                     @if (stackPile7.Any())
                     {
-                        @foreach (var card in stackPile7.Cards)
+                        @foreach (var card in stackPile7.GetAllCards())
                         {
                             if (card.IsVisible)
                             {
