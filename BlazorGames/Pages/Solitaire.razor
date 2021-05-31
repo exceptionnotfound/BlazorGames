@@ -9,17 +9,15 @@
 @code {
     public Card DraggedCard { get; set; }
 
-    [Parameter] public DiscardPile DiscardPile { get; set; }
-
     public GameStatus Status { get; set; } = GameStatus.NotStarted;
 
     public Card FirstDiscard { get; set; }
     public Card SecondDiscard { get; set; }
     public Card ThirdDiscard { get; set; }
 
-    CardDeck drawDeck = new CardDeck();
+    CardDeck DrawDeck = new CardDeck();
 
-    DiscardPile discardPile = new DiscardPile();
+    DiscardPile DiscardPile = new DiscardPile();
 
     SuitPile clubsPile = new SuitPile(CardSuit.Clubs);
     SuitPile diamondsPile = new SuitPile(CardSuit.Diamonds);
@@ -38,8 +36,8 @@
     {
         Status = GameStatus.Playing;
 
-        drawDeck = new CardDeck();
-        discardPile = new DiscardPile();
+        DrawDeck = new CardDeck();
+        DiscardPile = new DiscardPile();
 
         FirstDiscard = null;
         SecondDiscard = null;
@@ -58,40 +56,40 @@
         stackPile6 = new StackPile();
         stackPile7 = new StackPile();
 
-        stackPile1.Add(drawDeck.Draw());
-        stackPile2.Add(drawDeck.DrawHidden());
-        stackPile3.Add(drawDeck.DrawHidden());
-        stackPile4.Add(drawDeck.DrawHidden());
-        stackPile5.Add(drawDeck.DrawHidden());
-        stackPile6.Add(drawDeck.DrawHidden());
-        stackPile7.Add(drawDeck.DrawHidden());
+        stackPile1.Add(DrawDeck.Draw());
+        stackPile2.Add(DrawDeck.DrawHidden());
+        stackPile3.Add(DrawDeck.DrawHidden());
+        stackPile4.Add(DrawDeck.DrawHidden());
+        stackPile5.Add(DrawDeck.DrawHidden());
+        stackPile6.Add(DrawDeck.DrawHidden());
+        stackPile7.Add(DrawDeck.DrawHidden());
 
-        stackPile2.Add(drawDeck.Draw());
-        stackPile3.Add(drawDeck.DrawHidden());
-        stackPile4.Add(drawDeck.DrawHidden());
-        stackPile5.Add(drawDeck.DrawHidden());
-        stackPile6.Add(drawDeck.DrawHidden());
-        stackPile7.Add(drawDeck.DrawHidden());
+        stackPile2.Add(DrawDeck.Draw());
+        stackPile3.Add(DrawDeck.DrawHidden());
+        stackPile4.Add(DrawDeck.DrawHidden());
+        stackPile5.Add(DrawDeck.DrawHidden());
+        stackPile6.Add(DrawDeck.DrawHidden());
+        stackPile7.Add(DrawDeck.DrawHidden());
 
-        stackPile3.Add(drawDeck.Draw());
-        stackPile4.Add(drawDeck.DrawHidden());
-        stackPile5.Add(drawDeck.DrawHidden());
-        stackPile6.Add(drawDeck.DrawHidden());
-        stackPile7.Add(drawDeck.DrawHidden());
+        stackPile3.Add(DrawDeck.Draw());
+        stackPile4.Add(DrawDeck.DrawHidden());
+        stackPile5.Add(DrawDeck.DrawHidden());
+        stackPile6.Add(DrawDeck.DrawHidden());
+        stackPile7.Add(DrawDeck.DrawHidden());
 
-        stackPile4.Add(drawDeck.Draw());
-        stackPile5.Add(drawDeck.DrawHidden());
-        stackPile6.Add(drawDeck.DrawHidden());
-        stackPile7.Add(drawDeck.DrawHidden());
+        stackPile4.Add(DrawDeck.Draw());
+        stackPile5.Add(DrawDeck.DrawHidden());
+        stackPile6.Add(DrawDeck.DrawHidden());
+        stackPile7.Add(DrawDeck.DrawHidden());
 
-        stackPile5.Add(drawDeck.Draw());
-        stackPile6.Add(drawDeck.DrawHidden());
-        stackPile7.Add(drawDeck.DrawHidden());
+        stackPile5.Add(DrawDeck.Draw());
+        stackPile6.Add(DrawDeck.DrawHidden());
+        stackPile7.Add(DrawDeck.DrawHidden());
 
-        stackPile6.Add(drawDeck.Draw());
-        stackPile7.Add(drawDeck.DrawHidden());
+        stackPile6.Add(DrawDeck.Draw());
+        stackPile7.Add(DrawDeck.DrawHidden());
 
-        stackPile7.Add(drawDeck.Draw());
+        stackPile7.Add(DrawDeck.Draw());
 
         StateHasChanged();
     }
@@ -99,31 +97,31 @@
     public void Draw()
     {
         if(ThirdDiscard != null)
-            discardPile.Add(ThirdDiscard);
+            DiscardPile.Add(ThirdDiscard);
         if(SecondDiscard != null)
             ThirdDiscard = SecondDiscard;
         if(FirstDiscard != null)
             SecondDiscard = FirstDiscard;
-        FirstDiscard = drawDeck.Draw();
+        FirstDiscard = DrawDeck.Draw();
 
         StateHasChanged();
     }
 
     public void ResetDrawPile()
     {
-        discardPile.Add(ThirdDiscard);
-        discardPile.Add(SecondDiscard);
-        discardPile.Add(FirstDiscard);
-        var allCards = discardPile.GetAll();
+        DiscardPile.Add(ThirdDiscard);
+        DiscardPile.Add(SecondDiscard);
+        DiscardPile.Add(FirstDiscard);
+        var allCards = DiscardPile.GetAll();
         allCards.Reverse();
         foreach (var card in allCards)
         {
-            drawDeck.Add(card);
+            DrawDeck.Add(card);
         }
         FirstDiscard = null;
         SecondDiscard = null;
         ThirdDiscard = null;
-        discardPile = new DiscardPile();
+        DiscardPile = new DiscardPile();
     }
 
     public void HandleDragStart(Card draggedCard)
@@ -141,7 +139,7 @@
         if (FirstDiscard != null && FirstDiscard.Suit == card.Suit && FirstDiscard.Value == card.Value)
         {
             FirstDiscard = null;
-            discardPile.RemoveIfExists(card);
+            DiscardPile.RemoveIfExists(card);
             MoveUpDiscards();
         }
         RemoveIfExistsInAnyStackPile(card);
@@ -178,7 +176,7 @@
         FirstDiscard = SecondDiscard;
         SecondDiscard = ThirdDiscard;
 
-        ThirdDiscard = discardPile.Pop();
+        ThirdDiscard = DiscardPile.Pop();
     }
 
     public void CardDoubleClick(Card card)
@@ -339,8 +337,8 @@
             && stackPile5.HasNoHiddenCards()
             && stackPile6.HasNoHiddenCards()
             && stackPile7.HasNoHiddenCards()
-            && !discardPile.Any()
-            && drawDeck.Count == 0
+            && !DiscardPile.Any()
+            && DrawDeck.Count == 0
             && FirstDiscard == null)
         {
             while(!clubsPile.IsComplete || !diamondsPile.IsComplete || !spadesPile.IsComplete || !heartsPile.IsComplete)
@@ -430,7 +428,7 @@
         <div class="col-2">
             <div>
                 @{
-                    int cardCount = drawDeck.Count;
+                    int cardCount = DrawDeck.Count;
                 }
                 @while (cardCount > 0)
                 {
@@ -438,7 +436,7 @@
                                 ClickEvent="Draw" />
                     cardCount -= 13;
                 }
-                @if (drawDeck.Count == 0)
+                @if (DrawDeck.Count == 0)
                 {
                     <div class="solitaire-drawdeck" @onclick="ResetDrawPile">
                         <img src="images/solitaire/cardBackGrey.png" />
@@ -468,28 +466,28 @@
                 <div class="row">
                     <div class="col-2">
                         <SuitDiscardPile SuitPile="clubsPile"
-                                         DiscardPile="discardPile"
+                                         DiscardPile="DiscardPile"
                                          DraggedCard="DraggedCard"
                                          MoveActiveCardCallback="(() => MoveActiveCard(clubsPile))"
                                          DragStartEvent="(() => HandleDragStart(clubsPile.Last()))"/>
                     </div>
                     <div class="col-2">
                         <SuitDiscardPile SuitPile="diamondsPile"
-                                         DiscardPile="discardPile"
+                                         DiscardPile="DiscardPile"
                                          DraggedCard="DraggedCard"
                                          MoveActiveCardCallback="(() => MoveActiveCard(diamondsPile))"
                                          DragStartEvent="(() => HandleDragStart(diamondsPile.Last()))"/>
                     </div>
                     <div class="col-2">
                         <SuitDiscardPile SuitPile="spadesPile"
-                                         DiscardPile="discardPile"
+                                         DiscardPile="DiscardPile"
                                          DraggedCard="DraggedCard"
                                          MoveActiveCardCallback="(() => MoveActiveCard(spadesPile))"
                                          DragStartEvent="(() => HandleDragStart(spadesPile.Last()))"/>
                     </div>
                     <div class="col-2">
                         <SuitDiscardPile SuitPile="heartsPile"
-                                         DiscardPile="discardPile"
+                                         DiscardPile="DiscardPile"
                                          DraggedCard="DraggedCard"
                                          MoveActiveCardCallback="(() => MoveActiveCard(heartsPile))"
                                          DragStartEvent="(() => HandleDragStart(heartsPile.Last()))"/>
