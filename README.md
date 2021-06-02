@@ -17,5 +17,11 @@ This project is used in many blog posts on my site, including:
 * [Blackjack in Blazor Part 2: The C# Classes](https://exceptionnotfound.net/blackjack-in-blazor-part-2-the-csharp-classes/)
 * [Blackjack in Blazor Part 3: Game State and Blazor Components](https://exceptionnotfound.net/blackjack-in-blazor-part-3-game-state-and-blazor-components/)
 * [Blackjack in Blazor Part 4: Putting it All Together](https://exceptionnotfound.net/blackjack-in-blazor-part-4-putting-it-all-together/)
+* [Tetris in Blazor Web Assembly](https://exceptionnotfound.net/tetris-in-blazor-webassembly/)
+* [Tetris in Blazor Part 2: Cells, the Grid, and the Game State](https://exceptionnotfound.net/tetris-in-blazor-part-2-cells-the-grid-and-the-game-state/)
+* [Tetris in Blazor Part 3: Tetrominos](https://exceptionnotfound.net/tetris-in-blazor-part-3-tetrominos/)
+* [Tetris in Blazor Part 4: Displaying the Grid and a Falling Tetromino](https://exceptionnotfound.net/tetris-in-blazor-part-4-displaying-the-grid-and-a-falling-tetromino/)
+* [Tetris in Blazor Part 5: Controls, Upcoming Tetrominos, and Clearing Rows](https://exceptionnotfound.net/tetris-in-blazor-part-5-controls-upcoming-tetrominos-and-clearing-rows/)
+* [Tetris in Blazor Part 6: Scoring, Levels, Music, and Other Features](https://exceptionnotfound.net/tetris-in-blazor-part-6-scoring-levels-music-and-other-features/)
 
 More to come! Pull requests are welcome on this project.
