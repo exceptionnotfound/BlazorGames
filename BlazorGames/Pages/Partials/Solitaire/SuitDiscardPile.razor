@@ -1,13 +1,9 @@
 ﻿@using BlazorGames.Models.Solitaire;
 @using BlazorGames.Models.Common;
-@using BlazorGames.Models.Common.Enums;
 
 @code {
     [Parameter]
     public SuitPile SuitPile { get; set; }
-
-    [Parameter]
-    public DiscardPile DiscardPile { get; set; }
 
     [Parameter]
     public Card DraggedCard { get; set; }
@@ -20,14 +16,20 @@
 
     private string CssClass { get; set; }
 
+    private string ImagePath { get; set; }
+
+    //If the dragged card can be dropped onto this card,
+    //add a special CSS class.
     public void HandleDragEnter()
     {
-        if (DraggedCard.Value == SuitPile.AllowedValue && DraggedCard.Suit == SuitPile.Suit)
+        if (DraggedCard.Value == SuitPile.AllowedValue
+            && DraggedCard.Suit == SuitPile.Suit)
         {
             CssClass = "solitaire-can-drop";
         }
     }
 
+    //Once the dragged card leaves, always reset the CSS class.
     public void HandleDragLeave()
     {
         CssClass = "";
@@ -35,36 +37,29 @@
 
     public async Task HandleDrop()
     {
-        CssClass = "";
+        CssClass = ""; //Reset the CSS
 
-        if (DraggedCard.Value == SuitPile.AllowedValue && DraggedCard.Suit == SuitPile.Suit)
+        //If the dragged card can be dropped here
+        if (DraggedCard.Value == SuitPile.AllowedValue
+            && DraggedCard.Suit == SuitPile.Suit)
         {
+            //Invoke the callback to move the dragged card.
+            //This callback will be different for stacks and suit piles.
             await MoveActiveCardCallback.InvokeAsync(SuitPile);
         }
     }
 }
-
 @if (SuitPile.Any())
-{
-    <div @ondragstart="DragStartEvent"
-         @ondragend="StateHasChanged"
-         @ondragenter="HandleDragEnter"
-         @ondragleave="HandleDragLeave"
-         @ondrop="HandleDrop"
-         ondragover="event.preventDefault();">
-        <img class="solitaire-card @CssClass"
-             src="images/common/@(SuitPile.Last().ImageName).png" />
-    </div>
-}
+    ImagePath = $"images/common/{SuitPile.Last().ImageName}.png";
 else
-{
-    <div @ondragstart="DragStartEvent"
-         @ondragend="StateHasChanged"
-         @ondragenter="HandleDragEnter"
-         @ondragleave="HandleDragLeave"
-         @ondrop="HandleDrop"
-         ondragover="event.preventDefault();">
-        <img class="solitaire-card @CssClass"
-             src="images/solitaire/cardDashed@(SuitPile.Suit.GetDisplayName()).png" />
-    </div>
-}
+    ImagePath = $"images/solitaire/cardDashed{SuitPile.Suit.GetDisplayName()}.png";
+
+<div @ondragstart="DragStartEvent"
+     @ondragend="StateHasChanged"
+     @ondragenter="HandleDragEnter"
+     @ondragleave="HandleDragLeave"
+     @ondrop="HandleDrop"
+     ondragover="event.preventDefault();">
+    <img class="solitaire-card @CssClass"
+         src="@ImagePath" />
+</div>

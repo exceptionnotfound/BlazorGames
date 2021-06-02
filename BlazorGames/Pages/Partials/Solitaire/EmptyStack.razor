@@ -9,9 +9,6 @@
     public Card DraggedCard { get; set; }
 
     [Parameter]
-    public EventCallback RemoveFromAllStacksEvent { get; set; }
-
-    [Parameter]
     public EventCallback DropEvent { get; set; }
 
     private string CssClass { get; set; }
@@ -28,8 +25,6 @@
     {
         CssClass = "";
     }
-
-
 }
 
 <img class="@CssClass"

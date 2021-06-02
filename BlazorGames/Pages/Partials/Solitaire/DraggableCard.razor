@@ -1,9 +1,12 @@
 ﻿@using BlazorGames.Models.Solitaire;
 
 @code {
+
+    //The card represented by this component
     [Parameter]
     public Card Card { get; set; }
 
+    //The card currently being dragged
     [Parameter]
     public Card DraggedCard { get; set; }
 
@@ -25,9 +28,11 @@
     {
         @if (DraggedCard != null)
         {
+            //Card being dropped must be opposite color from this card...
             bool isOppositeColor = (Card.IsBlack && DraggedCard.IsRed)
                                     || (Card.IsRed && DraggedCard.IsBlack);
 
+            //...and also one less than this card.
             bool isOneLessThan = (int)DraggedCard.Value == (((int)Card.Value) - 1);
 
             if (isOppositeColor && isOneLessThan)
