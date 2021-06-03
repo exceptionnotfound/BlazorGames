@@ -166,18 +166,17 @@
     {
         if (FirstDiscard != null && FirstDiscard.Suit == card.Suit && FirstDiscard.Value == card.Value)
         {
-            FirstDiscard = null;
-            DiscardPile.RemoveIfExists(card);
-            MoveUpDiscards();
+            RemoveFromDiscards(card);
         }
-        RemoveIfExistsInAnyStackPile(card);
+        RemoveIfExistsInAnyStack(card);
+        RemoveFromSuitPiles(card);
 
         suitPile.Add(card);
 
         StateHasChanged();
     }
 
-    private void RemoveIfExistsInAnyStackPile(Card card)
+    private void RemoveIfExistsInAnyStack(Card card)
     {
         StackPile1.RemoveIfExists(card);
         StackPile2.RemoveIfExists(card);
@@ -186,13 +185,11 @@
         StackPile5.RemoveIfExists(card);
         StackPile6.RemoveIfExists(card);
         StackPile7.RemoveIfExists(card);
+    }
 
-        ClubsPile.RemoveIfExists(card);
-        DiamondsPile.RemoveIfExists(card);
-        SpadesPile.RemoveIfExists(card);
-        HeartsPile.RemoveIfExists(card);
-
-        if(FirstDiscard != null && FirstDiscard.Suit == card.Suit && FirstDiscard.Value == card.Value)
+    private void RemoveFromDiscards(Card card)
+    {
+        if (FirstDiscard != null && FirstDiscard.Suit == card.Suit && FirstDiscard.Value == card.Value)
         {
             FirstDiscard = null;
             MoveUpDiscards();
@@ -205,6 +202,14 @@
         SecondDiscard = ThirdDiscard;
 
         ThirdDiscard = DiscardPile.Pop();
+    }
+
+    private void RemoveFromSuitPiles(Card card)
+    {
+        HeartsPile.RemoveIfExists(card);
+        ClubsPile.RemoveIfExists(card);
+        DiamondsPile.RemoveIfExists(card);
+        SpadesPile.RemoveIfExists(card);
     }
 
     public void CardDoubleClick(Card card)
@@ -249,10 +254,14 @@
 
     public async Task DropCardOntoStack(StackPile targetStack)
     {
+        //Get the topmost card of the target stack
         var card = targetStack.Last();
+
         bool canStack = false;
         if (card == null) //No cards on the stack, we can only allow kings
         {
+            //If the stack is empty, dragged card can only be placed
+            //if it is a King.
             canStack = DraggedCard.Value == CardValue.King;
         }
         else
@@ -260,79 +269,68 @@
             bool isOppositeColor = (card.IsBlack && DraggedCard.IsRed)
                                     || (card.IsRed && DraggedCard.IsBlack);
 
-            bool isOneLessThan = (int)DraggedCard.Value == (((int)card.Value) - 1);
+            bool isOneLessThan
+                = (int)DraggedCard.Value == (((int)card.Value) - 1);
 
+            //Dragged card can be stacked if it is the opposite color
+            //and one less rank from the current top card of the stack.
             canStack = isOneLessThan && isOppositeColor;
         }
 
         if (canStack)
         {
+            //Determine the stack the card came from
             StackPile sourceStack = null;
             if (StackPile7.Contains(DraggedCard))
-            {
                 sourceStack = StackPile7;
-            }
             else if (StackPile6.Contains(DraggedCard))
-            {
                 sourceStack = StackPile6;
-            }
             else if (StackPile5.Contains(DraggedCard))
-            {
                 sourceStack = StackPile5;
-            }
             else if (StackPile4.Contains(DraggedCard))
-            {
                 sourceStack = StackPile4;
-            }
             else if (StackPile3.Contains(DraggedCard))
-            {
                 sourceStack = StackPile3;
-            }
             else if (StackPile2.Contains(DraggedCard))
-            {
                 sourceStack = StackPile2;
-            }
             else if (StackPile1.Contains(DraggedCard))
-            {
                 sourceStack = StackPile1;
-            }
-            if(sourceStack != null)
+
+            //If the card came from a stack, move the card's stack
+            if (sourceStack != null)
             {
                 MoveCardStack(targetStack, sourceStack);
             }
-            if(DraggedCard == FirstDiscard)
+
+            //If the card came from discards, remove it from there
+            //and add it to the target stack
+            if (DraggedCard == FirstDiscard)
             {
-                RemoveIfExistsInAnyStackPile(DraggedCard);
+                RemoveFromDiscards(DraggedCard);
                 targetStack.Add(DraggedCard);
             }
-            if(HeartsPile.Contains(DraggedCard))
+
+            //If the card came from the suit piles, remove it from
+            //the suit pile and add it to the stack.
+            if (ClubsPile.Contains(DraggedCard)
+                || DiamondsPile.Contains(DraggedCard)
+                || SpadesPile.Contains(DraggedCard)
+                || HeartsPile.Contains(DraggedCard))
             {
-                HeartsPile.RemoveIfExists(DraggedCard);
+                RemoveFromSuitPiles(DraggedCard);
                 targetStack.Add(DraggedCard);
             }
-            if (ClubsPile.Contains(DraggedCard))
-            {
-                ClubsPile.RemoveIfExists(DraggedCard);
-                targetStack.Add(DraggedCard);
-            }
-            if (DiamondsPile.Contains(DraggedCard))
-            {
-                DiamondsPile.RemoveIfExists(DraggedCard);
-                targetStack.Add(DraggedCard);
-            }
-            if (SpadesPile.Contains(DraggedCard))
-            {
-                SpadesPile.RemoveIfExists(DraggedCard);
-                targetStack.Add(DraggedCard);
-            }
+
         }
+
+        //Refresh the interface
         StateHasChanged();
         await AutoComplete();
     }
 
     private void MoveCardStack(StackPile targetStack, StackPile sourceStack)
     {
-        //Check if any cards exist *after* the dragged card
+        //Check if any cards exist *lower* than dragged card
         var index = sourceStack.IndexOf(DraggedCard);
         if (sourceStack.Count() >= index)
         {
@@ -495,25 +493,25 @@
                     <div class="col-2">
                         <SuitDiscardPile SuitPile="ClubsPile"
                                          DraggedCard="DraggedCard"
-                                         MoveActiveCardCallback="(() => MoveActiveCard(ClubsPile))"
+                                         MoveActiveCardEvent="(() => MoveActiveCard(ClubsPile))"
                                          DragStartEvent="(() => HandleDragStart(ClubsPile.Last()))"/>
                     </div>
                     <div class="col-2">
                         <SuitDiscardPile SuitPile="DiamondsPile"
                                          DraggedCard="DraggedCard"
-                                         MoveActiveCardCallback="(() => MoveActiveCard(DiamondsPile))"
+                                         MoveActiveCardEvent="(() => MoveActiveCard(DiamondsPile))"
                                          DragStartEvent="(() => HandleDragStart(DiamondsPile.Last()))"/>
                     </div>
                     <div class="col-2">
                         <SuitDiscardPile SuitPile="SpadesPile"
                                          DraggedCard="DraggedCard"
-                                         MoveActiveCardCallback="(() => MoveActiveCard(SpadesPile))"
+                                         MoveActiveCardEvent="(() => MoveActiveCard(SpadesPile))"
                                          DragStartEvent="(() => HandleDragStart(SpadesPile.Last()))"/>
                     </div>
                     <div class="col-2">
                         <SuitDiscardPile SuitPile="HeartsPile"
                                          DraggedCard="DraggedCard"
-                                         MoveActiveCardCallback="(() => MoveActiveCard(HeartsPile))"
+                                         MoveActiveCardEvent="(() => MoveActiveCard(HeartsPile))"
                                          DragStartEvent="(() => HandleDragStart(HeartsPile.Last()))"/>
                     </div>
                 </div>

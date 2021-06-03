@@ -12,7 +12,7 @@
     public EventCallback DragStartEvent { get; set; }
 
     [Parameter]
-    public EventCallback MoveActiveCardCallback { get; set; }
+    public EventCallback MoveActiveCardEvent { get; set; }
 
     private string CssClass { get; set; }
 
@@ -45,7 +45,7 @@
         {
             //Invoke the callback to move the dragged card.
             //This callback will be different for stacks and suit piles.
-            await MoveActiveCardCallback.InvokeAsync(SuitPile);
+            await MoveActiveCardEvent.InvokeAsync(SuitPile);
         }
     }
 }
