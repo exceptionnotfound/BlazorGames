@@ -59,6 +59,8 @@ else
      @ondragenter="HandleDragEnter"
      @ondragleave="HandleDragLeave"
      @ondrop="HandleDrop"
+     @ondrop:preventDefault="true"
+     @ondrop:stopPropagation="true"
      ondragover="event.preventDefault();">
     <img class="solitaire-card @CssClass"
          src="@ImagePath" />

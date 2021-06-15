@@ -254,6 +254,8 @@
 
     public async Task DropCardOntoStack(StackPile targetStack)
     {
+        
+
         //Get the topmost card of the target stack
         var card = targetStack.Last();
 
@@ -348,12 +350,6 @@
         }
     }
 
-    public async Task EmptyStackDrop(StackPile stackPile)
-    {
-        await DropCardOntoStack(stackPile);
-        await AutoComplete();
-    }
-
     private async Task AutoComplete()
     {
         if(StackPile1.HasNoHiddenCards()
@@ -369,74 +365,31 @@
         {
             while(!ClubsPile.IsComplete || !DiamondsPile.IsComplete || !SpadesPile.IsComplete || !HeartsPile.IsComplete)
             {
-                //Cycle through each stack, get the lowest card in the stack, and attempt to add it to the correct suit pile
-                var card1 = StackPile1.Last();
-                if (card1 != null)
-                {
-                    CheckMoveCardToSuitPile(card1, ClubsPile);
-                    CheckMoveCardToSuitPile(card1, DiamondsPile);
-                    CheckMoveCardToSuitPile(card1, SpadesPile);
-                    CheckMoveCardToSuitPile(card1, HeartsPile);
-                }
-
-                var card2 = StackPile2.Last();
-                if (card2 != null)
-                {
-                    CheckMoveCardToSuitPile(card2, ClubsPile);
-                    CheckMoveCardToSuitPile(card2, DiamondsPile);
-                    CheckMoveCardToSuitPile(card2, SpadesPile);
-                    CheckMoveCardToSuitPile(card2, HeartsPile);
-                }
-
-                var card3 = StackPile3.Last();
-                if (card3 != null)
-                {
-                    CheckMoveCardToSuitPile(card3, ClubsPile);
-                    CheckMoveCardToSuitPile(card3, DiamondsPile);
-                    CheckMoveCardToSuitPile(card3, SpadesPile);
-                    CheckMoveCardToSuitPile(card3, HeartsPile);
-                }
-
-                var card4 = StackPile4.Last();
-                if (card4 != null)
-                {
-                    CheckMoveCardToSuitPile(card4, ClubsPile);
-                    CheckMoveCardToSuitPile(card4, DiamondsPile);
-                    CheckMoveCardToSuitPile(card4, SpadesPile);
-                    CheckMoveCardToSuitPile(card4, HeartsPile);
-                }
-
-                var card5 = StackPile5.Last();
-                if (card5 != null)
-                {
-                    CheckMoveCardToSuitPile(card5, ClubsPile);
-                    CheckMoveCardToSuitPile(card5, DiamondsPile);
-                    CheckMoveCardToSuitPile(card5, SpadesPile);
-                    CheckMoveCardToSuitPile(card5, HeartsPile);
-                }
-
-                var card6 = StackPile6.Last();
-                if (card6 != null)
-                {
-                    CheckMoveCardToSuitPile(card6, ClubsPile);
-                    CheckMoveCardToSuitPile(card6, DiamondsPile);
-                    CheckMoveCardToSuitPile(card6, SpadesPile);
-                    CheckMoveCardToSuitPile(card6, HeartsPile);
-                }
-
-                var card7 = StackPile7.Last();
-                if (card7 != null)
-                {
-                    CheckMoveCardToSuitPile(card7, ClubsPile);
-                    CheckMoveCardToSuitPile(card7, DiamondsPile);
-                    CheckMoveCardToSuitPile(card7, SpadesPile);
-                    CheckMoveCardToSuitPile(card7, HeartsPile);
-                }
+                await CheckMoveStackTopCard(StackPile1);
+                await CheckMoveStackTopCard(StackPile2);
+                await CheckMoveStackTopCard(StackPile3);
+                await CheckMoveStackTopCard(StackPile4);
+                await CheckMoveStackTopCard(StackPile5);
+                await CheckMoveStackTopCard(StackPile6);
+                await CheckMoveStackTopCard(StackPile7);
 
                 StateHasChanged();
-                await Task.Delay(100);
+
             }
         }
+    }
+
+    public async Task CheckMoveStackTopCard(StackPile stackPile)
+    {
+        var card = stackPile.Last();
+        if (card != null)
+        {
+            CheckMoveCardToSuitPile(card, ClubsPile);
+            CheckMoveCardToSuitPile(card, DiamondsPile);
+            CheckMoveCardToSuitPile(card, SpadesPile);
+            CheckMoveCardToSuitPile(card, HeartsPile);
+        }
+        await Task.Delay(100);
     }
 }
 
@@ -547,7 +500,7 @@
                     {
                         <EmptyStack Pile="StackPile1"
                                     DraggedCard="DraggedCard"
-                                    DropEvent="(() => EmptyStackDrop(StackPile1))"/>
+                                    DropEvent="(() => DropCardOntoStack(StackPile1))"/>
                     }
                 </div>
                 <div class="col-md-4">
@@ -575,7 +528,7 @@
                     {
                         <EmptyStack Pile="StackPile2"
                                     DraggedCard="DraggedCard"
-                                    DropEvent="(() => EmptyStackDrop(StackPile2))"/>
+                                    DropEvent="(() => DropCardOntoStack(StackPile2))"/>
                     }
                 </div>
             </div>
@@ -607,7 +560,7 @@
                     {
                         <EmptyStack Pile="StackPile3"
                                     DraggedCard="DraggedCard"
-                                    DropEvent="(() => EmptyStackDrop(StackPile3))"/>
+                                    DropEvent="(() => DropCardOntoStack(StackPile3))"/>
                     }
                 </div>
                 <div class="col-md-2">
@@ -635,7 +588,7 @@
                     {
                         <EmptyStack Pile="StackPile4"
                                     DraggedCard="DraggedCard"
-                                    DropEvent="(() => EmptyStackDrop(StackPile4))"/>
+                                    DropEvent="(() => DropCardOntoStack(StackPile4))"/>
                     }
                 </div>
                 <div class="col-md-2">
@@ -663,7 +616,7 @@
                     {
                         <EmptyStack Pile="StackPile5"
                                     DraggedCard="DraggedCard"
-                                    DropEvent="(() => EmptyStackDrop(StackPile5))"/>
+                                    DropEvent="(() => DropCardOntoStack(StackPile5))"/>
                     }
                 </div>
                 <div class="col-md-2">
@@ -691,7 +644,7 @@
                     {
                         <EmptyStack Pile="StackPile6"
                                     DraggedCard="DraggedCard"
-                                    DropEvent="(() => EmptyStackDrop(StackPile6))"/>
+                                    DropEvent="(() => DropCardOntoStack(StackPile6))"/>
                     }
                 </div>
                 <div class="col-md-2">
@@ -719,7 +672,7 @@
                     {
                         <EmptyStack Pile="StackPile7"
                                     DraggedCard="DraggedCard"
-                                    DropEvent="(() => EmptyStackDrop(StackPile7))"/>
+                                    DropEvent="(() => DropCardOntoStack(StackPile7))"/>
                     }
                 </div>
                 <div class="col-md-2"></div>

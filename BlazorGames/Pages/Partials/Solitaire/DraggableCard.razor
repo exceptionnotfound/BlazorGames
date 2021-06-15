@@ -56,4 +56,6 @@
      @ondragenter="CardDragEnter"
      @ondragleave="CardDragLeave"
      @ondrop="(async () => { await HandleDropEvent.InvokeAsync(this); AdditionalCss = null; })"
+     @ondrop:preventDefault="true"
+     @ondrop:stopPropagation="true"
      ondragover="event.preventDefault();"/>

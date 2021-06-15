@@ -27,9 +27,9 @@ namespace BlazorGames.Models.Solitaire
             return Cards.Count();
         }
 
-    public List<Card> GetAllCards()
-    {
-        return Cards;
-    }
+        public List<Card> GetAllCards()
+        {
+            return Cards;
+        }
     }
 }

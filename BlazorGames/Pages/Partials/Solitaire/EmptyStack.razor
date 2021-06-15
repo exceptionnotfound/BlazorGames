@@ -32,5 +32,7 @@
      @ondragenter="EmptyStackDragEnter"
      @ondragleave="EmptyStackDragLeave"
      @ondrop="DropEvent"
+     @ondrop:preventDefault="true"
+     @ondrop:stopPropagation="true"
      ondragover="event.preventDefault();"
      ondragstart="event.dataTransfer.setData('', event.target.id);" />
