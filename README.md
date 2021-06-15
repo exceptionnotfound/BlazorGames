@@ -23,5 +23,10 @@ This project is used in many blog posts on my site, including:
 * [Tetris in Blazor Part 4: Displaying the Grid and a Falling Tetromino](https://exceptionnotfound.net/tetris-in-blazor-part-4-displaying-the-grid-and-a-falling-tetromino/)
 * [Tetris in Blazor Part 5: Controls, Upcoming Tetrominos, and Clearing Rows](https://exceptionnotfound.net/tetris-in-blazor-part-5-controls-upcoming-tetrominos-and-clearing-rows/)
 * [Tetris in Blazor Part 6: Scoring, Levels, Music, and Other Features](https://exceptionnotfound.net/tetris-in-blazor-part-6-scoring-levels-music-and-other-features/)
+* [Solitaire in Blazor Part 1: Overview](https://exceptionnotfound.net/solitaire-in-blazor-part-1-overview/)
+* [Solitaire in Blazor Part 2: The C# Classes](https://exceptionnotfound.net/solitaire-in-blazor-part-2-the-csharp-classes/)
+* Solitaire in Blazor Part 3: Drawing, Discarding, and the Stacks
+* Solitaire in Blazor Part 4: Drag and Drop
+* Solitaire in Blazor Part 5: Double-Click Shortcut and Autocomplete
 
 More to come! Pull requests are welcome on this project.
