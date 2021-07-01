@@ -9,8 +9,8 @@ This project is used in many blog posts on my site, including:
 ### Solitaire
 * [Part 1: Overview](https://exceptionnotfound.net/solitaire-in-blazor-part-1-overview/)
 * [Part 2: The C# Classes](https://exceptionnotfound.net/solitaire-in-blazor-part-2-the-csharp-classes/)
-* Part 3: Drawing, Discarding, and the Stacks
-* Part 4: Drag and Drop
+* [Part 3: Drawing, Discarding, and the Stacks](https://exceptionnotfound.net/solitaire-in-blazor-part-3-drawing-discarding-and-the-stacks/)
+* [Part 4: Drag and Drop](https://exceptionnotfound.net/solitaire-in-blazor-part-4-drag-and-drop/)
 * Part 5: Double-Click Shortcut and Autocomplete
 
 ### Tetris
