@@ -73,6 +73,19 @@ namespace BlazorGames.Models.Minesweeper
             return nearbyPanels.Except(currentPanel).ToList();
         }
 
+        public void RevealNumberPanelNeighbors(int x, int y)
+        {
+            var neighbors = GetNeighbors(x, y);
+
+            foreach (var panel in neighbors)
+            {
+                if (!panel.IsFlagged && !panel.IsRevealed)
+                {
+                    RevealPanel(panel.X, panel.Y);
+                }
+            }
+        }
+
         public void RevealPanel(int x, int y)
         {
             //Step 1: Find and reveal the clicked panel

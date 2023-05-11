@@ -30,6 +30,18 @@
 
         await _jsRuntime.InvokeVoidAsync("Prism.highlightAll");
     }
+
+    bool leftButtonPressed = false;
+    bool rightButtonPressed = false;
+
+    private bool BothButtonsPressed => leftButtonPressed && rightButtonPressed;
+
+    private void NumberPanelMouseUpHandler(int x, int y)
+    {
+        if (BothButtonsPressed) board.RevealNumberPanelNeighbors(x, y);
+        leftButtonPressed = false;
+        rightButtonPressed = false;
+    }
 }
 
 <PageTitle Title="Minesweeper" />
@@ -114,7 +126,7 @@
                         }
                         else //Number
                         {
-                            <div class="minesweeper-gamepiece minesweeper-@currentPanel.AdjacentMines">@currentPanel.AdjacentMines</div>
+                            <div class="minesweeper-gamepiece minesweeper-@currentPanel.AdjacentMines" @onmousedown="@(e => { if (e.Button == 0) leftButtonPressed = true; if (e.Button == 2) rightButtonPressed = true; })" @onmouseup="@(() => NumberPanelMouseUpHandler(x, y))">@currentPanel.AdjacentMines</div>
                         }
                     }
                     else if (currentPanel.IsFlagged)
